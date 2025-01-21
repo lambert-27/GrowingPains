@@ -1,4 +1,4 @@
-package crud;
+package test;
 
 
 import java.sql.Connection;
@@ -19,7 +19,7 @@ public class driver {
 			Connection connection = null;
 			Statement statement = null;
 			crud c;
-			c = new crud(connection, statement);
+
 
 			String f_name = "John";
 			String l_name = "nhoJ";
@@ -32,6 +32,7 @@ public class driver {
 				connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
 				//Create Statement for inserting into table
 				statement = connection.createStatement();
+				c = new crud(connection, statement);
 				c.insertCustomer(f_name, l_name, email, address, password, phone);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -39,9 +40,7 @@ public class driver {
 			}
 			finally{
 				try {
-					if(statement != null)
 					statement.close();
-					if(connection != null)
 					connection.close();
 				}
 				catch (Exception exception) {
