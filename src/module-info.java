@@ -4,6 +4,6 @@
 /**
  * 
  */
-module test {
+module GrowingPains {
 	requires java.sql;
 }
