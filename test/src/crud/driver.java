@@ -1,13 +1,11 @@
-package test;
-
+package crud;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-
+import model.Customer;
+import model.Address;
 public class driver {
 		
 		public static void main(String[] args) {
@@ -18,22 +16,21 @@ public class driver {
 			
 			Connection connection = null;
 			Statement statement = null;
+			//Declares instance of class crud
 			crud c;
 
+			//Instance of Address class
+			Address adrs = new Address("Main St.", "Carlow", "Carlow", "R93823","Ireland");
+			//Instance of Customer
+			Customer cust = new Customer("John", "nhoJ", "123@123.com", "strongpassword", 1111, adrs);
 
-			String f_name = "John";
-			String l_name = "nhoJ";
-			String password = "yo123";
-			String email = "NO";
-			String address = "YES";
-			int phone = 12393;
-		
+
 			try {
 				connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
 				//Create Statement for inserting into table
 				statement = connection.createStatement();
-				c = new crud(connection, statement);
-				c.insertCustomer(f_name, l_name, email, address, password, phone);
+				c = new crud(connection);
+				c.insertCustomer(cust);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
