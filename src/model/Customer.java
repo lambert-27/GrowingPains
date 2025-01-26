@@ -2,7 +2,9 @@ package model;
 //GROWING PAINS - Mark Lambert - C00192497
 //Customer class - Compositional aggregation w/ Account class
 public class Customer {
-
+//TODO Ask Jason about the use of setting up a static variable for each 
+//object which will be placed into a DB, so that it corresponds with the auto increment
+	//private int customerID;
     private String fName;
     private String lName;
     private Account acc;

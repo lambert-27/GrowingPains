@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Date;
-import model.Customer;
+import model.*;
+
 public class crud {
 	private Connection connection;
 	
@@ -32,20 +33,34 @@ public class crud {
 			sqlException.printStackTrace();
 		}
 	}
-	
-	public void insertOrder(int customerID, int productID, Date date, Time time, String shippingAddress, float totalPrice) {
+	public void insertProduct(Item item) {
 		try {
-			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, productID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?,?)");
-			pstat.setInt(1,  customerID);
-			pstat.setInt(2,  productID);
-			pstat.setDate(3, date);
-			pstat.setTime(4,  time);
-			pstat.setString(5, shippingAddress);
-			pstat.setFloat(6, totalPrice);
+			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Product(productName, description, price, qty, category) VALUES(?,?,?,?,?)");
+			pstat.setString(1,  item.getItemName());
+			pstat.setString(2,  item.getDescription());
+			pstat.setFloat(3, item.getPrice());
+			pstat.setInt(4,  item.getQty());
+			pstat.setString(5, item.getType());
 			pstat.executeUpdate();
 		}
 		catch(SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
 	}
+	
+//	public void insertOrder(int customerID, int productID, Date date, Time time, String shippingAddress, float totalPrice) {
+//		try {
+//			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, productID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?,?)");
+//			pstat.setInt(1,  customerID);
+//			pstat.setInt(2,  productID);
+//			pstat.setDate(3, date);
+//			pstat.setTime(4,  time);
+//			pstat.setString(5, shippingAddress);
+//			pstat.setFloat(6, totalPrice);
+//			pstat.executeUpdate();
+//		}
+//		catch(SQLException sqlException) {
+//			sqlException.printStackTrace();
+//		}
+//	}
 }
