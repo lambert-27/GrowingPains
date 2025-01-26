@@ -1,5 +1,6 @@
 package model;
-
+//PAINS - Mark Lambert - C00192497
+//Plant subclass of Item
 
 public class Plant extends Item {
 

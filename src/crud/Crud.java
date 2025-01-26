@@ -10,10 +10,10 @@ import java.sql.Time;
 import java.sql.Date;
 import model.*;
 
-public class crud {
+public class Crud {
 	private Connection connection;
 	
-	public crud(Connection connection) {
+	public Crud(Connection connection) {
 		this.connection = connection;
 	}
 	
@@ -48,6 +48,9 @@ public class crud {
 		}
 	}
 	
+	public void insertOrder() {
+		
+	}
 //	public void insertOrder(int customerID, int productID, Date date, Time time, String shippingAddress, float totalPrice) {
 //		try {
 //			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, productID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?,?)");

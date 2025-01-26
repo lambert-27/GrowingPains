@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import model.*;
-import crud.crud;
+import crud.Crud;
 
-public class growingpains {
+public class GrowingMains {
 		
 		public static void main(String[] args) {
 			//database URL using localmachine as host, with mysql sub protocol
@@ -19,21 +19,21 @@ public class growingpains {
 			Connection connection = null;
 			Statement statement = null;
 			//Declares instance of class crud
-			crud c;
+			Crud c;
 			
 			//Instance of Address class
 			Address adrs = new Address("Secondary St.", "Ballinaboola", "Wexford", "Y20X391","Ireland");
 			//Instance of Customer
 			Customer cust = new Customer("David", "DaveJ", "david@dave.com", "mmynameisdavid", 800, adrs);
 			Plant p = new Plant("Alocasia", "Alocasia - Elepahnt's Ear. 13cm pot, suitable for semi-hydro", 14.99f, 25, "Alocasia - Tropical", "Experienced");
-			Acessory a = new Acessory("12cm Teracotta Pot", "Natural teracotta pot beautiful for indoors and outdoors", 2.99f, 30, "Plant Pot" );
+			Accessory a = new Accessory("12cm Teracotta Pot", "Natural teracotta pot beautiful for indoors and outdoors", 2.99f, 30, "Plant Pot" );
 
 
 			try {
 				connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
 				//Create Statement for inserting into table
 				statement = connection.createStatement();
-				c = new crud(connection);
+				c = new Crud(connection);
 				//Insertion of customer
 				c.insertCustomer(cust);
 				//Insertion of plant item

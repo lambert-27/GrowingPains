@@ -8,7 +8,7 @@ public class Account {
     private String password;
     private int phone;
 
-    //Constructor
+    //Constructors
     public Account(String email, String password, int phone, Address address) {
     	setEmail(email);
     	setPassword(password);

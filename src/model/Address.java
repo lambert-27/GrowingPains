@@ -1,5 +1,6 @@
 package model;
-
+//GROWING PAINS - Mark Lambert - C00192497
+//Address Class 
 public class Address {
 
 	private String town;

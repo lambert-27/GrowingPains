@@ -1,5 +1,6 @@
+//GROWING PAINS - Mark Lambert - C00192497
+//Item abstract Class - 
 package model;
-
 
 public abstract class Item {
 	//TODO Ask Jason about the use of setting up a static variable for each 
