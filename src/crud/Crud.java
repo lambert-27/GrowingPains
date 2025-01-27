@@ -4,23 +4,26 @@ package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Date;
 import model.*;
 
 public class Crud {
 	private Connection connection;
 	
+	//Constructor
 	public Crud(Connection connection) {
+		//When we instantiate the CRUD class, so to do we instantiate a Connection
 		this.connection = connection;
 	}
 	
 	//Inserts a Customer object into SQL Database by values fName, lName, email, address, password, phone
 	public void insertCustomer(Customer cust){
 		try {
+			//PreparedStatement for inserting a customer
 			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Customer(fName, lName, email, address, password, phone) VALUES(?,?,?,?,?,?)");
+			//Sets the values for Customer table
 			pstat.setString(1,  cust.getfName());
 			pstat.setString(2,  cust.getlName());
 			pstat.setString(3,  cust.getEmail());
@@ -33,6 +36,45 @@ public class Crud {
 			sqlException.printStackTrace();
 		}
 	}
+
+	public void getCustomer() {
+		//Declare a new Customer
+		Customer c ;
+		//Declare a new ResultSet, default to null
+		ResultSet resultSet = null;
+		
+		try {
+			//Prepared statement for Querying the Customer table
+			PreparedStatement pstat = connection.prepareStatement("SELECT customerID, fName, lName, email, address, password, phone FROM Customer where customerID=1");
+			//resultSet is assigned the result of the query
+			resultSet = pstat.executeQuery();
+			ResultSetMetaData metaData = resultSet.getMetaData();
+
+			System.out.println("-----Customers Table in GrowingPains DB-----");
+				//Check if result has a value
+				while(resultSet.next()) {
+					//Call setters from Customer
+					c = new Customer(
+							resultSet.getInt("customerID"), resultSet.getString("fName"), 
+							resultSet.getString("lName"), resultSet.getString("email"), 
+							resultSet.getString("password"), resultSet.getInt("phone"), resultSet.getString("address"));
+							
+				System.out.println(c);
+			}
+		}catch(SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		finally {
+			try {
+				resultSet.close();
+			}
+				catch(Exception exception) {
+					exception.printStackTrace();
+				}
+			}
+		//return c;	
+		}
+
 	public void insertProduct(Item item) {
 		try {
 			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Product(productName, description, price, qty, category) VALUES(?,?,?,?,?)");

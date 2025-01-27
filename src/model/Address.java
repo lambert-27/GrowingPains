@@ -18,6 +18,11 @@ public class Address {
     	setCountry(country);
     }
 
+    //A constructor for RETRIEVING Customers. The town attribute gets assigned the full concatenated Address
+    public Address(String address) {
+    	setTown(address);
+    }
+    
 	//Setters
 	public void setTown(String town) {
 		this.town = town;
@@ -60,9 +65,13 @@ public class Address {
 		return country;
 	}
 
-
 	//toString to style Address output to a visually pleasing format
 	public String toString() {
+		//If town has a value in it and city doesn't, that means we are RETRIEVING a customer, so we can return just town
+		if(town != null && city == null) {
+			return town;
+		}
+		//Otherwise, use this for insertion
 		return town + ", " + city + ", " + county + ", " + eircode + ", " + country;
 	}
 	

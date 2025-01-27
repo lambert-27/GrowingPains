@@ -16,10 +16,21 @@ public class Account {
     	//Aggregation
     	setAddress(address);
     }
+    
+    public Account(String email, String password, int phone, String address) {
+    	setEmail(email);
+    	setPassword(password);
+    	setPhone(phone);
+    	//Aggregation
+    	setAddress(address);
+    }
 
     //Setters
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	public void setAddress(String address){
+		this.address = new Address(address);
 	}
 	public void setEmail(String email) {
 		this.email = email;
@@ -47,6 +58,11 @@ public class Account {
 
 	public int getPhone() {
 		return phone;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [email=" + email + ", address=" + address + ", password=" + password + ", phone=" + phone + "]";
 	}
 
 	

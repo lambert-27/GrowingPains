@@ -6,7 +6,7 @@ public abstract class Item {
 	//TODO Ask Jason about the use of setting up a static variable for each 
 	//object which will be placed into a DB, so that it corresponds with the auto increment
 
-//    protected int itemID;
+    private int itemID;
 	private String itemName;
 	private String description;
 	private float price;
@@ -14,6 +14,16 @@ public abstract class Item {
 	private String type;
 	
     public Item(String itemName, String description, float price, int qty) {
+    	setItemName(itemName);
+    	setDescription(description);
+    	setPrice(price);
+    	setQty(qty);
+    	setType(type);
+    }
+    
+    //Item constructor containing itemID for Item RETRIEVAL
+    public Item(int itemID, String itemName, String description, float price, int qty) {
+    	setItemID(itemID);
     	setItemName(itemName);
     	setDescription(description);
     	setPrice(price);
@@ -43,6 +53,10 @@ public abstract class Item {
     	this.qty = qty;
     }
     
+    public void setItemID(int itemID) {
+    	this.itemID = itemID;
+    }
+    
     //this class getterss
     public String getItemName() {
     	return this.itemName;
@@ -61,6 +75,9 @@ public abstract class Item {
     public int getQty() {
     	return this.qty;
     }
+    
+    public int getItemID() {
+    	return this.itemID;    }
 
 
 }

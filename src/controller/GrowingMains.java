@@ -13,12 +13,12 @@ public class GrowingMains {
 		public static void main(String[] args) {
 			//database URL using localmachine as host, with mysql sub protocol
 			final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
-//			Windows MYSQL login
-			final String USER_NAME = "user";
-			final String PASS_WORD = "Growing_up27";
+////			Windows MYSQL login
+//			final String USER_NAME = "user";
+//			final String PASS_WORD = "Growing_up27";
 //			Linux MySQL login
-//			final String USER_NAME = "root";
-//			final String PASS_WORD = "Growing_pains123";
+			final String USER_NAME = "root";
+			final String PASS_WORD = "Growing_pains123";
 			
 			Connection connection = null;
 			Statement statement = null;
@@ -29,7 +29,11 @@ public class GrowingMains {
 			Address adrs = new Address("Secondary St.", "Ballinaboola", "Wexford", "Y20X391","Ireland");
 			//Instance of Customer
 			Customer cust = new Customer("David", "DaveJ", "david@dave.com", "mmynameisdavid", 800, adrs);
+			
+			//Note; The following are child class' of the superclass Item
+			//Instance of plant class
 			Plant p = new Plant("Alocasia", "Alocasia - Elepahnt's Ear. 13cm pot, suitable for semi-hydro", 14.99f, 25, "Alocasia - Tropical", "Experienced");
+			//Instance of Accessory class
 			Accessory a = new Accessory("12cm Teracotta Pot", "Natural teracotta pot beautiful for indoors and outdoors", 2.99f, 30, "Plant Pot" );
 
 
@@ -38,12 +42,13 @@ public class GrowingMains {
 				//Create Statement for inserting into table
 				statement = connection.createStatement();
 				c = new Crud(connection);
-				//Insertion of customer
-				c.insertCustomer(cust);
-				//Insertion of plant item
-				c.insertProduct(p);
-				//Insertion of accessory items
-				c.insertProduct(a);
+//				Insertion of customer
+//				c.insertCustomer(cust);
+//				//Insertion of plant item
+//				c.insertProduct(p);
+//				//Insertion of accessory items
+//				c.insertProduct(a);
+				c.getCustomer();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
