@@ -54,7 +54,7 @@ public class Customer {
 		this.acc = new Account(email, password, phone, address);
 	}
 	
-	//Account setter, which has a String for an address
+	//Account setter, which has a String for an address (Used for RETRIEVAL)
 	public void setAccount(String email, String password, int phone, String address) {
 		this.acc = new Account(email, password, phone, address);
 	}
