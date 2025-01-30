@@ -4,7 +4,6 @@ package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.*;
@@ -71,7 +70,7 @@ public class Crud {
 		return c;
 	}
 	
-//	Gets all Accessory items in Product table
+//	Gets all Customers items in Customer table
 	public void getAllCustomers() throws SQLException {
 		ResultSet resultSet = null;
 		
