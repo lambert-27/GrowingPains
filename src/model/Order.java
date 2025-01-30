@@ -5,15 +5,16 @@ import java.sql.Date;
 import java.util.Calendar;
 
 public class Order {
-    //private int orderID;
+	//Class instance variables
+    private int orderID;
     private Date date;
     private Time time;
     private Address shippingAdrs;
     private float totalPrice;
     
+    //Constructors
+    //Order - INSERTION
     public Order() {
-    	//TODO ask Jason about the order table, do I have a productID in there or do I not? 
-    	//Calls setDate and setTime without arguments as it auto timestaps to when Order is created
     	setDate();
     	setTime();
     	setAddress(shippingAdrs);

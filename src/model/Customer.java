@@ -2,19 +2,18 @@ package model;
 //GROWING PAINS - Mark Lambert - C00192497
 //Customer class - Compositional aggregation w/ Account class
 public class Customer {
-//TODO Ask Jason about the use of setting up a static variable for each 
-//object which will be placed into a DB, so that it corresponds with the auto increment
-	
+	//Class instance variables
 	private int customerID;
     private String fName;
     private String lName;
     private Account acc;
     
-  //Constructor
+  //Default Constructor
     public Customer() {
     	
     }
     
+//  Constructor used for INSERTION  
     public Customer(String fName, String lName, String email, String password, int phone, Address address) {
     	setfName(fName);
     	setlName(lName);
@@ -22,7 +21,7 @@ public class Customer {
     	setAccount(email, password, phone, address);
     }
 
-    //Constructor including customerID, used for Customer RETRIEVAL 
+    //Constructor including customerID, used for Customer MODIFICATION 
     public Customer(int customerID, String fName, String lName, String email, String password, int phone, Address address) {
     	setCustomerID(customerID);
     	setfName(fName);
@@ -39,17 +38,20 @@ public class Customer {
     }
     
     //Setters
+    //Set Customer first name
 	public void setfName(String fName) {
 		this.fName = fName;
 	}
+	//Set customer last name
 	public void setlName(String lName) {
 		this.lName = lName;
 	}
-	
+	//Set customer id
 	public void setCustomerID(int customerID) {
 		this.customerID = customerID;
 	}
 	//Account setter creates a new instance of Account object - Compositional Aggregation
+	//For INSERTION
 	public void setAccount(String email, String password, int phone, Address address) {
 		this.acc = new Account(email, password, phone, address);
 	}
@@ -59,14 +61,15 @@ public class Customer {
 		this.acc = new Account(email, password, phone, address);
 	}
 	//Getters
+	//Returns first name
 	public String getfName() {
 		return fName;
 	}
-	
+	//Returns last name
 	public String getlName() {
 		return lName;
 	}
-	
+	//Returns ID
 	public int getCustomerID() {
 		return customerID;
 	}

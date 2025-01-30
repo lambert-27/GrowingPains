@@ -2,7 +2,7 @@ package model;
 //GROWING PAINS - Mark Lambert - C00192497
 //Address Class 
 public class Address {
-
+	//Class instance variables
 	private String town;
 	private String city;
 	private String county;
@@ -10,6 +10,7 @@ public class Address {
 	private String country;
 	
 	//Constructor
+	//INSERTION
     public Address(String town, String city, String county, String eircode, String country) {
     	setTown(town);
     	setCity(city);
@@ -18,7 +19,8 @@ public class Address {
     	setCountry(country);
     }
 
-    //A constructor for RETRIEVING Customers. The town attribute gets assigned the full concatenated Address
+    //A constructor for RETRIEVING Customers. 
+    //The town attribute gets assigned the full concatenated Address retrieved from DB
     public Address(String address) {
     	setTown(address);
     }

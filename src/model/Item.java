@@ -9,11 +9,16 @@ public abstract class Item {
     private int itemID;
 	private String itemName;
 	private String description;
-	private float price;
+	private double price;
 	private int qty;
 	private String type;
-	
-    public Item(String itemName, String description, float price, int qty) {
+	//Constructors
+	//Default constructor
+	public Item() {
+		
+	}
+	//Item - INSERTION
+    public Item(String itemName, String description, double price, int qty) {
     	setItemName(itemName);
     	setDescription(description);
     	setPrice(price);
@@ -22,7 +27,7 @@ public abstract class Item {
     }
     
     //Item constructor containing itemID for Item RETRIEVAL
-    public Item(int itemID, String itemName, String description, float price, int qty) {
+    public Item(int itemID, String itemName, String description, double price, int qty) {
     	setItemID(itemID);
     	setItemName(itemName);
     	setDescription(description);
@@ -41,7 +46,7 @@ public abstract class Item {
     	this.type = type;
     }
     
-    public void setPrice(float price) {
+    public void setPrice(double price) {
     	this.price = price;
     }
     
@@ -64,7 +69,7 @@ public abstract class Item {
     
     public abstract String getType();
     
-    public float getPrice() {
+    public double getPrice() {
     	return this.price;
     }
     
@@ -78,6 +83,11 @@ public abstract class Item {
     
     public int getItemID() {
     	return this.itemID;    }
+	@Override
+	public String toString() {
+		return "Item [itemID=" + itemID + ", itemName=" + itemName + ", description=" + description + ", price=" + price
+				+ ", qty=" + qty + ", type=" + type + "]";
+	}
 
-
+    
 }
