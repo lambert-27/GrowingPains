@@ -32,6 +32,8 @@ public class Crud {
 			pstat.executeUpdate();
 		}
 		catch(SQLException sqlException) {
+//			After studying notes, realised I can print custom message here
+			System.err.println("Error inserting into Customer table: " +  sqlException.getMessage());
 			sqlException.printStackTrace();
 		}
 	}
@@ -65,6 +67,7 @@ public class Crud {
 				System.out.println(c);
 			}
 		}catch(SQLException sqlException) {
+			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
 			sqlException.printStackTrace();
 		}
 		return c;
@@ -88,6 +91,7 @@ public class Crud {
 			}
 		}
 			catch(SQLException sqlException) {
+				System.err.println("Error retrieving all Customers from table: " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
 	}
@@ -103,6 +107,7 @@ public class Crud {
 			pstat.executeUpdate();
 		}
 		catch(SQLException sqlException) {
+			System.err.println("Error inserting Product into table : " + sqlException.getMessage());
 			sqlException.printStackTrace();
 		}
 	}
@@ -132,6 +137,7 @@ public class Crud {
 			}
 		}
 			catch(SQLException sqlException) {
+				System.err.println("Error retrieving Product from table : " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
 		return p;
@@ -162,6 +168,7 @@ public class Crud {
 			}
 		}
 			catch(SQLException sqlException) {
+				System.err.println("Error retrieving Accessory from table : " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
 		return a;
@@ -187,6 +194,7 @@ public class Crud {
 			}
 		}
 			catch(SQLException sqlException) {
+				System.err.println("Error retrieving all Plants from table : " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
 	}
@@ -209,6 +217,7 @@ public class Crud {
 			}
 		}
 			catch(SQLException sqlException) {
+				System.err.println("Error retrieving all Accessories from table : " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
 	}
@@ -231,6 +240,7 @@ public class Crud {
 			}
 		}
 			catch(SQLException sqlException) {
+				System.err.println("Error retrieving all Products from table : " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
 	}
