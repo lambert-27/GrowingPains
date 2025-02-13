@@ -96,6 +96,34 @@ public class Crud {
 			}
 	}
 
+//	Deletes a Customer via their ID from table
+	public void deleteCustomer(int customerID) throws SQLException {
+
+				try {
+					//Prepared statement for Querying the Customer table
+					PreparedStatement pstat = connection.prepareStatement("DELETE FROM Customer WHERE customerID=?");
+					pstat.setInt(1, customerID);
+					//rowsAffected is assigned the result of the query
+					int rowsAffected = pstat.executeUpdate();
+
+//					If a row was affected (greater than 0) then success!
+					if(rowsAffected > 0){
+						System.out.println("The Customer with customer ID: " + customerID + " was deleted");
+					}
+//					Otherwise, not found
+					else {
+						System.out.println("The Customer with customer ID: " + customerID + " was not found");
+					}
+				}catch(SQLException sqlException) {
+					System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+					sqlException.printStackTrace();
+				}
+	}
+	
+	public void updateCustomer() {
+		
+	}
+
 //	INSERT a Product into Product table
 	public void insertProduct(Item item) throws SQLException{
 		try {
@@ -143,6 +171,30 @@ public class Crud {
 		return p;
 	}
 	
+//	Deletes a Plant item from the Product table
+	public void deletePlant(int productID) throws SQLException {
+		
+		try {
+			//Prepared statement for Querying the Customer table
+			PreparedStatement pstat = connection.prepareStatement("DELETE FROM Product WHERE productID=? AND category='Plant'");
+			pstat.setInt(1, productID);
+			//rowsAffected is assigned the result of the query
+			int rowsAffected = pstat.executeUpdate();
+
+//			If a row was affected (greater than 0) then success!
+			if(rowsAffected > 0){
+				System.out.println("The Product with product ID: " + productID + " was deleted");
+			}
+//			Otherwise, not found
+			else {
+				System.out.println("The Product with product ID: " + productID + " was not found");
+			}
+		}catch(SQLException sqlException) {
+			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+			sqlException.printStackTrace();
+		}
+}
+	
 //	Gets all Accessory items in Product table
 	public Accessory getAccessory() throws SQLException {
 		//Instantiate a new empty Plant object
@@ -174,7 +226,29 @@ public class Crud {
 		return a;
 	}
 	
+//	Deletes a Plant item from the Product table
+	public void deleteAccessory(int productID) throws SQLException {
+		
+		try {
+			//Prepared statement for Querying the Customer table
+			PreparedStatement pstat = connection.prepareStatement("DELETE FROM Product WHERE productID=? AND category='Accessory'");
+			pstat.setInt(1, productID);
+			//rowsAffected is assigned the result of the query
+			int rowsAffected = pstat.executeUpdate();
 
+//			If a row was affected (greater than 0) then success!
+			if(rowsAffected > 0){
+				System.out.println("The Product with product ID: " + productID + " was deleted");
+			}
+//			Otherwise, not found
+			else {
+				System.out.println("The Product with product ID: " + productID + " was not found");
+			}
+		}catch(SQLException sqlException) {
+			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+			sqlException.printStackTrace();
+		}
+}
 	
 //	Gets all Plant items in Product table
 	public void getAllPlants() throws SQLException {
@@ -244,6 +318,30 @@ public class Crud {
 				sqlException.printStackTrace();
 			}
 	}
+	
+//	Deletes a Plant item from the Product table
+	public void deleteProduct(int productID) throws SQLException {
+		
+		try {
+			//Prepared statement for Querying the Customer table
+			PreparedStatement pstat = connection.prepareStatement("DELETE FROM Product WHERE productID=?");
+			pstat.setInt(1, productID);
+			//rowsAffected is assigned the result of the query
+			int rowsAffected = pstat.executeUpdate();
+
+//			If a row was affected (greater than 0) then success!
+			if(rowsAffected > 0){
+				System.out.println("The Product with product ID: " + productID + " was deleted");
+			}
+//			Otherwise, not found
+			else {
+				System.out.println("The Product with product ID: " + productID + " was not found");
+			}
+		}catch(SQLException sqlException) {
+			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+			sqlException.printStackTrace();
+		}
+}
 	
 	public void insertOrder() throws SQLException {
 		

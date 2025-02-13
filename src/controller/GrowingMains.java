@@ -14,7 +14,7 @@ public class GrowingMains {
 			//database URL using localmachine as host, with mysql sub protocol
 			final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
 //			Windows MYSQL login
-			final String USER_NAME = "user";
+			final String USER_NAME = "plantman";
 			final String PASS_WORD = "Growing_up27";
 ////			Linux MySQL login
 //			final String USER_NAME = "root";
@@ -50,13 +50,17 @@ public class GrowingMains {
 //				c.insertProduct(a);
 				
 				//RETRIEVE tests
-				c.getCustomer();
-				c.getPlant();
-				c.getAccessory();
-				c.getAllCustomers();
-				c.getAllAccessories();
-				c.getAllPlants();
-				c.getAllProducts();
+				// c.getCustomer();
+				// c.getPlant();
+				// c.getAccessory();
+				// c.getAllCustomers();
+				// c.getAllAccessories();
+				// c.getAllPlants();
+				// c.getAllProducts();
+				c.deleteCustomer(1);
+				c.deleteAccessory(2);
+				c.deletePlant(1);
+				c.deleteProduct(14);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
