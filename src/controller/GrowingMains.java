@@ -26,17 +26,16 @@ public class GrowingMains {
 			Crud c;
 			
 			//Instance of Address class
-			Address adrs = new Address("Secondary St.", "Ballinaboola", "Wexford", "Y20X391","Ireland");
+			Address adrs = new Address("Primary Rd.", "Goldthorpe", "Wexford", "X09S631","Ireland");
 			//Instance of Customer
 			Customer cust = new Customer("David", "DaveJ", "david@dave.com", "mmynameisdavid", 800, adrs);
-			
 			//Note; The following are child class' of the superclass Item
 			//Instance of plant class
 			Plant p = new Plant("Alocasia", "Alocasia - Elepahnt's Ear. 13cm pot, suitable for semi-hydro", 14.99f, 25, "Alocasia - Tropical", "Experienced");
 			//Instance of Accessory class
 			Accessory a = new Accessory("12cm Teracotta Pot", "Natural teracotta pot beautiful for indoors and outdoors", 2.99f, 30, "Plant Pot" );
-
-
+			//Instance of Order class
+			Order o = new Order(1, 11, adrs, 27.00f);
 			try {
 				connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
 				//Create Statement for inserting into table
@@ -48,6 +47,7 @@ public class GrowingMains {
 //				c.insertProduct(p);
 //				//Insertion of accessory items
 //				c.insertProduct(a);
+//				c.insertOrder(o);
 				
 				//RETRIEVE tests
 				// c.getCustomer();
@@ -57,10 +57,17 @@ public class GrowingMains {
 				// c.getAllAccessories();
 				// c.getAllPlants();
 				// c.getAllProducts();
-				c.deleteCustomer(1);
-				c.deleteAccessory(2);
-				c.deletePlant(1);
-				c.deleteProduct(14);
+				//c.getOrder();
+				
+//				DELETE TESTS
+//				c.deleteCustomer(1);
+//				c.deleteAccessory(2);
+//				c.deletePlant(1);
+//				c.deleteProduct(14);
+//				c.updateCustomer(cust);
+//				c.updateItem(a, 4);
+				c.updateOrder(o, 1);
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
