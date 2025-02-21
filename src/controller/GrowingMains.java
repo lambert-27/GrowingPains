@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import model.*;
 import crud.Crud;
+import view.GrowingPains;
 
 public class GrowingMains {
 		
@@ -24,7 +25,8 @@ public class GrowingMains {
 			Statement statement = null;
 			//Declares instance of class crud
 			Crud c;
-			
+			GrowingPains g = new GrowingPains();
+
 			//Instance of Address class
 			Address adrs = new Address("Primary Rd.", "Goldthorpe", "Wexford", "X09S631","Ireland");
 			//Instance of Customer

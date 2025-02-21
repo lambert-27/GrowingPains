@@ -6,7 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.*;
+import model.Customer;
+import model.Accessory;
+import model.Plant;
+import model.Item; 
+import model.Order;
 
 public class Crud {
 	private Connection connection;
