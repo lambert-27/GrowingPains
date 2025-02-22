@@ -15,11 +15,11 @@ public class GrowingMains {
 			//database URL using localmachine as host, with mysql sub protocol
 			final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
 //			Windows MYSQL login
-	//		final String USER_NAME = "plantman";
-//			final String PASS_WORD = "Growing_up27";
+			final String USER_NAME = "plantman";
+			final String PASS_WORD = "Growing_up27";
 ////			Linux MySQL login
-			final String USER_NAME = "root";
-			final String PASS_WORD = "Growing_pains123";
+//			final String USER_NAME = "root";
+//			final String PASS_WORD = "Growing_pains123";
 			
 			Connection connection = null;
 			Statement statement = null;

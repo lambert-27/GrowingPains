@@ -12,8 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 public class GrowingPains extends JFrame{
 //	ImageIcon holds the path to the image for our icon
@@ -28,7 +27,7 @@ public class GrowingPains extends JFrame{
 		setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		Both the X and Y are set to be the maximum possible
-		setSize(1280, 720);
+		setSize(1700, 900);
 
 //		Set the location of the window relative to the screen, null = centered
 		setLocationRelativeTo(null);
@@ -63,7 +62,7 @@ public class GrowingPains extends JFrame{
 //	SideBar Panel
 	public void sideBar() {
 		JPanel sideBar = new JPanel();
-//		Set sidebar to a custom colour (dark grey)
+//		Set sidebar to custom green
 		sideBar.setBackground(GREEN);
 //		Set the sideBar panel to the WEST of the BorderLayout
 		getContentPane().add(sideBar, BorderLayout.WEST);
@@ -112,12 +111,10 @@ public class GrowingPains extends JFrame{
 //		Add the title to the panel
 		JLabel titleLbl = new JLabel(" ");
 		titlePanel.add(titleLbl);
-//		The main open space is reserved for the body of the app 
-		JPanel mainPanel = new JPanel();
-		titlePanel.add(mainPanel, BorderLayout.CENTER);
+
 //		Home screen has a background - acting like a splash screen
 		JLabel bckgrndLbl = new JLabel("");
-		bckgrndLbl.setIcon(new ImageIcon(getClass().getResource("/view/1.png")));
-		mainPanel.add(bckgrndLbl);
+		bckgrndLbl.setIcon(new ImageIcon(getClass().getResource("bg.png")));
+		mainContent.add(bckgrndLbl);
 	}
 }
