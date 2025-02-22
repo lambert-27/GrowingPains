@@ -3,7 +3,6 @@ package view;
 //GrowingPains View class - Contains structure for main area of app
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,12 +12,15 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GrowingPains extends JFrame{
 //	ImageIcon holds the path to the image for our icon
 //	getClass -> retrieve a reference to the Class obj that represents the GrowingPains class
 //	getResource() -> returns the location of the image as a URL
 	private final ImageIcon ICON = new ImageIcon(getClass().getResource("growing_pains.png"));
+	private final Color GREEN = new Color(24, 65, 15);
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
 	public GrowingPains() {
 		super("Growing Pains");
@@ -62,7 +64,7 @@ public class GrowingPains extends JFrame{
 	public void sideBar() {
 		JPanel sideBar = new JPanel();
 //		Set sidebar to a custom colour (dark grey)
-		sideBar.setBackground(new Color(112, 128, 144));
+		sideBar.setBackground(GREEN);
 //		Set the sideBar panel to the WEST of the BorderLayout
 		getContentPane().add(sideBar, BorderLayout.WEST);
 //		Set the layout within this panel to be a BOX layout and stack the items along the Y-AXIS (vertical stack)
@@ -74,7 +76,7 @@ public class GrowingPains extends JFrame{
 		browseBtn.setForeground(Color.WHITE);
 		browseBtn.setFont(new Font("Arial", Font.PLAIN, 20));
 		browseBtn.setBorderPainted(false);
-		browseBtn.setBackground(new Color(112, 128, 144));
+		browseBtn.setBackground(GREEN);
 		sideBar.add(browseBtn);
 		
 //		CART BUTTON
@@ -83,7 +85,7 @@ public class GrowingPains extends JFrame{
 		cartBtn.setForeground(Color.WHITE);
 		cartBtn.setFont(new Font("Arial", Font.PLAIN, 20));
 		cartBtn.setBorderPainted(false);
-		cartBtn.setBackground(new Color(112, 128, 144));
+		cartBtn.setBackground(GREEN);
 		sideBar.add(cartBtn);
 		
 //		REMINDER BUTTON
@@ -92,13 +94,30 @@ public class GrowingPains extends JFrame{
 		remindersBtn.setForeground(Color.WHITE);
 		remindersBtn.setFont(new Font("Arial", Font.PLAIN, 20));
 		remindersBtn.setBorderPainted(false);
-		remindersBtn.setBackground(new Color(112, 128, 144));
+		remindersBtn.setBackground(GREEN);
 		sideBar.add(remindersBtn);
+		
 	}
+	
 //	MainContent Panel
 	public void mainContent() {
+//		mainContent establish the main container for this content area
 		JPanel mainContent = new JPanel();
 		getContentPane().add(mainContent, BorderLayout.CENTER);
-		mainContent.setLayout(new CardLayout(0, 0));
+		mainContent.setLayout(new BorderLayout());
+//		Container for the title
+		JPanel titlePanel = new JPanel();
+		titlePanel.setBackground(GREEN);
+		mainContent.add(titlePanel, BorderLayout.NORTH);
+//		Add the title to the panel
+		JLabel titleLbl = new JLabel(" ");
+		titlePanel.add(titleLbl);
+//		The main open space is reserved for the body of the app 
+		JPanel mainPanel = new JPanel();
+		titlePanel.add(mainPanel, BorderLayout.CENTER);
+//		Home screen has a background - acting like a splash screen
+		JLabel bckgrndLbl = new JLabel("");
+		bckgrndLbl.setIcon(new ImageIcon(getClass().getResource("/view/1.png")));
+		mainPanel.add(bckgrndLbl);
 	}
 }
