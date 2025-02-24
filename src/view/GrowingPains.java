@@ -9,6 +9,7 @@ import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ public class GrowingPains extends JFrame{
 //	getResource() -> returns the location of the image as a URL
 	private final ImageIcon ICON = new ImageIcon(getClass().getResource("growing_pains.png"));
 	private final Color GREEN = new Color(24, 65, 15);
+	private final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
 	public GrowingPains() {
 		super("Growing Pains");
@@ -68,7 +70,7 @@ public class GrowingPains extends JFrame{
 		getContentPane().add(sideBar, BorderLayout.WEST);
 //		Set the layout within this panel to be a BOX layout and stack the items along the Y-AXIS (vertical stack)
 		sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
-		
+
 //		BROWSE BUTTON
 		JButton browseBtn = new JButton("Browse");
 		browseBtn.setIcon(new ImageIcon(getClass().getResource("pot.png")));
@@ -77,7 +79,7 @@ public class GrowingPains extends JFrame{
 		browseBtn.setBorderPainted(false);
 		browseBtn.setBackground(GREEN);
 		sideBar.add(browseBtn);
-		
+		browseBtn.addActionListener(null);
 //		CART BUTTON
 		JButton cartBtn = new JButton("Cart");
 		cartBtn.setIcon(new ImageIcon(getClass().getResource("checkout.png")));
@@ -114,6 +116,7 @@ public class GrowingPains extends JFrame{
 
 //		Home screen has a background - acting like a splash screen
 		JLabel bckgrndLbl = new JLabel("");
+		bckgrndLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		bckgrndLbl.setIcon(new ImageIcon(getClass().getResource("bg.png")));
 		mainContent.add(bckgrndLbl);
 	}
