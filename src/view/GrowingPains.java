@@ -3,6 +3,7 @@ package view;
 //GrowingPains View class - Contains structure for main area of app
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,22 +21,23 @@ public class GrowingPains extends JFrame{
 //	getClass -> retrieve a reference to the Class obj that represents the GrowingPains class
 //	getResource() -> returns the location of the image as a URL
 	private final ImageIcon ICON = new ImageIcon(getClass().getResource("growing_pains.png"));
+//	Custom green colour 
 	private final Color GREEN = new Color(24, 65, 15);
+//	Common font used for buttons and headings
 	private final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
 	public GrowingPains() {
+//		Invokes the superclass constructor (JFrame), passing in a String as the title
 		super("Growing Pains");
-//		Calls super calls methods (JFrame)
-		setLayout(new FlowLayout());
+		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		Both the X and Y are set to be the maximum possible
 		setSize(1700, 900);
-
 //		Set the location of the window relative to the screen, null = centered
 		setLocationRelativeTo(null);
 //		Set the icon image by calling ICON.getImage as setIconImage takes in an Image as an argument
 		setIconImage(ICON.getImage());
 
+//		Methods to create respective panels for GUI
 		topBar();
 		sideBar();
 		mainContent();
@@ -44,13 +46,11 @@ public class GrowingPains extends JFrame{
 	}
 //	TopBar Panel
 	public void topBar() {
-//		Sets the main content area to a border layout
-		getContentPane().setLayout(new BorderLayout());
 		JPanel topBar = new JPanel();
 //		Sets the background to a white
 		topBar.setBackground(Color.WHITE);
 //		Places the panel at the NORTH (TOP) of the BorderLayout
-		getContentPane().add(topBar, BorderLayout.NORTH);
+		add(topBar, BorderLayout.NORTH);
 //		The layout being used within this panel is a FLOW LAYOUT, aligning the items to the LEFT
 		topBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
@@ -67,57 +67,129 @@ public class GrowingPains extends JFrame{
 //		Set sidebar to custom green
 		sideBar.setBackground(GREEN);
 //		Set the sideBar panel to the WEST of the BorderLayout
-		getContentPane().add(sideBar, BorderLayout.WEST);
+		add(sideBar, BorderLayout.WEST);
 //		Set the layout within this panel to be a BOX layout and stack the items along the Y-AXIS (vertical stack)
 		sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
 
 //		BROWSE BUTTON
-		JButton browseBtn = new JButton("Browse");
-		browseBtn.setIcon(new ImageIcon(getClass().getResource("pot.png")));
-		browseBtn.setForeground(Color.WHITE);
-		browseBtn.setFont(new Font("Arial", Font.PLAIN, 20));
-		browseBtn.setBorderPainted(false);
-		browseBtn.setBackground(GREEN);
+		JButton browseBtn = createButton("Browse", "pot.png");
 		sideBar.add(browseBtn);
-		browseBtn.addActionListener(null);
+
 //		CART BUTTON
-		JButton cartBtn = new JButton("Cart");
-		cartBtn.setIcon(new ImageIcon(getClass().getResource("checkout.png")));
-		cartBtn.setForeground(Color.WHITE);
-		cartBtn.setFont(new Font("Arial", Font.PLAIN, 20));
-		cartBtn.setBorderPainted(false);
-		cartBtn.setBackground(GREEN);
+		JButton cartBtn = createButton("Cart", "checkout.png");
 		sideBar.add(cartBtn);
 		
 //		REMINDER BUTTON
-		JButton remindersBtn = new JButton("Reminders");
-		remindersBtn.setIcon(new ImageIcon(getClass().getResource("reminder.png")));
-		remindersBtn.setForeground(Color.WHITE);
-		remindersBtn.setFont(new Font("Arial", Font.PLAIN, 20));
-		remindersBtn.setBorderPainted(false);
-		remindersBtn.setBackground(GREEN);
+		JButton remindersBtn = createButton("Reminders", "reminder.png");
 		sideBar.add(remindersBtn);
 		
 	}
 	
+//	Method that encapsulates all common code for creating a button, takes in 2 paramaters
+//	one for the name, the other containing the name of the ImageIcon
+	public JButton createButton(String name, String icon) {
+		
+		JButton btn = new JButton(name);
+//		Set the imageIcon
+		btn.setIcon(new ImageIcon(getClass().getResource(icon)));
+		btn.setForeground(Color.WHITE);
+		btn.setFont(ARIAL);
+//		Remove border and set bg for transparent effect
+		btn.setBorderPainted(false);
+		btn.setBackground(GREEN);
+
+		return btn;
+	}
 //	MainContent Panel
 	public void mainContent() {
-//		mainContent establish the main container for this content area
-		JPanel mainContent = new JPanel();
+//		mainContent establish the main container for this content area, with a CARDLayout
+//		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
+		JPanel mainContent = new JPanel(new CardLayout());
 		getContentPane().add(mainContent, BorderLayout.CENTER);
-		mainContent.setLayout(new BorderLayout());
+		
+		mainContent.add(welcomePanel());
+		mainContent.add(browsePanel());
+		mainContent.add(cartPanel());
+		mainContent.add(reminderPanel());
+
+	}
+	
+//	Creates the welcomePanel splash screen
+	public JPanel welcomePanel() {
+		JPanel welcomePanel = new JPanel(new BorderLayout());
+		
 //		Container for the title
 		JPanel titlePanel = new JPanel();
 		titlePanel.setBackground(GREEN);
-		mainContent.add(titlePanel, BorderLayout.NORTH);
 //		Add the title to the panel
 		JLabel titleLbl = new JLabel(" ");
 		titlePanel.add(titleLbl);
 
 //		Home screen has a background - acting like a splash screen
-		JLabel bckgrndLbl = new JLabel("");
+		JLabel bckgrndLbl = new JLabel((new ImageIcon(getClass().getResource("bg.png"))));
+//		
 		bckgrndLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		bckgrndLbl.setIcon(new ImageIcon(getClass().getResource("bg.png")));
-		mainContent.add(bckgrndLbl);
+//		Add the backgroundLbl to the center, the titleLabel to the NORTH
+		welcomePanel.add(bckgrndLbl, BorderLayout.CENTER);
+		welcomePanel.add(titlePanel, BorderLayout.NORTH);
+		
+		return welcomePanel;
+	}
+	
+//	Creates and returns the browsePanel
+	public JPanel browsePanel() {
+		JPanel browsePanel = new JPanel(new BorderLayout());
+		
+//		Title has a BorderLayout so that we can push thte label to the left (west)
+		JPanel titlePanel = new JPanel(new BorderLayout());
+		titlePanel.setBackground(GREEN);
+		JLabel titleLbl = new JLabel("Browse");
+		titleLbl.setForeground(Color.WHITE);
+		titleLbl.setFont(ARIAL);
+//		Align the title text to the left
+		titlePanel.add(titleLbl, BorderLayout.WEST);
+		
+//		Add the title to the NORTH 
+		browsePanel.add(titlePanel, BorderLayout.NORTH);
+		
+		return browsePanel;
+	}
+	
+//	Creates and returns the browsePanel
+	public JPanel cartPanel() {
+		JPanel cartPanel = new JPanel(new BorderLayout());
+		
+//		Title has a BorderLayout so that we can push thte label to the left (west)
+		JPanel titlePanel = new JPanel(new BorderLayout());
+		titlePanel.setBackground(GREEN);
+		JLabel titleLbl = new JLabel("Cart");
+		titleLbl.setForeground(Color.WHITE);
+		titleLbl.setFont(ARIAL);
+//		Align the title text to the left
+		titlePanel.add(titleLbl, BorderLayout.WEST);
+		
+//		Add the title to the NORTH 
+		cartPanel.add(titlePanel, BorderLayout.NORTH);
+		
+		return cartPanel;
+	}
+	
+//	Creates and returns the browsePanel
+	public JPanel reminderPanel() {
+		JPanel reminderPanel = new JPanel(new BorderLayout());
+		
+//		Title has a BorderLayout so that we can push thte label to the left (west)
+		JPanel titlePanel = new JPanel(new BorderLayout());
+		titlePanel.setBackground(GREEN);
+		JLabel titleLbl = new JLabel("Reminders");
+		titleLbl.setForeground(Color.WHITE);
+		titleLbl.setFont(ARIAL);
+//		Align the title text to the left
+		titlePanel.add(titleLbl, BorderLayout.WEST);
+		
+//		Add the title to the NORTH 
+		reminderPanel.add(titlePanel, BorderLayout.NORTH);
+		
+		return reminderPanel;
 	}
 }
