@@ -14,12 +14,12 @@ public class GrowingMains {
 		public static void main(String[] args) {
 			//database URL using localmachine as host, with mysql sub protocol
 			final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
-//			Windows MYSQL login
-			final String USER_NAME = "plantman";
-			final String PASS_WORD = "Growing_up27";
-////			Linux MySQL login
-//			final String USER_NAME = "root";
-//			final String PASS_WORD = "Growing_pains123";
+////			Windows MYSQL login
+//			final String USER_NAME = "plantman";
+//			final String PASS_WORD = "Growing_up27";
+//			Linux MySQL login
+			final String USER_NAME = "root";
+			final String PASS_WORD = "Growing_pains123";
 			
 			Connection connection = null;
 			Statement statement = null;
@@ -84,5 +84,12 @@ public class GrowingMains {
 			}
 		}
 	}
+
+//JCombo boxes
+//Hash passwords, make it so we can login
+//Show enry in GUI and then show the table also updating
+//Error handling for various fields
+//Error handling must go to a log file (pop-up to tell user the input data was invalid, or highlisgt a field in red text etc)
+//Documentation up-to-date
 
 

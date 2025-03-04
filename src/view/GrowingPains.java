@@ -7,6 +7,11 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +30,9 @@ public class GrowingPains extends JFrame{
 	private final Color GREEN = new Color(24, 65, 15);
 //	Common font used for buttons and headings
 	private final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
+	CardLayout cardLayout = new CardLayout ();
+	JPanel mainContent = new JPanel(cardLayout);
+	
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
 	public GrowingPains() {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
@@ -38,9 +46,10 @@ public class GrowingPains extends JFrame{
 		setIconImage(ICON.getImage());
 
 //		Methods to create respective panels for GUI
+		mainContent();
 		topBar();
 		sideBar();
-		mainContent();
+
 //		Sets all elements within this container to visible
 		setVisible(true);
 	}
@@ -59,6 +68,12 @@ public class GrowingPains extends JFrame{
 		titleLbl.setIcon(new ImageIcon(getClass().getResource("growing pains_1.png")));
 //		Set font and fontsize
 		titleLbl.setFont(new Font("Arial", Font.PLAIN, 33));
+//		Event handling for a label, which listens for a mouse click to happen
+		titleLbl.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(mainContent, "Welcome");
+			}
+		});
 		topBar.add(titleLbl);
 	}
 //	SideBar Panel
@@ -74,14 +89,30 @@ public class GrowingPains extends JFrame{
 //		BROWSE BUTTON
 		JButton browseBtn = createButton("Browse", "pot.png");
 		sideBar.add(browseBtn);
+		browseBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(mainContent, "Browse");
+			}
+		});
 
 //		CART BUTTON
 		JButton cartBtn = createButton("Cart", "checkout.png");
 		sideBar.add(cartBtn);
+		cartBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(mainContent,  "Cart");
+			}
+		});
 		
 //		REMINDER BUTTON
 		JButton remindersBtn = createButton("Reminders", "reminder.png");
 		sideBar.add(remindersBtn);
+		remindersBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(mainContent, "Reminder");
+			}
+			
+		});
 		
 	}
 	
@@ -104,13 +135,13 @@ public class GrowingPains extends JFrame{
 	public void mainContent() {
 //		mainContent establish the main container for this content area, with a CARDLayout
 //		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
-		JPanel mainContent = new JPanel(new CardLayout());
+
 		getContentPane().add(mainContent, BorderLayout.CENTER);
 		
-		mainContent.add(welcomePanel());
-		mainContent.add(browsePanel());
-		mainContent.add(cartPanel());
-		mainContent.add(reminderPanel());
+		mainContent.add(welcomePanel(), "Welcome");
+		mainContent.add(browsePanel(), "Browse");
+		mainContent.add(cartPanel(), "Cart");
+		mainContent.add(reminderPanel(), "Reminder");
 
 	}
 	
