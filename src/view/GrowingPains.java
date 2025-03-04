@@ -7,19 +7,27 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import model.DisplayItem;
+import model.Item;
+import model.Plant;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 
 public class GrowingPains extends JFrame{
 //	ImageIcon holds the path to the image for our icon
@@ -32,9 +40,11 @@ public class GrowingPains extends JFrame{
 	private final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
 	CardLayout cardLayout = new CardLayout ();
 	JPanel mainContent = new JPanel(cardLayout);
-	
+//	4x4 grid for displaying plants
+	JPanel gridPanel = new JPanel(new GridLayout(4, 4));
+
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
-	public GrowingPains() {
+	public GrowingPains(List<DisplayItem> products) {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
 		super("Growing Pains");
 		setLayout(new BorderLayout());
@@ -46,7 +56,7 @@ public class GrowingPains extends JFrame{
 		setIconImage(ICON.getImage());
 
 //		Methods to create respective panels for GUI
-		mainContent();
+		mainContent(products);
 		topBar();
 		sideBar();
 
@@ -126,36 +136,44 @@ public class GrowingPains extends JFrame{
 		btn.setForeground(Color.WHITE);
 		btn.setFont(ARIAL);
 //		Remove border and set bg for transparent effect
+		btn.setOpaque(false);
 		btn.setBorderPainted(false);
-		btn.setBackground(GREEN);
+		btn.setFocusPainted(false);
+		btn.setContentAreaFilled(false);
 
 		return btn;
 	}
 //	MainContent Panel
-	public void mainContent() {
+	public void mainContent(List<DisplayItem> products) {
 //		mainContent establish the main container for this content area, with a CARDLayout
 //		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
 
 		getContentPane().add(mainContent, BorderLayout.CENTER);
 		
 		mainContent.add(welcomePanel(), "Welcome");
-		mainContent.add(browsePanel(), "Browse");
+		mainContent.add(browsePanel(products), "Browse");
 		mainContent.add(cartPanel(), "Cart");
 		mainContent.add(reminderPanel(), "Reminder");
 
 	}
 	
+	public JPanel titlePanel(String title) {
+//		Title has a BorderLayout so that we can push thte label to the left (west)
+		JPanel titlePanel = new JPanel(new BorderLayout());
+		titlePanel.setBackground(GREEN);
+		JLabel titleLbl = new JLabel(title);
+		titleLbl.setForeground(Color.WHITE);
+		titleLbl.setFont(ARIAL);
+//		Align the title text to the left
+		titlePanel.add(titleLbl, BorderLayout.WEST);
+		
+		return titlePanel;
+	}
+	
 //	Creates the welcomePanel splash screen
 	public JPanel welcomePanel() {
 		JPanel welcomePanel = new JPanel(new BorderLayout());
-		
-//		Container for the title
-		JPanel titlePanel = new JPanel();
-		titlePanel.setBackground(GREEN);
-//		Add the title to the panel
-		JLabel titleLbl = new JLabel(" ");
-		titlePanel.add(titleLbl);
-
+		JPanel titlePanel = titlePanel(" ");
 //		Home screen has a background - acting like a splash screen
 		JLabel bckgrndLbl = new JLabel((new ImageIcon(getClass().getResource("bg.png"))));
 //		
@@ -168,39 +186,38 @@ public class GrowingPains extends JFrame{
 	}
 	
 //	Creates and returns the browsePanel
-	public JPanel browsePanel() {
+	public JPanel browsePanel(List<DisplayItem> products) {
 		JPanel browsePanel = new JPanel(new BorderLayout());
 		
-//		Title has a BorderLayout so that we can push thte label to the left (west)
-		JPanel titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setBackground(GREEN);
-		JLabel titleLbl = new JLabel("Browse");
-		titleLbl.setForeground(Color.WHITE);
-		titleLbl.setFont(ARIAL);
-//		Align the title text to the left
-		titlePanel.add(titleLbl, BorderLayout.WEST);
-		
 //		Add the title to the NORTH 
-		browsePanel.add(titlePanel, BorderLayout.NORTH);
+		browsePanel.add(titlePanel("Browse"), BorderLayout.NORTH);
 		
+		getProducts(products);
+		
+		browsePanel.add(gridPanel, BorderLayout.CENTER);
+				
 		return browsePanel;
+	}
+	
+	public void getProducts(List<DisplayItem> products) {
+		for (Item product : products){
+			String image_path = product.getImgPath();
+			ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
+
+			JLabel imgLabel = new JLabel(icon);
+			
+			gridPanel.add(imgLabel);
+		}
+		
+
 	}
 	
 //	Creates and returns the browsePanel
 	public JPanel cartPanel() {
 		JPanel cartPanel = new JPanel(new BorderLayout());
 		
-//		Title has a BorderLayout so that we can push thte label to the left (west)
-		JPanel titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setBackground(GREEN);
-		JLabel titleLbl = new JLabel("Cart");
-		titleLbl.setForeground(Color.WHITE);
-		titleLbl.setFont(ARIAL);
-//		Align the title text to the left
-		titlePanel.add(titleLbl, BorderLayout.WEST);
-		
 //		Add the title to the NORTH 
-		cartPanel.add(titlePanel, BorderLayout.NORTH);
+		cartPanel.add(titlePanel("Cart"), BorderLayout.NORTH);
 		
 		return cartPanel;
 	}
@@ -208,18 +225,10 @@ public class GrowingPains extends JFrame{
 //	Creates and returns the browsePanel
 	public JPanel reminderPanel() {
 		JPanel reminderPanel = new JPanel(new BorderLayout());
-		
-//		Title has a BorderLayout so that we can push thte label to the left (west)
-		JPanel titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setBackground(GREEN);
-		JLabel titleLbl = new JLabel("Reminders");
-		titleLbl.setForeground(Color.WHITE);
-		titleLbl.setFont(ARIAL);
-//		Align the title text to the left
-		titlePanel.add(titleLbl, BorderLayout.WEST);
+
 		
 //		Add the title to the NORTH 
-		reminderPanel.add(titlePanel, BorderLayout.NORTH);
+		reminderPanel.add(titlePanel("Reminders"), BorderLayout.NORTH);
 		
 		return reminderPanel;
 	}

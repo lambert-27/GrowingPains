@@ -16,23 +16,23 @@ public class Plant extends Item {
     	
     }
     //TEMP RETRIEVAL 
-    public Plant(int itemID, String itemName, String description, double price, int qty) {
+    public Plant(int itemID, String itemName, String description, double price, int qty, String image_path) {
     	//Calls super class constructor
-    	super(itemName, description, price, qty);
+    	super(itemName, description, price, qty,  image_path);
     	super.setType(getType());
     }
     //Plant - INSERTION
-    public Plant(String itemName, String description, double price, int qty, String species, String difficulty) {
+    public Plant(String itemName, String description, double price, int qty, String species, String difficulty, String image_path) {
     	//Calls super class constructor
-    	super(itemName, description, price, qty);
+    	super(itemName, description, price, qty, image_path);
     	super.setType(getType());
     	setSpecies(species);
     	setDifficulty(difficulty);
     }
     
-    public Plant(int itemID, String itemName, String description, double price, int qty, String species, String difficulty) {
+    public Plant(int itemID, String itemName, String description, double price, int qty, String species, String difficulty, String image_path) {
     	//Calls super class constructor
-    	super(itemID, itemName, description, price, qty);
+    	super(itemID, itemName, description, price, qty, image_path);
     	super.setType(getType());
     	setSpecies(species);
     	setDifficulty(difficulty);

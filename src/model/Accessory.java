@@ -11,14 +11,14 @@ public class Accessory extends Item {
     	
     }
     //TEMP RETRIEVAL
-    public Accessory(int itemID, String itemName, String description, double price, int qty)  {
-    	super(itemName, description, price, qty);
+    public Accessory(int itemID, String itemName, String description, double price, int qty, String image_path)  {
+    	super(itemName, description, price, qty, image_path);
     	//Calls the super class' setType method, with the argument being passed taken from the getType for current class
     	super.setType(getType());
     }
     
-    public Accessory(String itemName, String description, double price, int qty, String accessoryType)  {
-    	super(itemName, description, price, qty);
+    public Accessory(String itemName, String description, double price, int qty, String accessoryType, String image_path)  {
+    	super(itemName, description, price, qty, image_path);
     	setAccessoryType(accessoryType);
     	//Calls the super class' setType method, with the argument being passed taken from the getType for current class
     	super.setType(getType());

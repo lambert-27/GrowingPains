@@ -5,8 +5,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+
 import model.*;
-import crud.Crud;
+import crud.*;
 import view.GrowingPains;
 
 public class GrowingMains {
@@ -15,17 +17,16 @@ public class GrowingMains {
 			//database URL using localmachine as host, with mysql sub protocol
 			final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
 ////			Windows MYSQL login
-//			final String USER_NAME = "plantman";
-//			final String PASS_WORD = "Growing_up27";
+			final String USER_NAME = "plantman";
+			final String PASS_WORD = "Growing_up27";
 //			Linux MySQL login
-			final String USER_NAME = "root";
-			final String PASS_WORD = "Growing_pains123";
-			
+//			final String USER_NAME = "root";
+//			final String PASS_WORD = "Growing_pains123";
+
 			Connection connection = null;
 			Statement statement = null;
-			//Declares instance of class crud
-			Crud c;
-			GrowingPains g = new GrowingPains();
+
+
 
 			//Instance of Address class
 			Address adrs = new Address("Primary Rd.", "Goldthorpe", "Wexford", "X09S631","Ireland");
@@ -33,42 +34,47 @@ public class GrowingMains {
 			Customer cust = new Customer("David", "DaveJ", "david@dave.com", "mmynameisdavid", 800, adrs);
 			//Note; The following are child class' of the superclass Item
 			//Instance of plant class
-			Plant p = new Plant("Alocasia", "Alocasia - Elepahnt's Ear. 13cm pot, suitable for semi-hydro", 14.99f, 25, "Alocasia - Tropical", "Experienced");
+			Plant p = new Plant("Maidenhair Fern", "Maidenhair Fern w/ 6cm pot, suitable for all owners", 6.99f, 12, "Fern", "Advanced", "images/fern.png");
 			//Instance of Accessory class
-			Accessory a = new Accessory("12cm Teracotta Pot", "Natural teracotta pot beautiful for indoors and outdoors", 2.99f, 30, "Plant Pot" );
+			Accessory a = new Accessory("Green Pot", "Green Pot w/ Eye Design", 8.99f, 3012, "Pot" , "images/pot_eyes.png");
 			//Instance of Order class
 			Order o = new Order(1, 11, adrs, 27.00f);
 			try {
 				connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
 				//Create Statement for inserting into table
 				statement = connection.createStatement();
-				c = new Crud(connection);
+				//Declares instance of class crud
+				accessoryCrud ac = new accessoryCrud(connection);
+				plantCrud pl = new plantCrud(connection);
+				orderCrud or = new orderCrud(connection);
+				productCrud pr = new productCrud(connection);
+				customerCrud cu = new customerCrud(connection);
 //				Insertion of customer
-//				c.insertCustomer(cust);
-//				//Insertion of plant item
-//				c.insertProduct(p);
-//				//Insertion of accessory items
-//				c.insertProduct(a);
-//				c.insertOrder(o);
+//				cu.insertCustomer(cust);
+				//Insertion of plant item
+				pr.insertProduct(p);
+				//Insertion of accessory items
+				pr.insertProduct(a);
+//				or.insertOrder(o);
 				
 				//RETRIEVE tests
-				// c.getCustomer();
-				// c.getPlant();
-				// c.getAccessory();
-				// c.getAllCustomers();
-				// c.getAllAccessories();
-				// c.getAllPlants();
-				// c.getAllProducts();
-				//c.getOrder();
-				
+//				 cu.getCustomer(1);
+//				 pl.getPlant(1);
+//				 ac.getAccessory(1);
+//				 cu.getAllCustomers();
+//				 ac.getAllAccessories();
+//				 pl.getAllPlants();
+//				 pr.getAllProducts();
+//				or.getOrder(1);
+				GrowingPains g = new GrowingPains(pr.getAllProducts());
 //				DELETE TESTS
-//				c.deleteCustomer(1);
-//				c.deleteAccessory(2);
-//				c.deletePlant(1);
-//				c.deleteProduct(14);
-//				c.updateCustomer(cust);
-//				c.updateItem(a, 4);
-				c.updateOrder(o, 1);
+//				cu.deleteCustomer(1);
+//				ac.deleteAccessory(2);
+//				pl.deletePlant(1);
+//				pr.deleteProduct(14);
+//				cu.updateCustomer(cust, 1);
+//				pr.updateItem(p, 5);
+//				or.updateOrder(o, 1);
 
 			} catch (SQLException e) {
 				e.printStackTrace();

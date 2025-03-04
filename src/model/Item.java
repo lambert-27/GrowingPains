@@ -12,28 +12,31 @@ public abstract class Item {
 	private double price;
 	private int qty;
 	private String type;
+	private String image_path;
 	//Constructors
 	//Default constructor
 	public Item() {
 		
 	}
 	//Item - INSERTION
-    public Item(String itemName, String description, double price, int qty) {
+    public Item(String itemName, String description, double price, int qty, String image_path) {
     	setItemName(itemName);
     	setDescription(description);
     	setPrice(price);
     	setQty(qty);
     	setType(type);
+    	setImgPath(image_path);
     }
     
     //Item constructor containing itemID for Item RETRIEVAL
-    public Item(int itemID, String itemName, String description, double price, int qty) {
+    public Item(int itemID, String itemName, String description, double price, int qty, String image_path) {
     	setItemID(itemID);
     	setItemName(itemName);
     	setDescription(description);
     	setPrice(price);
     	setQty(qty);
     	setType(type);
+    	setImgPath(image_path);
     }
 
     //Setters for super class attributes (Item)
@@ -62,9 +65,18 @@ public abstract class Item {
     	this.itemID = itemID;
     }
     
+    public void setImgPath(String image_path) {
+    	this.image_path = image_path;
+    }
+    
     //this class getterss
     public String getItemName() {
     	return this.itemName;
+    }
+    
+    //this class getterss
+    public String getImgPath() {
+    	return this.image_path;
     }
     
     public abstract String getType();
