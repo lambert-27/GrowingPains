@@ -52,9 +52,9 @@ public class GrowingMains {
 //				Insertion of customer
 //				cu.insertCustomer(cust);
 				//Insertion of plant item
-				pr.insertProduct(p);
+//				pr.insertProduct(p);
 				//Insertion of accessory items
-				pr.insertProduct(a);
+//				pr.insertProduct(a);
 //				or.insertOrder(o);
 				
 				//RETRIEVE tests

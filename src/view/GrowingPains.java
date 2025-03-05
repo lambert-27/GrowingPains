@@ -8,12 +8,10 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -23,8 +21,8 @@ import javax.swing.SwingConstants;
 
 import model.DisplayItem;
 import model.Item;
-import model.Plant;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,9 +38,11 @@ public class GrowingPains extends JFrame{
 	private final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
 	CardLayout cardLayout = new CardLayout ();
 	JPanel mainContent = new JPanel(cardLayout);
-//	4x4 grid for displaying plants
-	JPanel gridPanel = new JPanel(new GridLayout(4, 4));
-
+//	Grid for products, with a horizontal gap between each image of 10px
+	JPanel gridPanel = new JPanel(new GridLayout(0, 4, 10, 10));
+	
+	//Declare new LoginPanel
+	LoginPanel login;
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
 	public GrowingPains(List<DisplayItem> products) {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
@@ -54,7 +54,7 @@ public class GrowingPains extends JFrame{
 		setLocationRelativeTo(null);
 //		Set the icon image by calling ICON.getImage as setIconImage takes in an Image as an argument
 		setIconImage(ICON.getImage());
-
+		login = new LoginPanel(ARIAL, GREEN);
 //		Methods to create respective panels for GUI
 		mainContent(products);
 		topBar();
@@ -124,6 +124,17 @@ public class GrowingPains extends JFrame{
 			
 		});
 		
+		//Glue the Exit down to the bottom of the side bar for workflow priority
+		//preventing the user from misclicking and terminating the program
+		sideBar.add(Box.createVerticalGlue());
+		JButton exitBtn = createButton("Exit","exit.png");
+		sideBar.add(exitBtn);
+		exitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+
 	}
 	
 //	Method that encapsulates all common code for creating a button, takes in 2 paramaters
@@ -150,6 +161,7 @@ public class GrowingPains extends JFrame{
 
 		getContentPane().add(mainContent, BorderLayout.CENTER);
 		
+		mainContent.add(login);
 		mainContent.add(welcomePanel(), "Welcome");
 		mainContent.add(browsePanel(products), "Browse");
 		mainContent.add(cartPanel(), "Cart");
@@ -157,6 +169,7 @@ public class GrowingPains extends JFrame{
 
 	}
 	
+//	Title Panel shows the user what page they have currently clicked on 
 	public JPanel titlePanel(String title) {
 //		Title has a BorderLayout so that we can push thte label to the left (west)
 		JPanel titlePanel = new JPanel(new BorderLayout());
@@ -199,14 +212,32 @@ public class GrowingPains extends JFrame{
 		return browsePanel;
 	}
 	
+//	Method to get and display all products
 	public void getProducts(List<DisplayItem> products) {
+		Font productFont = new Font("Arial", Font.PLAIN, 24);
+//		For each Item in the List of Items
 		for (Item product : products){
 			String image_path = product.getImgPath();
 			ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
-
 			JLabel imgLabel = new JLabel(icon);
+			JLabel nameLabel = new JLabel(product.getItemName(), SwingConstants.CENTER);
+			JLabel priceLabel = new JLabel("€" + product.getPrice(), SwingConstants.CENTER);
+			priceLabel.setFont(productFont);
+			nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
+			//Place each product into its own container, as we want to display the image, 
+			//product name and price
+			JPanel productPanel = new JPanel(new BorderLayout());
+			JPanel infoPanel = new JPanel(new BorderLayout());
+
+//			Container just for the text info
+			infoPanel.add(nameLabel, BorderLayout.NORTH);
+			infoPanel.add(priceLabel, BorderLayout.CENTER);
 			
-			gridPanel.add(imgLabel);
+//			Container for the image AND the text
+			productPanel.add(imgLabel, BorderLayout.NORTH);
+			productPanel.add(infoPanel, BorderLayout.CENTER);
+			
+			gridPanel.add(productPanel);
 		}
 		
 
