@@ -35,6 +35,8 @@ public class BrowsePanel extends JPanel{
 			
 //			Allows the catalogue to be a scrollable page
 			JScrollPane scrollPane = new JScrollPane(gridPanel);
+//			Sets the increment value for when scrolling w/ mouse to a custom amount (Enables faster scrolling higher the number)
+			scrollPane.getVerticalScrollBar().setUnitIncrement(8);
 			add(scrollPane, BorderLayout.CENTER);
 					
 		}

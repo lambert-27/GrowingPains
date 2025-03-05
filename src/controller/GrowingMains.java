@@ -32,7 +32,10 @@ public class GrowingMains {
 			Customer cust = new Customer("David", "DaveJ", "david@dave.com", "mmynameisdavid", 800, adrs);
 			//Note; The following are child class' of the superclass Item
 			//Instance of plant class
-			Plant p = new Plant("Spider Plant", "Spider Plant - Suitable for all experience levels, loves humidity", 9.99f, 27, "Spider Plant", "Beginner", "images/spider.png");
+			Plant p = new Plant("String of Hearts", "String of Hearts - Vining indoor plant", 9.99f, 6, "String of Hearts", "Beginner", "images/soh.png");
+			
+			Plant p1 = new Plant("String of Bananas", "String of Bananas - Succulent vining plant", 19.99f, 16, "String of Bananas", "Experienced", "images/sob.png");
+			Plant p2 = new Plant("Alocasia Poly", "Alocasia - Elephant's Ear or Poly", 15.99f, 14, "Alocasia", "Experienced", "images/alocasia.png");
 			//Instance of Accessory class
 			Accessory a = new Accessory("8cm Pot with Wooden Stand", "Duck egg blue pot with wooden stand", 14.99f, 5, "Pot" , "images/pot_stand.png");
 			//Instance of Order class
@@ -51,6 +54,8 @@ public class GrowingMains {
 //				cu.insertCustomer(cust);
 				//Insertion of plant item
 //				pr.insertProduct(p);
+//				pr.insertProduct(p1);
+//				pr.insertProduct(p2);
 				//Insertion of accessory items
 //				pr.insertProduct(a);
 //				or.insertOrder(o);
