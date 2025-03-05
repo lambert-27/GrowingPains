@@ -6,15 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import model.Customer;
-import model.DisplayItem;
+
+
 import model.Accessory;
-import model.Plant;
-import model.Item; 
-import model.Order;
+
 
 public class accessoryCrud {
 //	Protected for package private, so that all child Crud classes can use the same connection

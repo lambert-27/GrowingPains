@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import model.DisplayItem;
-import model.Item;
+
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,7 +28,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class GrowingPains extends JFrame{
-//	ImageIcon holds the path to the image for our icon
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//	ImageIcon holds the path to the image for our icon
 //	getClass -> retrieve a reference to the Class obj that represents the GrowingPains class
 //	getResource() -> returns the location of the image as a URL
 	private final ImageIcon ICON = new ImageIcon(getClass().getResource("growing_pains.png"));
@@ -43,6 +47,7 @@ public class GrowingPains extends JFrame{
 	
 	//Declare new LoginPanel
 	LoginPanel login;
+	BrowsePanel browse;
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
 	public GrowingPains(List<DisplayItem> products) {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
@@ -55,6 +60,7 @@ public class GrowingPains extends JFrame{
 //		Set the icon image by calling ICON.getImage as setIconImage takes in an Image as an argument
 		setIconImage(ICON.getImage());
 		login = new LoginPanel(ARIAL, GREEN);
+		browse = new BrowsePanel(ARIAL, GREEN, products);
 //		Methods to create respective panels for GUI
 		mainContent(products);
 		topBar();
@@ -163,7 +169,7 @@ public class GrowingPains extends JFrame{
 		
 		mainContent.add(login);
 		mainContent.add(welcomePanel(), "Welcome");
-		mainContent.add(browsePanel(products), "Browse");
+		mainContent.add(browse, "Browse");
 		mainContent.add(cartPanel(), "Cart");
 		mainContent.add(reminderPanel(), "Reminder");
 
@@ -196,51 +202,6 @@ public class GrowingPains extends JFrame{
 		welcomePanel.add(titlePanel, BorderLayout.NORTH);
 		
 		return welcomePanel;
-	}
-	
-//	Creates and returns the browsePanel
-	public JPanel browsePanel(List<DisplayItem> products) {
-		JPanel browsePanel = new JPanel(new BorderLayout());
-		
-//		Add the title to the NORTH 
-		browsePanel.add(titlePanel("Browse"), BorderLayout.NORTH);
-		
-		getProducts(products);
-		
-		browsePanel.add(gridPanel, BorderLayout.CENTER);
-				
-		return browsePanel;
-	}
-	
-//	Method to get and display all products
-	public void getProducts(List<DisplayItem> products) {
-		Font productFont = new Font("Arial", Font.PLAIN, 24);
-//		For each Item in the List of Items
-		for (Item product : products){
-			String image_path = product.getImgPath();
-			ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
-			JLabel imgLabel = new JLabel(icon);
-			JLabel nameLabel = new JLabel(product.getItemName(), SwingConstants.CENTER);
-			JLabel priceLabel = new JLabel("€" + product.getPrice(), SwingConstants.CENTER);
-			priceLabel.setFont(productFont);
-			nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
-			//Place each product into its own container, as we want to display the image, 
-			//product name and price
-			JPanel productPanel = new JPanel(new BorderLayout());
-			JPanel infoPanel = new JPanel(new BorderLayout());
-
-//			Container just for the text info
-			infoPanel.add(nameLabel, BorderLayout.NORTH);
-			infoPanel.add(priceLabel, BorderLayout.CENTER);
-			
-//			Container for the image AND the text
-			productPanel.add(imgLabel, BorderLayout.NORTH);
-			productPanel.add(infoPanel, BorderLayout.CENTER);
-			
-			gridPanel.add(productPanel);
-		}
-		
-
 	}
 	
 //	Creates and returns the browsePanel

@@ -56,7 +56,6 @@ public class productCrud extends Crud{
 				String desc = resultSet.getString("description");
 				Double price = resultSet.getDouble("price");
 				int qty = resultSet.getInt("qty");
-				String type = resultSet.getString("category");
 				String image_path = resultSet.getString("image_path");
 				
 				DisplayItem product = new DisplayItem(id, name, desc, price, qty, image_path);

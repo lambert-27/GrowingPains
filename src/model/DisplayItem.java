@@ -3,9 +3,7 @@ package model;
 //Accessory subclass of Item
 
 public class DisplayItem extends Item {
-	//Class instance variables
-    private String accessoryType;
-    //Constructor
+
     //Default constructor
     public DisplayItem() {
     	

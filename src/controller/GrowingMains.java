@@ -26,17 +26,15 @@ public class GrowingMains {
 			Connection connection = null;
 			Statement statement = null;
 
-
-
 			//Instance of Address class
 			Address adrs = new Address("Primary Rd.", "Goldthorpe", "Wexford", "X09S631","Ireland");
 			//Instance of Customer
 			Customer cust = new Customer("David", "DaveJ", "david@dave.com", "mmynameisdavid", 800, adrs);
 			//Note; The following are child class' of the superclass Item
 			//Instance of plant class
-			Plant p = new Plant("Maidenhair Fern", "Maidenhair Fern w/ 6cm pot, suitable for all owners", 6.99f, 12, "Fern", "Advanced", "images/fern.png");
+			Plant p = new Plant("Spider Plant", "Spider Plant - Suitable for all experience levels, loves humidity", 9.99f, 27, "Spider Plant", "Beginner", "images/spider.png");
 			//Instance of Accessory class
-			Accessory a = new Accessory("Green Pot", "Green Pot w/ Eye Design", 8.99f, 3012, "Pot" , "images/pot_eyes.png");
+			Accessory a = new Accessory("8cm Pot with Wooden Stand", "Duck egg blue pot with wooden stand", 14.99f, 5, "Pot" , "images/pot_stand.png");
 			//Instance of Order class
 			Order o = new Order(1, 11, adrs, 27.00f);
 			try {
@@ -44,11 +42,11 @@ public class GrowingMains {
 				//Create Statement for inserting into table
 				statement = connection.createStatement();
 				//Declares instance of class crud
-				accessoryCrud ac = new accessoryCrud(connection);
-				plantCrud pl = new plantCrud(connection);
-				orderCrud or = new orderCrud(connection);
+//				accessoryCrud ac = new accessoryCrud(connection);
+//				plantCrud pl = new plantCrud(connection);
+//				orderCrud or = new orderCrud(connection);
 				productCrud pr = new productCrud(connection);
-				customerCrud cu = new customerCrud(connection);
+//				customerCrud cu = new customerCrud(connection);
 //				Insertion of customer
 //				cu.insertCustomer(cust);
 				//Insertion of plant item
