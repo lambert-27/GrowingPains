@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Plant;
 
-public class plantCrud extends Crud{
+public class PlantCrud extends Crud{
 	
-	public plantCrud(Connection connection) {
+	public PlantCrud(Connection connection) {
 		super(connection);
 		// TODO Auto-generated constructor stub
 	}

@@ -12,13 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import crud.CustomerCrud;
+import model.Customer;
 
 public class LoginPanel extends JPanel{
 /**
@@ -32,9 +36,11 @@ public class LoginPanel extends JPanel{
 	private GridBagConstraints gbc;
 	private JButton submit;
 	private JButton cancel;
+	private CustomerCrud crud;
 	
 //	Constructor, takes in the default FONT and COLOUR scheme
-	public LoginPanel(Font ARIAL, Color GREEN) {
+	public LoginPanel(Font ARIAL, Color GREEN, Connection connection) {
+		crud = new CustomerCrud(connection);
 //		Using a gridbag layout for flexibility
 		gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -85,8 +91,8 @@ public class LoginPanel extends JPanel{
 		submit.addMouseListener(new MouseAdapter() {
 			//When the user clicks the button to login, let them login
 			public void mouseClicked(MouseEvent e) {
-				String msg = "Password is : " + new String(pass.getPassword());
-				email.setText(msg);
+				String custEmail = email.getText();
+				String passWord = pass.getPassword().toString();
 			}
 
 			
@@ -114,5 +120,14 @@ public class LoginPanel extends JPanel{
 		btn.setBorderPainted(false);
 		
 		return btn;
+	}
+	
+	private Boolean login(String email, String passWord) throws SQLException {
+		for(Customer cust : crud.getAllCustomers()) {
+			if(cust.getEmail().equals(email) && cust.getPassword().equals(passWord)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

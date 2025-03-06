@@ -5,12 +5,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Customer;
+import model.DisplayItem;
 
-public class customerCrud extends Crud{
+public class CustomerCrud extends Crud{
 	
-	public customerCrud(Connection connection) {
+	public CustomerCrud(Connection connection) {
 		super(connection);
 		// TODO Auto-generated constructor stub
 	}
@@ -73,27 +76,38 @@ public class customerCrud extends Crud{
 		}
 		
 //		Gets all Customers items in Customer table
-		public void getAllCustomers() throws SQLException {
+		public List<Customer> getAllCustomers() throws SQLException {
 			ResultSet resultSet = null;
 			
+//			ArrayList of products to store all selected products
+			List<Customer> customers = new ArrayList<>();
 			try {
 				PreparedStatement pstat = connection.prepareStatement("SELECT customerID, fName, lName, email, address, password, phone FROM Customer");
 				//Assign resultSet the value of the query
 				resultSet = pstat.executeQuery();
 				
-				System.out.println("-----\nAll Customers in Customer Table in GrowingPains DB-----");
 //				Check if resultSet has a value
 				while(resultSet.next()) {
-					System.out.println(resultSet.getInt("customerID") + ", " + resultSet.getString("fName") + ", " + 
-					resultSet.getString("lName") + ", " + resultSet.getString("email") + ", " +
-					resultSet.getString("password") + ", " + resultSet.getInt("phone") + ", " + resultSet.getString("address"));
+					int id = resultSet.getInt("customerID");
+					String fName = resultSet.getString("fName");
+					String lName = resultSet.getString("lName");
+					String email = resultSet.getString("email");
+					String passWord = resultSet.getString("password");
+					String adrs = resultSet.getString("address");
+					int phone = resultSet.getInt("phone");
+					
+					Customer customer = new Customer(id, fName, lName, email, passWord, phone, adrs);
+					customers.add(customer);
+					}
 				}
-			}
 				catch(SQLException sqlException) {
-					System.err.println("Error retrieving all Customers from table: " + sqlException.getMessage());
+					System.err.println("Error retrieving all Customers from table : " + sqlException.getMessage());
 					sqlException.printStackTrace();
 				}
+			
+			return customers;
 		}
+
 
 //		Deletes a Customer via their ID from table
 		public void deleteCustomer(int customerID) throws SQLException {

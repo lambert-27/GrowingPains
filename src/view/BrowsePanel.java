@@ -27,7 +27,7 @@ public class BrowsePanel extends JPanel{
 	public BrowsePanel(Font ARIAL, Color GREEN, List<DisplayItem> products) {
 			setLayout(new BorderLayout());
 //			Grid for products, with a horizontal gap between each image of 10px
-			gridPanel = new JPanel(new GridLayout(0, 4, 10, 10));
+			gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
 //			Add the title to the NORTH 
 			add(titlePanel("Browse", ARIAL, GREEN), BorderLayout.NORTH);
 			

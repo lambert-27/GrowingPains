@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 import model.Order;
 
-public class orderCrud extends Crud{
+public class OrderCrud extends Crud{
 	
-	public orderCrud(Connection connection) {
+	public OrderCrud(Connection connection) {
 		super(connection);
 		// TODO Auto-generated constructor stub
 	}
