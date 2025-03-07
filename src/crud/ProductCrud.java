@@ -14,8 +14,8 @@ import model.Item;
 
 public class ProductCrud extends Crud{
 	
-	public ProductCrud(Connection connection) {
-		super(connection);
+	public ProductCrud() throws SQLException {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -45,7 +45,7 @@ public class ProductCrud extends Crud{
 //		ArrayList of products to store all selected products
 		List<DisplayItem> products = new ArrayList<>();
 		try {
-			PreparedStatement pstat = connection.prepareStatement("SELECT productID, productName, description, price, qty, category, image_path FROM product");
+			PreparedStatement pstat = connection.prepareStatement("SELECT productID, productName, description, price, qty, category, image_path FROM Product");
 			//Assign resultSet the value of the query
 			resultSet = pstat.executeQuery();
 			

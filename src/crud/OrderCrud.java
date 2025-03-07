@@ -10,8 +10,8 @@ import model.Order;
 
 public class OrderCrud extends Crud{
 	
-	public OrderCrud(Connection connection) {
-		super(connection);
+	public OrderCrud() throws SQLException {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

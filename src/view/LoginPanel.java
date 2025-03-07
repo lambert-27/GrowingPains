@@ -3,7 +3,9 @@ package view;
 //GrowingPains LoginPanel class - Contains structure for LoginPanel area of app
 
 
+import java.awt.CardLayout;
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
+
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -22,7 +24,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import crud.CustomerCrud;
-import model.Customer;
+
 
 public class LoginPanel extends JPanel{
 /**
@@ -39,8 +41,8 @@ public class LoginPanel extends JPanel{
 	private CustomerCrud crud;
 	
 //	Constructor, takes in the default FONT and COLOUR scheme
-	public LoginPanel(Font ARIAL, Color GREEN, Connection connection) {
-		crud = new CustomerCrud(connection);
+	public LoginPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent) throws SQLException {
+		crud = new CustomerCrud();
 //		Using a gridbag layout for flexibility
 		gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -76,10 +78,8 @@ public class LoginPanel extends JPanel{
 		pass.addActionListener(new ActionListener(){
 			//When the user presses ENTER, let them login
 			public void actionPerformed(ActionEvent e) {
-				String msg = "Password is : " + new String(pass.getPassword());
-				email.setText(msg);
+				handleLogin(cl, mainContent);
 			}
-			
 		});
 		gbc.gridx = 1;
 		gbc.gridy=6;
@@ -91,11 +91,8 @@ public class LoginPanel extends JPanel{
 		submit.addMouseListener(new MouseAdapter() {
 			//When the user clicks the button to login, let them login
 			public void mouseClicked(MouseEvent e) {
-				String custEmail = email.getText();
-				String passWord = pass.getPassword().toString();
+				handleLogin(cl, mainContent);
 			}
-
-			
 		});
 		
 		//Note skipped a line, y pos = 8;
@@ -108,6 +105,27 @@ public class LoginPanel extends JPanel{
 		gbc.gridx = 1;
 		gbc.gridy = 8;
 		add(cancel, gbc);
+		
+		
+	}
+	
+//	Method that holds logic for passing paramters to the crud.login method which, queries for the user w/ matching email/password combo
+	public void handleLogin(CardLayout cl, JPanel mainContent) {
+		String custEmail = email.getText();
+//		.getPassword() returns to us the array of characters that make up the password
+//		therefore, we first want to cast it as a String
+		String passWord = new String(pass.getPassword());
+		
+		try {
+			if(crud.login(custEmail, passWord)) {
+				cl.show(mainContent, "Browse");
+//				Call of static method showButtons, to show the sideBar when the customer is logged in
+				GrowingPains.showButtons();
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	//Create a button method, encapsulate common code
@@ -122,12 +140,6 @@ public class LoginPanel extends JPanel{
 		return btn;
 	}
 	
-	private Boolean login(String email, String passWord) throws SQLException {
-		for(Customer cust : crud.getAllCustomers()) {
-			if(cust.getEmail().equals(email) && cust.getPassword().equals(passWord)) {
-				return true;
-			}
-		}
-		return false;
-	}
+
+
 }

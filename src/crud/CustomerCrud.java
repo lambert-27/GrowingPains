@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Customer;
-import model.DisplayItem;
 
 public class CustomerCrud extends Crud{
 	
-	public CustomerCrud(Connection connection) {
-		super(connection);
+	public CustomerCrud() throws SQLException {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -108,7 +107,6 @@ public class CustomerCrud extends Crud{
 			return customers;
 		}
 
-
 //		Deletes a Customer via their ID from table
 		public void deleteCustomer(int customerID) throws SQLException {
 
@@ -150,6 +148,25 @@ public class CustomerCrud extends Crud{
 				System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
+		}
+		
+		public Boolean login(String email, String passWord) throws SQLException{
+			try
+			{
+				PreparedStatement pstat = connection.prepareStatement("SELECT * FROM Customer where email=? AND password=?");
+				
+				pstat.setString(1, email);
+				pstat.setString(2, passWord);
+				
+				try (ResultSet resultSet = pstat.executeQuery()){
+					return resultSet.next();
+				}
+			}catch(SQLException sqlException) {
+				System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+				sqlException.printStackTrace();
+				return false;
+			}
+
 		}
 
 }

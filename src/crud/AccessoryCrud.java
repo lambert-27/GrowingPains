@@ -12,19 +12,13 @@ import java.sql.SQLException;
 import model.Accessory;
 
 
-public class AccessoryCrud {
-//	Protected for package private, so that all child Crud classes can use the same connection
-	protected Connection connection;
-	
-	//Constructor
-	public AccessoryCrud(Connection connection) {
-		//When we instantiate the CRUD class, so to do we instantiate a Connection
-		this.connection = connection;
-	}
-	
-	
+public class AccessoryCrud extends Crud {
 
-	
+	//Constructor
+	public AccessoryCrud() throws SQLException {
+		super();
+	}
+		
 //	Gets all Accessory items in Product table
 	public Accessory getAccessory(int productID) throws SQLException {
 		//Instantiate a new empty Plant object

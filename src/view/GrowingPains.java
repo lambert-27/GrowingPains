@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -28,14 +30,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class GrowingPains extends JFrame{
-/**
-	 * 
-	 */
+	private static JButton browseBtn;
+	private static JButton cartBtn;
+	private static JButton remindersBtn;
+	private static JButton exitBtn;
+	
 	private static final long serialVersionUID = 1L;
 	//	ImageIcon holds the path to the image for our icon
 //	getClass -> retrieve a reference to the Class obj that represents the GrowingPains class
 //	getResource() -> returns the location of the image as a URL
-	private final ImageIcon ICON = new ImageIcon(getClass().getResource("growing_pains.png"));
+	private final ImageIcon ICON = new ImageIcon(getClass().getResource("images/growing_pains.png"));
 //	Custom green colour 
 	private final Color GREEN = new Color(24, 65, 15);
 //	Common font used for buttons and headings
@@ -49,7 +53,7 @@ public class GrowingPains extends JFrame{
 	LoginPanel login;
 	BrowsePanel browse;
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
-	public GrowingPains(List<DisplayItem> products) {
+	public GrowingPains(List<DisplayItem> products) throws SQLException {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
 		super("Growing Pains");
 		setLayout(new BorderLayout());
@@ -59,13 +63,13 @@ public class GrowingPains extends JFrame{
 		setLocationRelativeTo(null);
 //		Set the icon image by calling ICON.getImage as setIconImage takes in an Image as an argument
 		setIconImage(ICON.getImage());
-		login = new LoginPanel(ARIAL, GREEN);
+		login = new LoginPanel(ARIAL, GREEN, cardLayout, mainContent);
 		browse = new BrowsePanel(ARIAL, GREEN, products);
 //		Methods to create respective panels for GUI
 		mainContent(products);
 		topBar();
 		sideBar();
-
+		hideButtons();
 //		Sets all elements within this container to visible
 		setVisible(true);
 	}
@@ -81,7 +85,7 @@ public class GrowingPains extends JFrame{
 		
 		JLabel titleLbl = new JLabel("Growing Pains");
 //		Give an icon to the label
-		titleLbl.setIcon(new ImageIcon(getClass().getResource("growing pains_1.png")));
+		titleLbl.setIcon(new ImageIcon(getClass().getResource("images/growing pains_1.png")));
 //		Set font and fontsize
 		titleLbl.setFont(new Font("Arial", Font.PLAIN, 33));
 //		Event handling for a label, which listens for a mouse click to happen
@@ -103,7 +107,7 @@ public class GrowingPains extends JFrame{
 		sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
 
 //		BROWSE BUTTON
-		JButton browseBtn = createButton("Browse", "pot.png");
+		browseBtn = createButton("Browse", "images/pot.png");
 		sideBar.add(browseBtn);
 		browseBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +116,7 @@ public class GrowingPains extends JFrame{
 		});
 
 //		CART BUTTON
-		JButton cartBtn = createButton("Cart", "checkout.png");
+		cartBtn = createButton("Cart", "images/checkout.png");
 		sideBar.add(cartBtn);
 		cartBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -121,19 +125,18 @@ public class GrowingPains extends JFrame{
 		});
 		
 //		REMINDER BUTTON
-		JButton remindersBtn = createButton("Reminders", "reminder.png");
+		remindersBtn = createButton("Reminders", "images/reminder.png");
 		sideBar.add(remindersBtn);
 		remindersBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(mainContent, "Reminder");
 			}
-			
 		});
 		
 		//Glue the Exit down to the bottom of the side bar for workflow priority
 		//preventing the user from misclicking and terminating the program
 		sideBar.add(Box.createVerticalGlue());
-		JButton exitBtn = createButton("Exit","exit.png");
+		exitBtn = createButton("Exit","images/exit.png");
 		sideBar.add(exitBtn);
 		exitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -164,10 +167,9 @@ public class GrowingPains extends JFrame{
 	public void mainContent(List<DisplayItem> products) {
 //		mainContent establish the main container for this content area, with a CARDLayout
 //		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
-
 		getContentPane().add(mainContent, BorderLayout.CENTER);
-		
-		mainContent.add(login);
+//		Add the panels into the "deck", note the names for the panels, allowing us to switch between them by a unique, easily identifiable name
+		mainContent.add(login, "Login");
 		mainContent.add(welcomePanel(), "Welcome");
 		mainContent.add(browse, "Browse");
 		mainContent.add(cartPanel(), "Cart");
@@ -177,7 +179,7 @@ public class GrowingPains extends JFrame{
 	
 //	Title Panel shows the user what page they have currently clicked on 
 	public JPanel titlePanel(String title) {
-//		Title has a BorderLayout so that we can push thte label to the left (west)
+//		Title has a BorderLayout so that we can push the label to the left (west)
 		JPanel titlePanel = new JPanel(new BorderLayout());
 		titlePanel.setBackground(GREEN);
 		JLabel titleLbl = new JLabel(title);
@@ -194,7 +196,7 @@ public class GrowingPains extends JFrame{
 		JPanel welcomePanel = new JPanel(new BorderLayout());
 		JPanel titlePanel = titlePanel(" ");
 //		Home screen has a background - acting like a splash screen
-		JLabel bckgrndLbl = new JLabel((new ImageIcon(getClass().getResource("bg.png"))));
+		JLabel bckgrndLbl = new JLabel((new ImageIcon(getClass().getResource("images/bg.png"))));
 //		
 		bckgrndLbl.setHorizontalAlignment(SwingConstants.CENTER);
 //		Add the backgroundLbl to the center, the titleLabel to the NORTH
@@ -224,4 +226,21 @@ public class GrowingPains extends JFrame{
 		
 		return reminderPanel;
 	}
+//	Static void hudeButtons sets the visibility to false
+	public static void hideButtons() {
+		browseBtn.setVisible(false);
+		cartBtn.setVisible(false);
+		remindersBtn.setVisible(false);
+		exitBtn.setVisible(false);
+	}
+//	Static void showButtons, allowing the loginPanel and other panels within the class to have access to the buttons 
+//	e.g, if the user logged out, then the loginPanel can call hideButtons
+	 public static void showButtons() {
+		browseBtn.setVisible(true);
+		cartBtn.setVisible(true);
+		remindersBtn.setVisible(true);
+		exitBtn.setVisible(true);
+	}
+	
+
 }

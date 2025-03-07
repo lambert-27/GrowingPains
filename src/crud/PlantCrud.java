@@ -9,8 +9,8 @@ import model.Plant;
 
 public class PlantCrud extends Crud{
 	
-	public PlantCrud(Connection connection) {
-		super(connection);
+	public PlantCrud() throws SQLException {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

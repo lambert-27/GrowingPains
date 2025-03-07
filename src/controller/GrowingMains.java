@@ -14,18 +14,6 @@ import view.GrowingPains;
 public class GrowingMains {
 		
 		public static void main(String[] args) {
-			//database URL using localmachine as host, with mysql sub protocol
-			final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
-////			Windows MYSQL login
-//			final String USER_NAME = "plantman";
-//			final String PASS_WORD = "Growing_up27";
-//			Linux MySQL login
-			final String USER_NAME = "root";
-			final String PASS_WORD = "Growing_pains123";
-
-			Connection connection = null;
-			Statement statement = null;
-
 			//Instance of Address class
 			Address adrs = new Address("Primary Rd.", "Goldthorpe", "Wexford", "X09S631","Ireland");
 			//Instance of Customer
@@ -41,14 +29,12 @@ public class GrowingMains {
 			//Instance of Order class
 			Order o = new Order(1, 11, adrs, 27.00f);
 			try {
-				connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
-				//Create Statement for inserting into table
-				statement = connection.createStatement();
+
 				//Declares instance of class crud
 //				accessoryCrud ac = new accessoryCrud(connection);
 //				plantCrud pl = new plantCrud(connection);
 //				orderCrud or = new orderCrud(connection);
-				ProductCrud pr = new ProductCrud(connection);
+				ProductCrud pr = new ProductCrud();
 //				customerCrud cu = new customerCrud(connection);
 //				Insertion of customer
 //				cu.insertCustomer(cust);
@@ -81,15 +67,6 @@ public class GrowingMains {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
-			finally{
-				try {
-					statement.close();
-					connection.close();
-				}
-				catch (Exception exception) {
-					exception.printStackTrace();
-				}
 			}
 		}
 	}
