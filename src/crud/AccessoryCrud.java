@@ -2,7 +2,6 @@ package crud;
 //GROWING PAINS - Mark Lambert - C00192497
 //accessoryCrud class - Purpose to hold all methods for relevant Retrieve tasks for Accessory Items
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,7 +1,6 @@
 package crud;
 //GROWING PAINS - Mark Lambert - C00192497
 //Customer Crud class - Purpose to hold all methods for relevant Create, Retrieve, Update, Delete tasks for Customers
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

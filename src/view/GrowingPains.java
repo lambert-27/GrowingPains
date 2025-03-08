@@ -14,7 +14,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import model.Catalogue;
-import model.DisplayItem;
-
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -45,18 +42,19 @@ public class GrowingPains extends JFrame{
 	private final Color GREEN = new Color(24, 65, 15);
 //	Common font used for buttons and headings
 	private final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
-	CardLayout cardLayout = new CardLayout ();
-	JPanel mainContent = new JPanel(cardLayout);
-//	Grid for products, with a horizontal gap between each image of 10px
-	JPanel gridPanel = new JPanel(new GridLayout(0, 4, 10, 10));
-	
+	private CardLayout cardLayout;
+	private JPanel mainContent;
+	private TitlePanel titlePanel;
 	//Declare new LoginPanel
-	LoginPanel login;
-	BrowsePanel browse;
+	private LoginPanel login;
+	private BrowsePanel browse;
+	private ProductPanel productPanel;
 	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
-	public GrowingPains(List<DisplayItem> products) throws SQLException {
+	public GrowingPains() throws SQLException {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
 		super("Growing Pains");
+		cardLayout = new CardLayout();
+		mainContent = new JPanel(cardLayout);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1700, 900);
@@ -67,11 +65,11 @@ public class GrowingPains extends JFrame{
 		
 //		Declare and initialise a new Catalogue
 		Catalogue catalogue = new Catalogue();
-
+		productPanel = new ProductPanel(ARIAL, GREEN, "", "", 0.0);
 		login = new LoginPanel(ARIAL, GREEN, cardLayout, mainContent);
-		browse = new BrowsePanel(ARIAL, GREEN, catalogue);
+		browse = new BrowsePanel(ARIAL, GREEN, catalogue, cardLayout, mainContent, productPanel);
 //		Methods to create respective panels for GUI
-		mainContent(products);
+		mainContent();
 		topBar();
 		sideBar();
 		hideButtons();
@@ -169,7 +167,8 @@ public class GrowingPains extends JFrame{
 		return btn;
 	}
 //	MainContent Panel
-	public void mainContent(List<DisplayItem> products) {
+	public void mainContent() {
+		
 //		mainContent establish the main container for this content area, with a CARDLayout
 //		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
 		getContentPane().add(mainContent, BorderLayout.CENTER);
@@ -179,27 +178,14 @@ public class GrowingPains extends JFrame{
 		mainContent.add(browse, "Browse");
 		mainContent.add(cartPanel(), "Cart");
 		mainContent.add(reminderPanel(), "Reminder");
+		mainContent.add(productPanel, "Product");
 
-	}
-	
-//	Title Panel shows the user what page they have currently clicked on 
-	public JPanel titlePanel(String title) {
-//		Title has a BorderLayout so that we can push the label to the left (west)
-		JPanel titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setBackground(GREEN);
-		JLabel titleLbl = new JLabel(title);
-		titleLbl.setForeground(Color.WHITE);
-		titleLbl.setFont(ARIAL);
-//		Align the title text to the left
-		titlePanel.add(titleLbl, BorderLayout.WEST);
-		
-		return titlePanel;
 	}
 	
 //	Creates the welcomePanel splash screen
 	public JPanel welcomePanel() {
 		JPanel welcomePanel = new JPanel(new BorderLayout());
-		JPanel titlePanel = titlePanel(" ");
+		titlePanel = new TitlePanel(" ", ARIAL, GREEN);
 //		Home screen has a background - acting like a splash screen
 		JLabel bckgrndLbl = new JLabel((new ImageIcon(getClass().getResource("images/bg.png"))));
 //		
@@ -214,9 +200,8 @@ public class GrowingPains extends JFrame{
 //	Creates and returns the browsePanel
 	public JPanel cartPanel() {
 		JPanel cartPanel = new JPanel(new BorderLayout());
-		
 //		Add the title to the NORTH 
-		cartPanel.add(titlePanel("Cart"), BorderLayout.NORTH);
+		cartPanel.add(new TitlePanel("Cart", ARIAL, GREEN), BorderLayout.NORTH);
 		
 		return cartPanel;
 	}
@@ -224,14 +209,18 @@ public class GrowingPains extends JFrame{
 //	Creates and returns the browsePanel
 	public JPanel reminderPanel() {
 		JPanel reminderPanel = new JPanel(new BorderLayout());
-
-		
 //		Add the title to the NORTH 
-		reminderPanel.add(titlePanel("Reminders"), BorderLayout.NORTH);
-		
+		reminderPanel.add(new TitlePanel("Reminders", ARIAL, GREEN), BorderLayout.NORTH);
+	
 		return reminderPanel;
 	}
-//	Static void hudeButtons sets the visibility to false
+	
+	public JPanel productPanel() {
+		productPanel.add(new TitlePanel("Product", ARIAL, GREEN), BorderLayout.NORTH);
+		return productPanel;
+	}
+	
+//	Static void hideButtons sets the visibility to false
 	public static void hideButtons() {
 		browseBtn.setVisible(false);
 		cartBtn.setVisible(false);
@@ -246,6 +235,7 @@ public class GrowingPains extends JFrame{
 		remindersBtn.setVisible(true);
 		exitBtn.setVisible(true);
 	}
-	
+	 
+
 
 }

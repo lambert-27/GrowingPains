@@ -1,7 +1,7 @@
 package crud;
 //GROWING PAINS - Mark Lambert - C00192497
 //plantCrud class - Purpose to hold all methods for relevant Retrieve operations for Plants
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

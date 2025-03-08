@@ -1,7 +1,5 @@
 package model;
 
-import java.io.*;
-import java.util.*;
 import java.sql.Time;
 import java.sql.Date;
 public class Reminder {

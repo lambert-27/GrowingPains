@@ -27,9 +27,7 @@ import crud.CustomerCrud;
 
 
 public class LoginPanel extends JPanel{
-/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	//	Instance variables 
 	private JTextField email;
@@ -109,7 +107,7 @@ public class LoginPanel extends JPanel{
 		
 	}
 	
-//	Method that holds logic for passing paramters to the crud.login method which, queries for the user w/ matching email/password combo
+//	Method that holds logic for passing parameters to the crud.login method which, queries for the user w/ matching email/password combo
 	public void handleLogin(CardLayout cl, JPanel mainContent) {
 		String custEmail = email.getText();
 //		.getPassword() returns to us the array of characters that make up the password

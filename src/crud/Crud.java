@@ -9,8 +9,8 @@ import java.sql.Statement;
 
 public abstract class Crud {
 //	Protected for package private, so that all child Crud classes can use the same connection
-	protected Connection connection;
-	protected Statement statement;
+	protected static Connection connection;
+	protected static Statement statement;
 	//database URL using localmachine as host, with mysql sub protocol
 	final String DATABSE_URL = "jdbc:mysql://localhost/GrowingPains";
 ////	Windows MYSQL login
@@ -26,5 +26,11 @@ public abstract class Crud {
 		//Create Statement for inserting into table
 		statement = connection.createStatement();
 	}
+	
+	 public static void closeConnection() throws SQLException {
+		 connection.close();
+		 statement.close();
+	 }
+	
 	
 }
