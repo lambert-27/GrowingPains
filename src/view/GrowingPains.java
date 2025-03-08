@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import model.Catalogue;
 import model.DisplayItem;
 
 
@@ -63,8 +64,12 @@ public class GrowingPains extends JFrame{
 		setLocationRelativeTo(null);
 //		Set the icon image by calling ICON.getImage as setIconImage takes in an Image as an argument
 		setIconImage(ICON.getImage());
+		
+//		Declare and initialise a new Catalogue
+		Catalogue catalogue = new Catalogue();
+
 		login = new LoginPanel(ARIAL, GREEN, cardLayout, mainContent);
-		browse = new BrowsePanel(ARIAL, GREEN, products);
+		browse = new BrowsePanel(ARIAL, GREEN, catalogue);
 //		Methods to create respective panels for GUI
 		mainContent(products);
 		topBar();

@@ -5,6 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -14,24 +17,24 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import model.Catalogue;
 import model.DisplayItem;
 import model.Item;
 
 public class BrowsePanel extends JPanel{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JPanel gridPanel;
 	
-	public BrowsePanel(Font ARIAL, Color GREEN, List<DisplayItem> products) {
+	public BrowsePanel(Font ARIAL, Color GREEN, Catalogue catalogue) throws SQLException {
 			setLayout(new BorderLayout());
 //			Grid for products, with a horizontal gap between each image of 10px
 			gridPanel = new JPanel(new GridLayout(0, 4, 10, 10));
 //			Add the title to the NORTH 
 			add(titlePanel("Browse", ARIAL, GREEN), BorderLayout.NORTH);
 			
-			getProducts(products);
+//			Disects each Item in the List of products to get all info about the product
+			getProducts(catalogue.displayCatalogue());
 			
 //			Allows the catalogue to be a scrollable page
 			JScrollPane scrollPane = new JScrollPane(gridPanel);
@@ -49,6 +52,14 @@ public class BrowsePanel extends JPanel{
 				String image_path = product.getImgPath();
 				ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
 				JLabel imgLabel = new JLabel(icon);
+				
+				imgLabel.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						
+					}
+					
+				});
+				
 				JLabel nameLabel = new JLabel(product.getItemName(), SwingConstants.CENTER);
 				JLabel priceLabel = new JLabel("€" + product.getPrice(), SwingConstants.CENTER);
 				priceLabel.setFont(productFont);
