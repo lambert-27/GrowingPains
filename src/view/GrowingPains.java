@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import model.Cart;
 import model.Catalogue;
 
 import javax.swing.Box;
@@ -27,6 +28,15 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/** 
+ * The GrowingPains class contians thee main structure for the application
+ * 
+ *  From here, the login panel is initally displayed and the login success then
+ *  determines if the user gets access to broader features. All GUI components
+ *  get initialised from here.
+ *  
+ *  It sets up the main JFrame (window), including the app size, logo and other window behaviours
+ */
 public class GrowingPains extends JFrame{
 	private static JButton browseBtn;
 	private static JButton cartBtn;
@@ -49,10 +59,16 @@ public class GrowingPains extends JFrame{
 	private LoginPanel login;
 	private BrowsePanel browse;
 	private ProductPanel productPanel;
-	//TODO Add an EXIT button, which is pushed to the bottom of the sidebar
+	private CartPanel cartPanel;
+	private Cart cart;
+
+	/**
+	 * Constructs the GrowingPains application frame, setting the layout, panels and buttons necessary
+	 */
 	public GrowingPains() throws SQLException {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
 		super("Growing Pains");
+		cart = new Cart();
 		cardLayout = new CardLayout();
 		mainContent = new JPanel(cardLayout);
 		setLayout(new BorderLayout());
@@ -65,9 +81,10 @@ public class GrowingPains extends JFrame{
 		
 //		Declare and initialise a new Catalogue
 		Catalogue catalogue = new Catalogue();
-		productPanel = new ProductPanel(ARIAL, GREEN, "", "", 0.0);
+		productPanel = new ProductPanel(ARIAL, GREEN, "", "", 0.0, cart);
 		login = new LoginPanel(ARIAL, GREEN, cardLayout, mainContent);
 		browse = new BrowsePanel(ARIAL, GREEN, catalogue, cardLayout, mainContent, productPanel);
+
 //		Methods to create respective panels for GUI
 		mainContent();
 		topBar();
@@ -76,7 +93,11 @@ public class GrowingPains extends JFrame{
 //		Sets all elements within this container to visible
 		setVisible(true);
 	}
-//	TopBar Panel
+
+	/**
+	 * Sets up the top bar of the application window
+	 * Contains the title and event listener to navigate to the "Welcome" panel
+	 */
 	public void topBar() {
 		JPanel topBar = new JPanel();
 //		Sets the background to a white
@@ -99,7 +120,12 @@ public class GrowingPains extends JFrame{
 		});
 		topBar.add(titleLbl);
 	}
-//	SideBar Panel
+
+	/**
+	 * Sets up the sidebar of the application window, including buttons 
+	 * for navigation. The buttons are arranged vertically and contain
+	 * event handling for user interaction
+	 */
 	public void sideBar() {
 		JPanel sideBar = new JPanel();
 //		Set sidebar to custom green
@@ -123,6 +149,9 @@ public class GrowingPains extends JFrame{
 		sideBar.add(cartBtn);
 		cartBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				Instantiate a new CartPanel so that it updates Dynamically when the user inserts new items
+				cartPanel = new CartPanel(ARIAL, GREEN, cart);
+				mainContent.add(cartPanel, "Cart");
 				cardLayout.show(mainContent,  "Cart");
 			}
 		});
@@ -149,8 +178,13 @@ public class GrowingPains extends JFrame{
 
 	}
 	
-//	Method that encapsulates all common code for creating a button, takes in 2 paramaters
-//	one for the name, the other containing the name of the ImageIcon
+	/**
+	 *	Method that encapsulates all common code for creating a button, takes in 2 paramaters
+	*one for the name, the other containing the name of the ImageIcon
+	*@param name the the displayed on the button
+	*@param icon the image for the button
+	*@return the JButton created
+	*/
 	public JButton createButton(String name, String icon) {
 		
 		JButton btn = new JButton(name);
@@ -166,23 +200,28 @@ public class GrowingPains extends JFrame{
 
 		return btn;
 	}
-//	MainContent Panel
+	/**
+	 * Sets up the main content area of the app, using a CardLayout
+	 * Adds different panels to the "deck" of cards for display
+	 */
 	public void mainContent() {
 		
 //		mainContent establish the main container for this content area, with a CARDLayout
 //		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
-		getContentPane().add(mainContent, BorderLayout.CENTER);
+		add(mainContent, BorderLayout.CENTER);
 //		Add the panels into the "deck", note the names for the panels, allowing us to switch between them by a unique, easily identifiable name
 		mainContent.add(login, "Login");
 		mainContent.add(welcomePanel(), "Welcome");
 		mainContent.add(browse, "Browse");
-		mainContent.add(cartPanel(), "Cart");
 		mainContent.add(reminderPanel(), "Reminder");
 		mainContent.add(productPanel, "Product");
 
 	}
 	
-//	Creates the welcomePanel splash screen
+/**
+ * 	Creates and returns the welcomePanel splash screen
+ * @return a JPanel representing the welcome panel
+ */
 	public JPanel welcomePanel() {
 		JPanel welcomePanel = new JPanel(new BorderLayout());
 		titlePanel = new TitlePanel(" ", ARIAL, GREEN);
@@ -197,7 +236,10 @@ public class GrowingPains extends JFrame{
 		return welcomePanel;
 	}
 	
-//	Creates and returns the browsePanel
+	/**
+	 * 	Creates the welcomePanel splash screen
+	 * @return a JPanel representing the welcome panel
+	 */
 	public JPanel cartPanel() {
 		JPanel cartPanel = new JPanel(new BorderLayout());
 //		Add the title to the NORTH 
@@ -206,7 +248,10 @@ public class GrowingPains extends JFrame{
 		return cartPanel;
 	}
 	
-//	Creates and returns the browsePanel
+	/**
+	 * 	Creates the reminderPanel
+	 * @return a JPanel representing the reminder panel
+	 */
 	public JPanel reminderPanel() {
 		JPanel reminderPanel = new JPanel(new BorderLayout());
 //		Add the title to the NORTH 
@@ -215,27 +260,31 @@ public class GrowingPains extends JFrame{
 		return reminderPanel;
 	}
 	
+	/**
+	 * 	Creates the productPanel 
+	 * @return a JPanel representing the product panel
+	 */
 	public JPanel productPanel() {
 		productPanel.add(new TitlePanel("Product", ARIAL, GREEN), BorderLayout.NORTH);
 		return productPanel;
 	}
 	
-//	Static void hideButtons sets the visibility to false
+	/**
+	 * Hides the sidebar buttons when the user is logged out
+	 */
 	public static void hideButtons() {
 		browseBtn.setVisible(false);
 		cartBtn.setVisible(false);
 		remindersBtn.setVisible(false);
 		exitBtn.setVisible(false);
 	}
-//	Static void showButtons, allowing the loginPanel and other panels within the class to have access to the buttons 
-//	e.g, if the user logged out, then the loginPanel can call hideButtons
+	/**
+	 * Shows the sidebar buttons after the user logs in
+	 */
 	 public static void showButtons() {
 		browseBtn.setVisible(true);
 		cartBtn.setVisible(true);
 		remindersBtn.setVisible(true);
 		exitBtn.setVisible(true);
 	}
-	 
-
-
 }

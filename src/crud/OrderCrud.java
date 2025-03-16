@@ -7,16 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Order;
-
+/**
+ * The OrderCrud class provides methods for performing CRUD (Create, Retrieve, Update, Delete) 
+ * operations in the Order Table
+*/
 public class OrderCrud extends Crud{
-	
+	//Constructs an OrderCrud object which initialises the database connection via its superclass
 	public OrderCrud() throws SQLException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	
-//	Inserts a new Order into the Orders table
+	/**
+	 *  Inserts a Order into the Orders table 
+	 * @param Order order An Order Object containing all details 
+	 * (customerID, productID, date, time, address, price)
+	 * to be entered into the Order table
+	 */
 	public void insertOrder(Order order) throws SQLException {
 		try {
 			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, productID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?,?)");
@@ -34,7 +42,11 @@ public class OrderCrud extends Crud{
 		}
 	}
 
-//	RETRIEVES a Orders from Orders table
+	/**
+	 *  Retrieves an Order item from the Orders table based on its order ID
+	 * @param orderID The ID of the order to retrieve
+	 * @return An Order object
+	 */
 	public Order getOrder(int orderID) throws SQLException {
 		//Declare a new Order
 		Order o = new Order();
@@ -70,7 +82,10 @@ public class OrderCrud extends Crud{
 		return o;
 	}
 	
-//	Gets all Orders items in Orders table
+	/**
+	 *  Retrieves all Orders from the Orders table
+	 * @return A List of Order objects
+	 */
 	public void getAllOrders() throws SQLException {
 		ResultSet resultSet = null;
 		
@@ -93,7 +108,10 @@ public class OrderCrud extends Crud{
 			}
 	}
 
-//	Deletes an Order via their ID from table
+	/**
+	 *  Deletes an Order from the Orders table based on its order ID
+	 * @param orderID The ID of the order to retrieve
+	 */
 	public void deleteOrder(int orderID) throws SQLException {
 
 				try {
@@ -117,8 +135,11 @@ public class OrderCrud extends Crud{
 				}
 	}
 	
-//	Update an existing Order via their order ID to a new set of values (held in a new customer object)
-	public void updateOrder(Order order, int orderID) throws SQLException {
+	/**
+	 *  Updates an Order from the Orders table based on its order ID
+	 * @param Order order The Order Object with which is being edited
+	 */
+	public void updateOrder(Order order) throws SQLException {
 		try {
 			PreparedStatement pstat = connection.prepareStatement("UPDATE Orders SET customerID=?, productID=?, date=?, time=?, shippingAddress=?, totalPrice=? WHERE orderID=?");
 			pstat.setInt(1,  order.getCustomerID());
@@ -127,7 +148,7 @@ public class OrderCrud extends Crud{
 			pstat.setTime(4,  order.getTime());
 			pstat.setString(5,  order.getAddress());
 			pstat.setFloat(6, order.getPrice());
-			pstat.setInt(7,  orderID);
+			pstat.setInt(7,  order.getOrderID());
 			pstat.executeUpdate();
 		}catch(SQLException sqlException) {
 			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());

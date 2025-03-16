@@ -2,9 +2,13 @@
 //Item abstract Class - 
 package model;
 
+/**
+ * The Item class is an abstract class, holding all  broad information about an item
+ * and provides functionality relevant to all Items
+ * 
+ * The item class holds the itemID, itemName, description, price, quantity, type and image path of each product
+ */
 public abstract class Item {
-	//TODO Ask Jason about the use of setting up a static variable for each 
-	//object which will be placed into a DB, so that it corresponds with the auto increment
 
     private int itemID;
 	private String itemName;
@@ -18,7 +22,15 @@ public abstract class Item {
 	public Item() {
 		
 	}
-	//Item - INSERTION
+    /**
+     * Constructor used for creating an Item Object for INSERTION operations
+     * hence, the absence of itemID
+     * @param itemName The Name of the Accessory
+     * @param description The Description of the Accessory
+     * @param price The Price of the Accessory
+     * @param qty The Quantity of the Accessory
+     * @param image_path The Image Path of the Accessory
+     */
     public Item(String itemName, String description, double price, int qty, String image_path) {
     	setItemName(itemName);
     	setDescription(description);
@@ -28,7 +40,16 @@ public abstract class Item {
     	setImgPath(image_path);
     }
     
-    //Item constructor containing itemID for Item RETRIEVAL
+    /**
+     * Constructor used for creating an Accessory Object for RETRIEVAL operations
+     * hence, the inclusion of itemID
+     * @param itemID The ID of the Accessory
+     * @param itemName The Name of the Accessory
+     * @param description The Description of the Accessory
+     * @param price The Price of the Accessory
+     * @param qty The Quantity of the Accessory
+     * @param image_path The Image Path of the Accessory
+     */
     public Item(int itemID, String itemName, String description, double price, int qty, String image_path) {
     	setItemID(itemID);
     	setItemName(itemName);
@@ -39,67 +60,122 @@ public abstract class Item {
     	setImgPath(image_path);
     }
 
-    //Setters for super class attributes (Item)
+    /**
+     * Sets the name of the Item
+     * 
+     * @param itemName The name of the Product
+     */
     public void setItemName(String itemName) {
-    	//Note call of super.variableName - Calls the Item class attribute 
     	this.itemName = itemName;
     }
-    
+    /**
+     * Sets the type of the Item
+     * 
+     * @param type The type of the Product
+     */
     public void setType(String type) {
     	this.type = type;
     }
-    
+    /**
+     * Sets the Price of the Item
+     * 
+     * @param price The price associated with the Product
+     */
     public void setPrice(double price) {
     	this.price = price;
     }
-    
+    /**
+     * Sets the description of the Item
+     * 
+     * @param description The name of the Product
+     */
     public void setDescription(String description) {
     	this.description = description;
     }
-    
+    /**
+     * Sets the Quantity of the Product
+     * 
+     * @param qty The quantity associated with the Product
+     */
     public void setQty(int qty) {
     	this.qty = qty;
     }
     
+    /**
+     * Sets the ID of the Item
+     * 
+     * @param itemID The ID of the Product
+     */
     public void setItemID(int itemID) {
     	this.itemID = itemID;
     }
-    
+    /**
+     * Gets the Image Path of the Item
+     * 
+     * @return The Image Path associated with the Product
+     */
     public void setImgPath(String image_path) {
     	this.image_path = image_path;
     }
     
-    //this class getterss
+    /**
+     * Get the name of the Item
+     * 
+     * @return Name The name of the Product
+     */
     public String getItemName() {
     	return this.itemName;
     }
     
-    //this class getterss
+    /**
+     * Gets the Image Path of the Item
+     * 
+     * @return The Image Path associated with the Product
+     */
     public String getImgPath() {
     	return this.image_path;
     }
     
+    /**
+     * Abstract method getType used by child class' of Item
+     * as Item won't be instantiated (due to it being an abstract class)
+     */
     public abstract String getType();
     
+    /**
+     * Gets the Price of the Item
+     * 
+     * @return The price associated with the Product
+     */
     public double getPrice() {
     	return this.price;
     }
     
+    /**
+     * Gets the description of the Item
+     * 
+     * @return description The name of the Product
+     */
     public String getDescription() {
     	return this.description;
     }
     
+    /**
+     * Gets the Quantity of the Product
+     * 
+     * @return qty The quantity associated with the Product
+     */
     public int getQty() {
     	return this.qty;
     }
     
+    /**
+     * Gets the ID of the Item
+     * 
+     * @return itemID The ID of the Product
+     */
     public int getItemID() {
-    	return this.itemID;    }
-	@Override
-	public String toString() {
-		return "Item [itemID=" + itemID + ", itemName=" + itemName + ", description=" + description + ", price=" + price
-				+ ", qty=" + qty + ", type=" + type + "]";
-	}
-
-    
+    	return this.itemID;   
+    }
+ 
 }

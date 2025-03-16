@@ -8,15 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Customer;
-
+/**
+ * The CustomerCrud class provides methods for performing CRUD (Create, Retrieve, Update, Delete)
+ * operations in the Customer Table
+*/
 public class CustomerCrud extends Crud{
-	
+	//Constructs an CustomerCrud object which initialises the database connection via its superclass
 	public CustomerCrud() throws SQLException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	//Inserts a Customer object into SQL Database by values fName, lName, email, address, password, phone
+	/**
+	 *  Inserts a Customer into the Customer table 
+	 * @param Customer cust A customer Object containing all details 
+	 * (fName, lName, email, address, passWord, phone)
+	 * to be entered into the Customer table
+	 */
 		public void insertCustomer(Customer cust) throws SQLException{
 			try {
 				//PreparedStatement for inserting a customer
@@ -37,7 +44,11 @@ public class CustomerCrud extends Crud{
 			}
 		}
 
-//		RETRIEVES a Customer from Customer table
+		/**
+		 *  Retrieves a Customer item from the Customer table based on its customer ID
+		 * @param customerID The ID of the customer to retrieve
+		 * @return A Customer object
+		 */
 		public Customer getCustomer(int customerID) throws SQLException {
 			//Declare a new Customer
 			Customer c = new Customer();
@@ -73,7 +84,10 @@ public class CustomerCrud extends Crud{
 			return c;
 		}
 		
-//		Gets all Customers items in Customer table
+		/**
+		 *  Retrieves all Customers from the Customer table
+		 * @return A List of Customer objects
+		 */
 		public List<Customer> getAllCustomers() throws SQLException {
 			ResultSet resultSet = null;
 			
@@ -106,7 +120,10 @@ public class CustomerCrud extends Crud{
 			return customers;
 		}
 
-//		Deletes a Customer via their ID from table
+		/**
+		 *  Deletes a Customer from the Customer table based on its customer ID
+		 * @param customerID The ID of the customer to retrieve
+		 */
 		public void deleteCustomer(int customerID) throws SQLException {
 
 					try {
@@ -130,8 +147,11 @@ public class CustomerCrud extends Crud{
 					}
 		}
 		
-//		Update an existing Customer via their customer ID to a new set of values (held in a new customer object)
-		public void updateCustomer(Customer cust, int customerID) throws SQLException {
+		/**
+		 *  Updates a Customer from the Customer table based on its customer ID
+		 * @param Customer cust The Customer object with which is being edited
+		 */
+		public void updateCustomer(Customer cust) throws SQLException {
 			try {
 				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, password=?, phone=? WHERE customerID=?");
 				
@@ -141,7 +161,7 @@ public class CustomerCrud extends Crud{
 				pstat.setString(4,  cust.getAddress());
 				pstat.setString(5, cust.getPassword());
 				pstat.setInt(6, cust.getPhone());
-				pstat.setInt(7,  customerID);
+				pstat.setInt(7,  cust.getCustomerID());
 				pstat.executeUpdate();
 			}catch(SQLException sqlException) {
 				System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
@@ -149,6 +169,12 @@ public class CustomerCrud extends Crud{
 			}
 		}
 		
+		/**
+		 *  Verifies the credentials of a customer by checking the entered email and password
+		 * against the existing customers in the Customer table
+		 * @param email and passWord Retrieves a customer based on the email and password provided.
+		 * @return true if a customer with the provided password and email exists, otherwise false.
+		 */
 		public Boolean login(String email, String passWord) throws SQLException{
 			try
 			{

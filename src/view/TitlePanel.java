@@ -8,9 +8,23 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+/**
+ * The TitlePanel contains the common code for displaying a title on each panel
+ * allowing for each product etc to have a Panel title of their own
+ * 
+ * Holds a JLabel representing the title
+ */
 public class TitlePanel extends JPanel {
 	private JLabel titleLbl;
+	
+	/**
+	 * Constructs a new JPanel representing the title
+	 * 
+	 * @param title the title displayed on the panel
+	 * @param GREEN the colour used
+	 * @param cart the cart containing the list of products to be displayed
+	 * @return the title panel
+	 */
 	public TitlePanel(String title, Font ARIAL, Color GREEN) {
 //		Title Panel shows the user what page they have currently clicked on 
 //			Title has a BorderLayout so that we can push the label to the left (west)
@@ -24,7 +38,9 @@ public class TitlePanel extends JPanel {
 			add(titleLbl, BorderLayout.WEST);
 		}
 
-//	Set title calls the label.setText method to set the title to a new one
+	/**
+	 * 	Calls the label.setText() method to set the title to a new one
+	 */
 	public void setTitle(String title) {
 		titleLbl.setText(title);
 

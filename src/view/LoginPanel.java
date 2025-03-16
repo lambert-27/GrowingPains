@@ -25,6 +25,12 @@ import javax.swing.JTextField;
 
 import crud.CustomerCrud;
 
+/** 
+ * The LoginPanel class represents the Login Panel in the GrowingPains application
+ * 
+ * It holds the structure and logic for handling the login process with the use of a JPasswordField
+ * for the password input
+ */
 
 public class LoginPanel extends JPanel{
 
@@ -38,7 +44,15 @@ public class LoginPanel extends JPanel{
 	private JButton cancel;
 	private CustomerCrud crud;
 	
-//	Constructor, takes in the default FONT and COLOUR scheme
+	/**
+	 * Constructs a new LoginPanel, initialising the layout, title, buttons and input fields
+	 * 
+	 * @param ARIAL the font used
+	 * @param GREEN the colour used
+	 * @param cart the cart containing the list of products to be displayed
+	 * @param cl the Layout Manager used
+	 * @param mainContent The main panel that holds the cards
+	 */
 	public LoginPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent) throws SQLException {
 		crud = new CustomerCrud();
 //		Using a gridbag layout for flexibility
@@ -85,7 +99,9 @@ public class LoginPanel extends JPanel{
 		
 		//Submit button
 		submit = createButton("Login", ARIAL, GREEN);
-		
+
+		submit.setBorderPainted(false);
+		submit.setFocusPainted(false);
 		submit.addMouseListener(new MouseAdapter() {
 			//When the user clicks the button to login, let them login
 			public void mouseClicked(MouseEvent e) {
@@ -100,6 +116,8 @@ public class LoginPanel extends JPanel{
 		
 		//Cancel button
 		cancel = createButton("Cancel", ARIAL, GREEN);
+		cancel.setBorderPainted(false);
+		cancel.setFocusPainted(false);
 		gbc.gridx = 1;
 		gbc.gridy = 8;
 		add(cancel, gbc);
@@ -107,7 +125,12 @@ public class LoginPanel extends JPanel{
 		
 	}
 	
-//	Method that holds logic for passing parameters to the crud.login method which, queries for the user w/ matching email/password combo
+	/**
+	 * Method that holds logic for passing parameters to the crud.login method which, queries for the user w/ matching email/password combo
+	 * 
+	 * @param cl the Layout Manager used
+	 * @param mainContent The main panel that holds the cards
+	 */
 	public void handleLogin(CardLayout cl, JPanel mainContent) {
 		String custEmail = email.getText();
 //		.getPassword() returns to us the array of characters that make up the password
@@ -126,7 +149,14 @@ public class LoginPanel extends JPanel{
 		}
 	}
 	
-	//Create a button method, encapsulate common code
+	/**
+	 * Create a button method, encapsulate common code
+	 * 
+	 * @param name the text displayed on the button
+	 * @param GREEN the colour used
+	 * @param cart the cart containing the list of products to be displayed
+	 * @return the JButton created
+	 */
 	public JButton createButton(String name, Font ARIAL, Color GREEN) {
 		JButton btn = new JButton(name);
 //		Set the imageIcon
@@ -137,7 +167,4 @@ public class LoginPanel extends JPanel{
 		
 		return btn;
 	}
-	
-
-
 }

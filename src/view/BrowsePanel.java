@@ -22,12 +22,31 @@ import model.Catalogue;
 import model.DisplayItem;
 import model.Item;
 
+/**
+ * The BrowsePanel class represents the Browse Panel in the GrowingPains application
+ * It displays a grid of products from the Catalogue, allwoing the user
+ * to click on any product to view detailed info about it
+ * 
+ * The BrowsePanel class extends JPanel, it serves as a container for a second
+ * panel- gridPanel which uses a GridLayout. When a Product is clicked, 
+ * an event is created where it switches to the ProductPanel- a panel
+ * detailing more info about an item
+ */
 public class BrowsePanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel gridPanel;
 
-	
+	/**
+	 * Constructs a new BrowsePanel, initialising the layout, title and other functionality like scroll speed
+	 * 
+	 * @param ARIAL the font used
+	 * @param GREEN the colour used
+	 * @param catalogue the catalogue containing the list of products to be displayed
+	 * @param cardLayout the Layout Manager used
+	 * @param mainContent The main panel that holds the cards
+	 * @param p the ProductPanel that displays product details
+	 */
 	public BrowsePanel(Font ARIAL, Color GREEN, Catalogue catalogue, CardLayout cardLayout, JPanel mainContent, ProductPanel p) throws SQLException {
 			setLayout(new BorderLayout());
 //			Grid for products, with a horizontal gap between each image of 10px
@@ -47,7 +66,19 @@ public class BrowsePanel extends JPanel{
 					
 		}
 		
-//		Method to get and display all products
+		/**
+		 * Retrieves a list of all products and adds them to the grid for display
+		 * 
+		 * Iterates through each product usng a for each loop, creating the relevant details
+		 * about each product in the catalogue
+		 * 
+		 * @param products a List of all products in the cart
+		 * @param cardLayout the Layout Manager used
+		 * @param mainContent The main panel that holds the cards
+		 * @param ARIAL the font used
+		 * @param GREEN the colour used
+		 * @param p the ProductPanel that displays product details
+		 */
 		public void getProducts(List<DisplayItem> products, CardLayout cardLayout, JPanel mainContent, Font ARIAL, Color GREEN, ProductPanel p) {
 			Font productFont = new Font("Arial", Font.PLAIN, 24);
 //			For each Item in the List of Items
@@ -64,6 +95,7 @@ public class BrowsePanel extends JPanel{
 						p.setImage(product.getImgPath());
 						p.setDescription(product.getDescription());
 						p.setPrice(product.getPrice());
+						p.setItem(product);
 //						Once the title is set, switch the cardLayout to the "Procuct" card, with the new heading matching the product
 						cardLayout.show(mainContent, "Product");
 					}
@@ -89,10 +121,6 @@ public class BrowsePanel extends JPanel{
 				
 				gridPanel.add(productPanel);
 			}
-		}
-		
-
-		
-		
+		}		
 }
 

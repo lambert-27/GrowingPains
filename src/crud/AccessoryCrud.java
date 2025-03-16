@@ -10,15 +10,24 @@ import java.sql.SQLException;
 
 import model.Accessory;
 
+/**
+ * The AccessoryCrud class provides methods for performing CRUD (Create, Retrieve, Update, Delete)
+ *operations in the Product Table
+*Specifically, this class provides methods for Products of type Accessory
+*/
 
 public class AccessoryCrud extends Crud {
 
-	//Constructor
+	//Constructs an AccessoryCrud object which initialises the database connection via its superclass
 	public AccessoryCrud() throws SQLException {
 		super();
 	}
 		
-//	Gets all Accessory items in Product table
+/**
+ *  Retrieves an Accessory item from the Product table based on its product ID
+ * @param productID The ID of the product to retrieve
+ * @return An Accessory object
+ */
 	public Accessory getAccessory(int productID) throws SQLException {
 		//Instantiate a new empty Plant object
 		Accessory a = new Accessory();
@@ -52,7 +61,10 @@ public class AccessoryCrud extends Crud {
 		return a;
 	}
 	
-//	Deletes an Accessory item from the Product table
+/**
+ * Deletes an Accessory item from the Product table based on its product ID
+ * @param productID The ID of the product to retrieve
+ */
 	public void deleteAccessory(int productID) throws SQLException {
 		
 		try {
@@ -76,7 +88,10 @@ public class AccessoryCrud extends Crud {
 		}
 }
 	
-//	Gets all Accessory items in Product table
+/**
+ * Retrieves all Accessory items from the Product table 
+ * @return An Accessory object
+ */
 	public void getAllAccessories() throws SQLException {
 		ResultSet resultSet = null;
 		

@@ -6,16 +6,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Plant;
-
+/**
+ * The PlantCrud class provides methods for performing CRUD (Create, Retrieve, Update, Delete)
+ * operations in the Product Table
+*Specifically, this class provides methods for Plants of type Plant
+*/
 public class PlantCrud extends Crud{
-	
+	//Constructs an PlantCrud object which initialises the database connection via its superclass
 	public PlantCrud() throws SQLException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-//	Gets a Plant item in Product table
+	/**
+	 *  Retrieves an Plant item from the Product table based on its product ID
+	 * @param productID The ID of the product to retrieve
+	 * @return An Plant object
+	 */
 	public Plant getPlant(int productID) throws SQLException {
 		//Instantiate a new empty Plant object
 		Plant p = new Plant();
@@ -48,7 +56,10 @@ public class PlantCrud extends Crud{
 		return p;
 	}
 	
-//	Deletes a Plant item from the Product table
+	/**
+	 * Deletes an Plant item from the Product table based on its product ID
+	 * @param productID The ID of the product to retrieve
+	 */
 	public void deletePlant(int productID) throws SQLException {
 		
 		try {
@@ -72,7 +83,10 @@ public class PlantCrud extends Crud{
 		}
 }
 		
-//	Gets all Plant items in Product table
+	/**
+	 *  Retrieves all Plant items from the Product table 
+	 * @return An Plant object
+	 */
 	public void getAllPlants() throws SQLException {
 		ResultSet resultSet = null;
 		

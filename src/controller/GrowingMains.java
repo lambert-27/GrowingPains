@@ -6,9 +6,14 @@ import java.sql.SQLException;
 
 import crud.Crud;
 import view.GrowingPains;
-
+/**
+ * Driver for GrowingPains application
+ */
 public class GrowingMains {
 		
+	/**
+	 * Main
+	 */
 		public static void main(String[] args) {
 			//Sample instances of all DB models
 //			Address adrs = new Address("Primary Rd.", "Goldthorpe", "Wexford", "X09S631","Ireland");
@@ -23,12 +28,11 @@ public class GrowingMains {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			}
 		}
-	}
 
 //JCombo boxes
 //Hash passwords
-//Show entry in GUI and then show the table also updating
 //Error handling for various fields
 //Error handling must go to a log file (pop-up to tell user the input data was invalid, or highlisgt a field in red text etc)
 //Documentation up-to-date
