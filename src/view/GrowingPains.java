@@ -7,7 +7,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -22,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import model.Cart;
 import model.Catalogue;
+import model.Customer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -61,6 +61,7 @@ public class GrowingPains extends JFrame{
 	private ProductPanel productPanel;
 	private CartPanel cartPanel;
 	private Cart cart;
+	private Customer customer;
 
 	/**
 	 * Constructs the GrowingPains application frame, setting the layout, panels and buttons necessary
@@ -71,6 +72,7 @@ public class GrowingPains extends JFrame{
 		cart = new Cart();
 		cardLayout = new CardLayout();
 		mainContent = new JPanel(cardLayout);
+		customer = new Customer();
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1700, 900);
@@ -83,6 +85,7 @@ public class GrowingPains extends JFrame{
 		Catalogue catalogue = new Catalogue();
 		productPanel = new ProductPanel(ARIAL, GREEN, "", "", 0.0, cart);
 		login = new LoginPanel(ARIAL, GREEN, cardLayout, mainContent);
+
 		browse = new BrowsePanel(ARIAL, GREEN, catalogue, cardLayout, mainContent, productPanel);
 
 //		Methods to create respective panels for GUI
@@ -149,8 +152,17 @@ public class GrowingPains extends JFrame{
 		sideBar.add(cartBtn);
 		cartBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				Before we go to the cart panel, check the status of the user to see if they are logged in
+//				doing so, then updates the Customer object in this class to have all info about the customer 
+//				to make an order
+				try {
+					checkLoggedIn();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 //				Instantiate a new CartPanel so that it updates Dynamically when the user inserts new items
-				cartPanel = new CartPanel(ARIAL, GREEN, cart);
+				cartPanel = new CartPanel(ARIAL, GREEN, cart, customer);
 				mainContent.add(cartPanel, "Cart");
 				cardLayout.show(mainContent,  "Cart");
 			}
@@ -287,4 +299,18 @@ public class GrowingPains extends JFrame{
 		remindersBtn.setVisible(true);
 		exitBtn.setVisible(true);
 	}
-}
+	 
+	 public void checkLoggedIn() throws SQLException {
+		 Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
+		 	 
+			 if(loggedInCustomer != null) {
+				 
+				 this.customer = loggedInCustomer;
+				 this.customer.setLoggedIn();
+			 }
+			 else
+			 {
+				 //TODO: CUSTOM EXCEPTION?
+			 }
+		 }
+	 }

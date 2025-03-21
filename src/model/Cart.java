@@ -6,10 +6,10 @@ import java.util.List;
 
 /**
  * The Cart class holds all information relative to each Customers Cart
- * The Account class holds the totalPrice and a List of all CartItems within the customers Cart
+ * The Account class holds the totalPrice and a List of all orderItems within the customers Cart
  */
 public class Cart {
-	private List<CartItem> items;
+	private List<OrderItem> items;
     private double totalPrice;
 
     /**
@@ -17,15 +17,15 @@ public class Cart {
      * The List of items gets initialised in this Constructor and the totalPrice gets set to 0 initially.
      */
     public Cart() {
-    	this.items = new ArrayList<CartItem>();
+    	this.items = new ArrayList<OrderItem>();
     	setTotalPrice(0);
     }
     
     /**
-     * Gets the List of cartItems associated with the Customer
-     * @return A List of CartItems containing information about each product in the cart
+     * Gets the List of orderItems associated with the Customer
+     * @return A List of orderItems containing information about each product in the cart
      */
-    public List<CartItem> getCart(){
+    public List<OrderItem> getCart(){
     	return this.items;
     }
     
@@ -39,17 +39,17 @@ public class Cart {
     public void addItem(Item item, int qty) {
     	boolean isFound = false;
     	
-    	for(CartItem cartItem : items) {
+    	for(OrderItem orderItem : items) {
 //    		If the user already has the item in their cart, then we need only increment the current qty in the cart by the qty they intend to add
-    		if(item.getItemID() == cartItem.getItemID()) {
-    			cartItem.setQty(cartItem.getQty()+qty);
+    		if(item.getItemID() == orderItem.getItemID()) {
+    			orderItem.setQty(orderItem.getQty()+qty);
     			isFound = true;
     		}
     	}
     	
     	if(isFound == false) {
-    		CartItem cartItem = new CartItem(item, qty);
-    		items.add(cartItem);
+    		OrderItem orderItem = new OrderItem(item, qty);
+    		items.add(orderItem);
     	}
     	
 //    	Update the current price by passing in the price of the item time the qty of the item
@@ -92,5 +92,13 @@ public class Cart {
      */
     public double getTotalPrice() {
     	return totalPrice;
+    }
+    
+    /**
+     * Resets the content of the cart back to zero
+     */
+    public void clearCart() {
+    	this.items.clear();
+    	this.totalPrice = 0;
     }
 }

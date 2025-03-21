@@ -193,5 +193,37 @@ public class CustomerCrud extends Crud{
 			}
 
 		}
+		
+		public Customer getCustomerByEmail(String email) throws SQLException {
+			//Declare a new Customer
+			Customer c = new Customer();
+			//Declare a new ResultSet, default to null
+			ResultSet resultSet = null;
+			
+			try {
+				//Prepared statement for Querying the Customer table
+				PreparedStatement pstat = connection.prepareStatement("SELECT customerID, fName, lName, email, address, password, phone FROM Customer WHERE email=?");
+				pstat.setString(1,  email);
+				//resultSet is assigned the result of the query
+				resultSet = pstat.executeQuery();
+
+					//Check if result has a value
+					while(resultSet.next()) {
+						//Creates a new Customer, inserting the values retrieved from the SELECT Query
+						c = new Customer(
+								resultSet.getInt("customerID"), 
+								resultSet.getString("fName"), 
+								resultSet.getString("lName"), 
+								resultSet.getString("email"), 
+								resultSet.getString("password"), 
+								resultSet.getInt("phone"), 
+								resultSet.getString("address"));
+				}
+			}catch(SQLException sqlException) {
+				System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+				sqlException.printStackTrace();
+			}
+			return c;
+		}
 
 }

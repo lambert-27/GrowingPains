@@ -34,7 +34,7 @@ public class Catalogue {
      */
     public void getCatalogue() throws SQLException {
     	ProductCrud crud = new ProductCrud();
-    	items = crud.getAllProducts();
+    	items = crud.getProductsInStock();
     }
 
     /**

@@ -2,9 +2,13 @@ package crud;
 //GROWING PAINS - Mark Lambert - C00192497
 //orderCrud class - Purpose to hold all methods for relevant Retrieve, Delete tasks for Order Items
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Order;
 /**
@@ -15,7 +19,6 @@ public class OrderCrud extends Crud{
 	//Constructs an OrderCrud object which initialises the database connection via its superclass
 	public OrderCrud() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	
@@ -29,11 +32,11 @@ public class OrderCrud extends Crud{
 		try {
 			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, productID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?,?)");
 			pstat.setInt(1,  order.getCustomerID());
-			pstat.setInt(2,  order.getProductID());
+			pstat.setInt(2,  0);
 			pstat.setDate(3, order.getDate());
 			pstat.setTime(4,  order.getTime());
 			pstat.setString(5,  order.getAddress());
-			pstat.setFloat(6, order.getPrice());
+			pstat.setDouble(6, order.getPrice());
 			pstat.executeUpdate();
 		}
 		catch(SQLException sqlException) {
@@ -66,8 +69,7 @@ public class OrderCrud extends Crud{
 					//Creates a new Orders, inserting the values retrieved from the SELECT Query
 					o = new Order(
 							resultSet.getInt("orderID"),
-							resultSet.getInt("customerID"), 
-							resultSet.getInt("productID"), 
+							resultSet.getInt("customerID"),  
 							resultSet.getDate("date"), 
 							resultSet.getTime("time"), 
 							resultSet.getString("shippingAddress"), 
@@ -86,8 +88,9 @@ public class OrderCrud extends Crud{
 	 *  Retrieves all Orders from the Orders table
 	 * @return A List of Order objects
 	 */
-	public void getAllOrders() throws SQLException {
+	public List<Order> getAllOrders() throws SQLException {
 		ResultSet resultSet = null;
+		List<Order> orders = new ArrayList<Order>();
 		
 		try {
 			PreparedStatement pstat = connection.prepareStatement("SELECT orderID, customerID, productID, date, time, shippingAddress, totalPrice FROM Orders");
@@ -97,15 +100,24 @@ public class OrderCrud extends Crud{
 			System.out.println("-----\nAll Orders in Order Table in GrowingPains DB-----");
 //			Check if resultSet has a value
 			while(resultSet.next()) {
-				System.out.println(resultSet.getInt("orderID") + ", " + resultSet.getInt("customerID") + ", " + 
-						resultSet.getInt("productID") + ", " + resultSet.getDate("date") + ", " +
-						resultSet.getTime("time") + ", " + resultSet.getString("shippingAddress") + ", " + resultSet.getFloat("totalPrice"));
+//				Assign values to a new temp Order and add it to the list
+				int orderID = resultSet.getInt("orderID");
+				int customerID = resultSet.getInt("customerID");
+				Date date = resultSet.getDate("date");
+				Time time = resultSet.getTime("time");
+				String address = resultSet.getString("shippingAddress");
+				Float price = resultSet.getFloat("totalPrice");
+				
+				Order o = new Order(orderID, customerID, date, time, address, price);
+				orders.add(o);
 			}
 		}
 			catch(SQLException sqlException) {
 				System.err.println("Error retrieving all Orders from table: " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
+		
+		return orders;
 	}
 
 	/**
@@ -143,11 +155,10 @@ public class OrderCrud extends Crud{
 		try {
 			PreparedStatement pstat = connection.prepareStatement("UPDATE Orders SET customerID=?, productID=?, date=?, time=?, shippingAddress=?, totalPrice=? WHERE orderID=?");
 			pstat.setInt(1,  order.getCustomerID());
-			pstat.setInt(2,  order.getProductID());
 			pstat.setDate(3, order.getDate());
 			pstat.setTime(4,  order.getTime());
 			pstat.setString(5,  order.getAddress());
-			pstat.setFloat(6, order.getPrice());
+			pstat.setDouble(6, order.getPrice());
 			pstat.setInt(7,  order.getOrderID());
 			pstat.executeUpdate();
 		}catch(SQLException sqlException) {

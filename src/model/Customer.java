@@ -17,6 +17,7 @@ public class Customer {
     private String fName;
     private String lName;
     private Account acc;
+    private boolean isLoggedIn = false;
     
   //Default Constructor
     /**
@@ -193,5 +194,24 @@ public class Customer {
 	 */
 	public int getPhone() {
 		return acc.getPhone();
+	}
+    /**
+     * Sets the customer's logged in status to true
+     */
+	public void setLoggedIn() {
+		this.isLoggedIn = true;
+	}
+    /**
+     * Gets the customer's logged in status
+     * 
+     * @return customers logged in status
+     */
+	public boolean getStatus() {
+		return this.isLoggedIn;
+	}
+
+	public void setAddress(String address) {
+		// TODO Auto-generated method stub
+		acc.setAddress(address);
 	}
 }

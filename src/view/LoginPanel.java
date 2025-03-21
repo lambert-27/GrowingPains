@@ -24,6 +24,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import crud.CustomerCrud;
+import model.Customer;
 
 /** 
  * The LoginPanel class represents the Login Panel in the GrowingPains application
@@ -43,6 +44,8 @@ public class LoginPanel extends JPanel{
 	private JButton submit;
 	private JButton cancel;
 	private CustomerCrud crud;
+	private Customer customer;
+	private String customerEmail;
 	
 	/**
 	 * Constructs a new LoginPanel, initialising the layout, title, buttons and input fields
@@ -90,7 +93,14 @@ public class LoginPanel extends JPanel{
 		pass.addActionListener(new ActionListener(){
 			//When the user presses ENTER, let them login
 			public void actionPerformed(ActionEvent e) {
-				handleLogin(cl, mainContent);
+				if(handleLogin(cl, mainContent) != null) {
+					try {
+						customer = crud.getCustomerByEmail(customerEmail);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		gbc.gridx = 1;
@@ -105,7 +115,14 @@ public class LoginPanel extends JPanel{
 		submit.addMouseListener(new MouseAdapter() {
 			//When the user clicks the button to login, let them login
 			public void mouseClicked(MouseEvent e) {
-				handleLogin(cl, mainContent);
+				if(handleLogin(cl, mainContent) != null) {
+					try {
+						customer = crud.getCustomerByEmail(customerEmail);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -131,22 +148,38 @@ public class LoginPanel extends JPanel{
 	 * @param cl the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
 	 */
-	public void handleLogin(CardLayout cl, JPanel mainContent) {
+	public Customer handleLogin(CardLayout cl, JPanel mainContent) {
 		String custEmail = email.getText();
+		customerEmail = custEmail;
 //		.getPassword() returns to us the array of characters that make up the password
 //		therefore, we first want to cast it as a String
 		String passWord = new String(pass.getPassword());
-		
+
 		try {
 			if(crud.login(custEmail, passWord)) {
+//				Retrieve the customer from the database 
+				customer = crud.getCustomerByEmail(custEmail);
+				if(customer != null) {
 				cl.show(mainContent, "Browse");
 //				Call of static method showButtons, to show the sideBar when the customer is logged in
 				GrowingPains.showButtons();
+				return customer;
+				}
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+//		Return null for login fail
+		return null;
+	}
+	
+	/**
+	 * Returns the current customer logged in
+	 */
+	public Customer getLoggedInCustomer() throws SQLException {
+		return this.customer;
 	}
 	
 	/**

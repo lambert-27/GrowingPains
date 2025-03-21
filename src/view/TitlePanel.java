@@ -15,6 +15,8 @@ import javax.swing.JPanel;
  * Holds a JLabel representing the title
  */
 public class TitlePanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
 	
 	/**

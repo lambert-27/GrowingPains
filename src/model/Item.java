@@ -25,11 +25,11 @@ public abstract class Item {
     /**
      * Constructor used for creating an Item Object for INSERTION operations
      * hence, the absence of itemID
-     * @param itemName The Name of the Accessory
-     * @param description The Description of the Accessory
-     * @param price The Price of the Accessory
-     * @param qty The Quantity of the Accessory
-     * @param image_path The Image Path of the Accessory
+     * @param itemName The Name of the Product
+     * @param description The Description of the Product
+     * @param price The Price of the Product
+     * @param qty The Quantity of the Product
+     * @param image_path The Image Path of the Product
      */
     public Item(String itemName, String description, double price, int qty, String image_path) {
     	setItemName(itemName);
@@ -41,14 +41,14 @@ public abstract class Item {
     }
     
     /**
-     * Constructor used for creating an Accessory Object for RETRIEVAL operations
+     * Constructor used for creating an Product Object for RETRIEVAL operations
      * hence, the inclusion of itemID
-     * @param itemID The ID of the Accessory
-     * @param itemName The Name of the Accessory
-     * @param description The Description of the Accessory
-     * @param price The Price of the Accessory
-     * @param qty The Quantity of the Accessory
-     * @param image_path The Image Path of the Accessory
+     * @param itemID The ID of the Product
+     * @param itemName The Name of the Product
+     * @param description The Description of the Product
+     * @param price The Price of the Product
+     * @param qty The Quantity of the Product
+     * @param image_path The Image Path of the Product
      */
     public Item(int itemID, String itemName, String description, double price, int qty, String image_path) {
     	setItemID(itemID);

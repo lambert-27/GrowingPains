@@ -14,11 +14,11 @@ public class Order {
 	//Class instance variables
     private int orderID;
     private int	customerID;
-    private int productID;
+//    private int productID;
     private Date date;
     private Time time;
     private Address shippingAdrs;
-    private float totalPrice;
+    private double totalPrice;
     
     //Constructors
     /* *
@@ -36,9 +36,9 @@ public class Order {
      * @param shippingAdrs The shipping address
      * @param totalPrice The total price of the order
      */
-    public Order(int customerID, int productID, Address shippingAdrs, float totalPrice) {
+    public Order(int customerID, String shippingAdrs, double totalPrice) {
     	setCustomerID(customerID);
-    	setProductID(productID);
+//    	setProductID(productID);
     	setDate();
     	setTime();
     	setAddress(shippingAdrs);
@@ -54,10 +54,10 @@ public class Order {
      * @param shippingAdrs The shipping address
      * @param totalPrice The total price of the order
      */
-    public Order(int orderID, int customerID, int productID, Date date, Time time,String shippingAdrs, float totalPrice) {
+    public Order(int orderID, int customerID, Date date, Time time,String shippingAdrs, double totalPrice) {
     	setOrderID(orderID);
     	setCustomerID(customerID);
-    	setProductID(productID);
+//    	setProductID(productID);
     	setDate(date);
     	setTime(time);
     	setAddress(shippingAdrs);
@@ -130,7 +130,7 @@ public class Order {
      * 
      * @param totalPrice The total price of the Order
      */
-    public void setPrice(float totalPrice) {
+    public void setPrice(double totalPrice) {
     	this.totalPrice = totalPrice;
     }
     
@@ -143,14 +143,14 @@ public class Order {
     	this.customerID = customerID;
     }
     
-    /**
-     * Sets the list of ID's of the Order
-     * 
-     * @param productID The list of product ID's of the Order
-     */
-    public void setProductID(int productID) {
-    	this.productID = productID;
-    }
+//    /**
+//     * Sets the list of ID's of the Order
+//     * 
+//     * @param productID The list of product ID's of the Order
+//     */
+//    public void setProductID(int productID) {
+//    	this.productID = productID;
+//    }
     /**
      * Gets the date of the Order for RETRIEVAL
      * 
@@ -180,7 +180,7 @@ public class Order {
      * 
      * @return The total price of the Order
      */
-    public float getPrice() {
+    public double getPrice() {
     	return this.totalPrice;
     }
     /**
@@ -191,14 +191,14 @@ public class Order {
     public int getCustomerID() {
     	return this.customerID;
     }
-    /**
-     * Gets the list of ID's of the Order
-     * 
-     * @return The ID of the Order
-     */
-    public int getProductID() {
-    	return this.productID;
-    }
+//    /**
+//     * Gets the list of ID's of the Order
+//     * 
+//     * @return The ID of the Order
+//     */
+//    public int getProductID() {
+//    	return this.productID;
+//    }
     /**
      * Gets the ID of the Order
      * 

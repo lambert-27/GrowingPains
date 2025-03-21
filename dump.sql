@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
--- Host: localhost    Database: growingpains
+-- Host: localhost    Database: GrowingPains
 -- ------------------------------------------------------
 -- Server version	8.0.41
 
@@ -58,9 +58,9 @@ CREATE TABLE `orders` (
   `date` date DEFAULT NULL,
   `time` time DEFAULT NULL,
   `shippingAddress` text,
-  `totalPrice` decimal(4,2) DEFAULT NULL,
+  `totalPrice` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`orderID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,1,11,'2025-03-04','22:59:00','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',27.00),(2,1,11,'2025-03-04','22:56:46','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',27.00),(3,1,11,'2025-03-04','22:59:00','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',27.00);
+INSERT INTO `orders` VALUES (1,1,11,'2025-03-04','22:59:00','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',27.00),(2,1,11,'2025-03-04','22:56:46','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',27.00),(3,1,11,'2025-03-04','22:59:00','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',27.00),(4,3,0,'2025-03-21','17:34:11','YES, , , , , , , , ',14.99),(5,3,0,'2025-03-21','17:43:54','YES, , , , , , , , ',29.98),(6,3,0,'2025-03-21','17:44:15','YES',8.99),(7,14,0,'2025-03-21','18:05:37','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',14.99),(8,14,0,'2025-03-21','18:15:30','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',113.91),(9,14,0,'2025-03-21','18:15:35','Primary Rd., Goldthorpe, Wexford, X09S631, Ireland',113.91),(10,3,0,'2025-03-21','18:52:05','YES',8.99),(11,3,0,'2025-03-21','18:57:14','YES',260.71),(12,3,0,'2025-03-21','18:57:37','YES',260.71),(13,3,0,'2025-03-21','19:01:06','YES',17.98),(14,3,0,'2025-03-21','19:08:35','YES',14.99),(15,3,0,'2025-03-21','19:15:17','YES',14.99);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,7 +98,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (3,'Pothos','Pothos 13cm pot, suitable for all owners',14.99,25,'Plant','images/pothos.png'),(4,'Golden Mister','Golden mister, ideal for orchids and high hummidty plants',8.99,30,'Accessory','images/mister.png'),(5,'Monstera','Monstera Adasonii w/ 15cm pot, suitable for all owners',12.99,43,'Plant','images/monsterra.png'),(6,'7cm Giraffe Pot','Gooft Giraffe pot to make your plants more fun',2.99,30,'Accessory','images/griaffe_pot.png'),(7,'Maidenhair Fern','Maidenhair Fern w/ 6cm pot, suitable for all owners',6.99,12,'Plant','images/fern.png'),(8,'Green Pot','Green Pot w/ Eye Design',8.99,3012,'Accessory','images/pot_eyes.png'),(21,'Golden Pothos','Golden Pothos w/ 8cm pot, suitable for all owners',5.99,27,'Plant','images/golden_pothos.png'),(22,'13cm Pot with Motif','Hand painted ceramic pot',10.99,12,'Accessory','images/pot_egg.png'),(23,'Pilea','Pilea - Chinea Money Plant',5.99,27,'Plant','images/pilea.png'),(24,'Moisture Meter','Moisture Meter - Single probe, excellent for all experience levels for watering',4.99,40,'Accessory','images/moisture_meter.png'),(25,'Spider Plant','Spider Plant - Suitable for all experience levels, loves humidity',9.99,27,'Plant','images/spider.png'),(26,'8cm Pot with Wooden Stand','Duck egg blue pot with wooden stand',14.99,5,'Accessory','images/pot_stand.png'),(27,'String of Hearts','String of Hearts - Vining indoor plant',9.99,6,'Plant','images/soh.png'),(28,'String of Bananas','String of Bananas - Succulent vining plant',19.99,16,'Plant','images/sob.png'),(29,'Alocasia Poly','Alocasia - Elephant\'s Ear or Poly',15.99,14,'Plant','images/alocasia.png');
+INSERT INTO `product` VALUES (3,'Pothos','Pothos 13cm pot, suitable for all owners',14.99,17,'Plant','images/pothos.png'),(4,'Golden Mister','Golden mister, ideal for orchids and high hummidty plants',8.99,30,'Accessory','images/mister.png'),(5,'Monstera','Monstera Adasonii w/ 15cm pot, suitable for all owners',12.99,43,'Plant','images/monsterra.png'),(6,'7cm Giraffe Pot','Gooft Giraffe pot to make your plants more fun',2.99,30,'Accessory','images/griaffe_pot.png'),(7,'Maidenhair Fern','Maidenhair Fern w/ 6cm pot, suitable for all owners',6.99,12,'Plant','images/fern.png'),(8,'Green Pot','Green Pot w/ Eye Design',8.99,3012,'Accessory','images/pot_eyes.png'),(21,'Golden Pothos','Golden Pothos w/ 8cm pot, suitable for all owners',5.99,27,'Plant','images/golden_pothos.png'),(22,'13cm Pot with Motif','Hand painted ceramic pot',10.99,12,'Accessory','images/pot_egg.png'),(23,'Pilea','Pilea - Chinea Money Plant',5.99,27,'Plant','images/pilea.png'),(24,'Moisture Meter','Moisture Meter - Single probe, excellent for all experience levels for watering',4.99,40,'Accessory','images/moisture_meter.png'),(25,'Spider Plant','Spider Plant - Suitable for all experience levels, loves humidity',9.99,27,'Plant','images/spider.png'),(26,'8cm Pot with Wooden Stand','Duck egg blue pot with wooden stand',14.99,5,'Accessory','images/pot_stand.png'),(27,'String of Hearts','String of Hearts - Vining indoor plant',9.99,6,'Plant','images/soh.png'),(28,'String of Bananas','String of Bananas - Succulent vining plant',19.99,16,'Plant','images/sob.png'),(29,'Alocasia Poly','Alocasia - Elephant\'s Ear or Poly',15.99,14,'Plant','images/alocasia.png');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -111,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-05 23:32:12
+-- Dump completed on 2025-03-21 19:19:22
