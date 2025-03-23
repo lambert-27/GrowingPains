@@ -42,7 +42,7 @@ public class LoginPanel extends JPanel{
 	private GridBagLayout gbl;
 	private GridBagConstraints gbc;
 	private JButton submit;
-	private JButton cancel;
+	private JButton createAccount;
 	private CustomerCrud crud;
 	private Customer customer;
 	private String customerEmail;
@@ -132,12 +132,27 @@ public class LoginPanel extends JPanel{
 		add(submit, gbc);
 		
 		//Cancel button
-		cancel = createButton("Cancel", ARIAL, GREEN);
-		cancel.setBorderPainted(false);
-		cancel.setFocusPainted(false);
+		createAccount = createButton("Create an Account", ARIAL, GREEN);
+		
+		createAccount.setBorderPainted(false);
+		createAccount.setFocusPainted(false);
+		createAccount.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				//TODO: INCORPORATE CREATEACCOUNT PANEL
+				try {
+					CreateAccountPanel createAccountPanel = new CreateAccountPanel(ARIAL, GREEN, cl, mainContent);
+					mainContent.add(createAccountPanel, "CreateAccount");
+					cl.show(mainContent, "CreateAccount");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		gbc.gridx = 1;
 		gbc.gridy = 8;
-		add(cancel, gbc);
+		add(createAccount, gbc);
 		
 		
 	}

@@ -39,7 +39,7 @@ public class Customer {
      * @param phone The phone number of the customer
      * @param address The address of the customer
      */
-    public Customer(String fName, String lName, String email, String password, int phone, Address address) {
+    public Customer(String fName, String lName, String email, String password, String phone, Address address) {
     	setfName(fName);
     	setlName(lName);
     	//Composition
@@ -59,7 +59,7 @@ public class Customer {
      * @param phone The phone number of the customer
      * @param address The address of the customer
      */
-    public Customer(int customerID, String fName, String lName, String email, String password, int phone, Address address) {
+    public Customer(int customerID, String fName, String lName, String email, String password, String phone, Address address) {
     	setCustomerID(customerID);
     	setfName(fName);
     	setlName(lName);
@@ -78,7 +78,7 @@ public class Customer {
      * @param phone The phone number of the customer
      * @param address The address of the customer
      */
-    public Customer(int customerID, String fName, String lName, String email, String password, int phone, String address) {
+    public Customer(int customerID, String fName, String lName, String email, String password, String phone, String address) {
     	setCustomerID(customerID);
     	setfName(fName);
     	setlName(lName);
@@ -123,7 +123,7 @@ public class Customer {
 	 * @param phone The phone number of the Customer
 	 * @param address The address of the Customer
 	 */
-	public void setAccount(String email, String password, int phone, Address address) {
+	public void setAccount(String email, String password, String phone, Address address) {
 		this.acc = new Account(email, password, phone, address);
 	}
 	
@@ -136,7 +136,7 @@ public class Customer {
 	 * @param phone The phone number of the Customer
 	 * @param address The address of the Customer
 	 */
-	public void setAccount(String email, String password, int phone, String address) {
+	public void setAccount(String email, String password, String phone, String address) {
 		this.acc = new Account(email, password, phone, address);
 	}
 	//Getters
@@ -192,7 +192,7 @@ public class Customer {
 	 * Calls Account getPhone() method to obtain the phone number
 	 * @return the phone number associated with the Account
 	 */
-	public int getPhone() {
+	public String getPhone() {
 		return acc.getPhone();
 	}
     /**

@@ -2,7 +2,7 @@ package view;
 //GROWING PAINS - Mark Lambert - C00192497
 //GrowingPains CartPanel class - Contains structure for CartPanel area of app
 import java.awt.BorderLayout;
-
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -50,7 +50,7 @@ public class CartPanel extends JPanel {
 	 * @param GREEN the colour used
 	 * @param cart the cart containing the list of products to be displayed
 	 */
-	public CartPanel(Font ARIAL, Color GREEN, Cart cart, Customer customer) {
+	public CartPanel(Font ARIAL, Color GREEN, Cart cart, Customer customer, CardLayout cl, JPanel mainContent) {
 		setLayout(new BorderLayout());
 //		Add the title to the NORTH 
 		add(new TitlePanel("Cart", ARIAL, GREEN), BorderLayout.NORTH);
@@ -73,6 +73,7 @@ public class CartPanel extends JPanel {
 //					Finally, insert the order
 					crud.insertOrder(order);
 					cart.clearCart();
+					cl.show(mainContent, "Browse");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

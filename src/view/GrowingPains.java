@@ -62,6 +62,8 @@ public class GrowingPains extends JFrame{
 	private CartPanel cartPanel;
 	private Cart cart;
 	private Customer customer;
+	private final int WIDTH = 1200;
+	private final int HEIGHT = 900;
 
 	/**
 	 * Constructs the GrowingPains application frame, setting the layout, panels and buttons necessary
@@ -75,7 +77,7 @@ public class GrowingPains extends JFrame{
 		customer = new Customer();
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1700, 900);
+		setSize(WIDTH, HEIGHT);
 //		Set the location of the window relative to the screen, null = centered
 		setLocationRelativeTo(null);
 //		Set the icon image by calling ICON.getImage as setIconImage takes in an Image as an argument
@@ -162,7 +164,7 @@ public class GrowingPains extends JFrame{
 					e1.printStackTrace();
 				}
 //				Instantiate a new CartPanel so that it updates Dynamically when the user inserts new items
-				cartPanel = new CartPanel(ARIAL, GREEN, cart, customer);
+				cartPanel = new CartPanel(ARIAL, GREEN, cart, customer, cardLayout, mainContent);
 				mainContent.add(cartPanel, "Cart");
 				cardLayout.show(mainContent,  "Cart");
 			}
@@ -299,7 +301,9 @@ public class GrowingPains extends JFrame{
 		remindersBtn.setVisible(true);
 		exitBtn.setVisible(true);
 	}
-	 
+	/**
+	 * Creates a customer object and if the Customer is logged in, returns the details of the customer
+	 */
 	 public void checkLoggedIn() throws SQLException {
 		 Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
 		 	 

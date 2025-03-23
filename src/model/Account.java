@@ -14,7 +14,7 @@ public class Account {
     private String email;
     private Address address;
     private String password;
-    private int phone;
+    private String phone;
 
     //Constructors
     /**
@@ -25,7 +25,7 @@ public class Account {
      * @param phone The Phone of the Account
      * @param address The Address of the Account
      */
-    public Account(String email, String password, int phone, Address address) {
+    public Account(String email, String password, String phone, Address address) {
     	setEmail(email);
     	setPassword(password);
     	setPhone(phone);
@@ -40,7 +40,7 @@ public class Account {
      * @param phone The Phone of the Account
      * @param address The Address of the Account
      */
-    public Account(String email, String password, int phone, String address) {
+    public Account(String email, String password, String phone, String address) {
     	setEmail(email);
     	setPassword(password);
     	setPhone(phone);
@@ -80,7 +80,7 @@ public class Account {
      * Sets the phone number of the Account 
      * @param phone The Phone Number associated with the Account
      */
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -114,7 +114,7 @@ public class Account {
      * Gets the phone number of the Account 
      * @param phone The Phone Number associated with the Account
      */
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 

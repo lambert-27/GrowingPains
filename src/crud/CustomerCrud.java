@@ -24,7 +24,7 @@ public class CustomerCrud extends Crud{
 	 * (fName, lName, email, address, passWord, phone)
 	 * to be entered into the Customer table
 	 */
-		public void insertCustomer(Customer cust) throws SQLException{
+		public boolean insertCustomer(Customer cust) throws SQLException{
 			try {
 				//PreparedStatement for inserting a customer
 				PreparedStatement pstat = connection.prepareStatement("INSERT INTO Customer(fName, lName, email, address, password, phone) VALUES(?,?,?,?,?,?)");
@@ -34,14 +34,16 @@ public class CustomerCrud extends Crud{
 				pstat.setString(3,  cust.getEmail());
 				pstat.setString(4,  cust.getAddress());
 				pstat.setString(5, cust.getPassword());
-				pstat.setInt(6, cust.getPhone());
+				pstat.setString(6, cust.getPhone());
 				pstat.executeUpdate();
+				return true;
 			}
 			catch(SQLException sqlException) {
 //				After studying notes, realised I can print custom message here
 				System.err.println("Error inserting into Customer table: " +  sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
+			return false;
 		}
 
 		/**
@@ -72,7 +74,7 @@ public class CustomerCrud extends Crud{
 								resultSet.getString("lName"), 
 								resultSet.getString("email"), 
 								resultSet.getString("password"), 
-								resultSet.getInt("phone"), 
+								resultSet.getString("phone"), 
 								resultSet.getString("address"));
 						//TEMP Print of Customer 				
 					System.out.println(c);
@@ -106,7 +108,7 @@ public class CustomerCrud extends Crud{
 					String email = resultSet.getString("email");
 					String passWord = resultSet.getString("password");
 					String adrs = resultSet.getString("address");
-					int phone = resultSet.getInt("phone");
+					String phone = resultSet.getString("phone");
 					
 					Customer customer = new Customer(id, fName, lName, email, passWord, phone, adrs);
 					customers.add(customer);
@@ -160,7 +162,7 @@ public class CustomerCrud extends Crud{
 				pstat.setString(3,  cust.getEmail());
 				pstat.setString(4,  cust.getAddress());
 				pstat.setString(5, cust.getPassword());
-				pstat.setInt(6, cust.getPhone());
+				pstat.setString(6, cust.getPhone());
 				pstat.setInt(7,  cust.getCustomerID());
 				pstat.executeUpdate();
 			}catch(SQLException sqlException) {
@@ -216,7 +218,7 @@ public class CustomerCrud extends Crud{
 								resultSet.getString("lName"), 
 								resultSet.getString("email"), 
 								resultSet.getString("password"), 
-								resultSet.getInt("phone"), 
+								resultSet.getString("phone"), 
 								resultSet.getString("address"));
 				}
 			}catch(SQLException sqlException) {

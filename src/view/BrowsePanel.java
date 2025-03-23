@@ -51,7 +51,7 @@ public class BrowsePanel extends JPanel{
 			setLayout(new BorderLayout());
 //			Grid for products, with a horizontal gap between each image of 10px
 //			note, rows set to 0 to dynamically let the rows adjust depending on catalogue
-			gridPanel = new JPanel(new GridLayout(0, 4, 10, 10));
+			gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
 //			Add the title to the NORTH 
 			add(new TitlePanel("Browse", ARIAL, GREEN), BorderLayout.NORTH);
 			
