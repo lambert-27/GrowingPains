@@ -95,10 +95,16 @@ public class GrowingPains extends JFrame{
 		topBar();
 		sideBar();
 		hideButtons();
+
+	}
+	/**
+	 * Sets all elements within the container to visibile, signifying
+	 * to the user the beginning of the application
+	 */
+	public void run() {
 //		Sets all elements within this container to visible
 		setVisible(true);
 	}
-
 	/**
 	 * Sets up the top bar of the application window
 	 * Contains the title and event listener to navigate to the "Welcome" panel
