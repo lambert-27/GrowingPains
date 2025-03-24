@@ -91,6 +91,7 @@ public class GrowingPains extends JFrame{
 
 		browse = new BrowsePanel(ARIAL, GREEN, catalogue, cardLayout, mainContent, productPanel);
 
+
 //		Methods to create respective panels for GUI
 		mainContent();
 		topBar();
@@ -185,6 +186,24 @@ public class GrowingPains extends JFrame{
 				cardLayout.show(mainContent, "Reminder");
 			}
 		});
+//		EDIT ACCOUNT Button
+		editAccountBtn = createButton("Account","images/account.png");
+		sideBar.add(editAccountBtn);
+		editAccountBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					//When the user clicks on the account button, then assign
+					//the GrowingPains Class Customer obj the details
+					//of the logged in customer
+					customer = login.getLoggedInCustomer();
+					mainContent.add(new EditAccountPanel(ARIAL, GREEN, cardLayout, mainContent, customer), "Edit Account");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				cardLayout.show(mainContent,  "Edit Account");
+			}
+		});
 		
 		//Glue the Exit down to the bottom of the side bar for workflow priority
 		//preventing the user from misclicking and terminating the program
@@ -194,20 +213,6 @@ public class GrowingPains extends JFrame{
 		exitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-			}
-		});
-		
-		editAccountBtn = createButton("Edit Account", "");
-		sideBar.add(editAccountBtn);
-		editAccountBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					mainContent.add(new EditAccountPanel(ARIAL, GREEN, cardLayout, mainContent), "Edit Account");
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				cardLayout.show(mainContent,  "Edit Account");
 			}
 		});
 	}
@@ -311,6 +316,7 @@ public class GrowingPains extends JFrame{
 		cartBtn.setVisible(false);
 		remindersBtn.setVisible(false);
 		exitBtn.setVisible(false);
+		editAccountBtn.setVisible(false);
 	}
 	/**
 	 * Shows the sidebar buttons after the user logs in
@@ -320,6 +326,7 @@ public class GrowingPains extends JFrame{
 		cartBtn.setVisible(true);
 		remindersBtn.setVisible(true);
 		exitBtn.setVisible(true);
+		editAccountBtn.setVisible(true);
 	}
 	/**
 	 * Creates a customer object and if the Customer is logged in, returns the details of the customer

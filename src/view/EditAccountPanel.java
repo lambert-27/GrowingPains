@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,15 +38,18 @@ public class EditAccountPanel extends JPanel{
 	private GridBagLayout gbl;
 	private GridBagConstraints gbc;
 	private CustomerCrud crud;
+	private Customer customer;
 	
-	public EditAccountPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent) throws SQLException {
+	public EditAccountPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent, Customer cust) throws SQLException {
+		//customer = new Customer();
+		customer = cust;
 		crud = new CustomerCrud();
 		gbl = new GridBagLayout();
 		setLayout(gbl);
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5,5,5,5); //Set padding
 		
-		buildForm(ARIAL, GREEN, cl, mainContent);
+		buildForm(ARIAL, GREEN, cl, mainContent, cust);
 		
 	}
 	
@@ -57,7 +61,7 @@ public class EditAccountPanel extends JPanel{
 	 * @param cardLayout the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
 	 */
-	public void buildForm(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent) {
+	public void buildForm(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent, Customer cust) {
 		//First Name
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -65,7 +69,7 @@ public class EditAccountPanel extends JPanel{
 		
 //		Add 1 to the y so that the inputbox is beneath the label
 		gbc.gridy = 1;
-		fName = createTextField();
+		fName = createTextField(cust.getfName());
 		add(fName, gbc);
 		
 		//Last Name
@@ -74,7 +78,7 @@ public class EditAccountPanel extends JPanel{
 		add(new JLabel("Last Name: "), gbc);
 		
 		gbc.gridy = 1;
-		lName = createTextField();
+		lName = createTextField(cust.getlName());
 		add(lName, gbc);
 		
 		//Email (next line)
@@ -83,7 +87,7 @@ public class EditAccountPanel extends JPanel{
 		add(new JLabel("Email: "), gbc);
 		
 		gbc.gridy = 3;
-		email = createTextField();
+		email = createTextField(cust.getEmail());
 		add(email, gbc);
 		
 
@@ -93,7 +97,7 @@ public class EditAccountPanel extends JPanel{
 		add(new JLabel("Phone: "), gbc);
 		
 		gbc.gridy = 3;
-		phone = createTextField();
+		phone = createTextField(cust.getPhone());
 		add(phone, gbc);
 		
 		//Address (next line)
@@ -103,7 +107,7 @@ public class EditAccountPanel extends JPanel{
 		add(new JLabel("Address: "), gbc);
 		
 		gbc.gridy = 5;
-		adrs = createTextField();
+		adrs = createTextField(cust.getAddress());
 		add(adrs, gbc);
 		
 		//Pass (next line)
@@ -135,7 +139,7 @@ public class EditAccountPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					updateAccount(cardLayout, mainContent);
+					updateAccount(cardLayout, mainContent, cust);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -186,8 +190,8 @@ public class EditAccountPanel extends JPanel{
 	 * Create a text field method, encapsulates common code
 	 * 
 	 */
-	public JTextField createTextField() {
-		JTextField txt = new JTextField();
+	public JTextField createTextField(String value) {
+		JTextField txt = new JTextField(value);
 		txt.setPreferredSize(new Dimension(300, 30));
 		return txt;
 		
@@ -199,7 +203,7 @@ public class EditAccountPanel extends JPanel{
 	 * some info, then insert
 	 * 
 	 */
-	public boolean updateAccount(CardLayout cardLayout, JPanel mainContent) throws SQLException {
+	public boolean updateAccount(CardLayout cardLayout, JPanel mainContent, Customer cust) throws SQLException {
 
 		if(validateForm()) {
 			String fName = this.fName.getText();
@@ -213,7 +217,7 @@ public class EditAccountPanel extends JPanel{
 			Address customerAdrs = new Address(adrs);
 			
 			if(password.equals(confirmPass) && !(password.isEmpty() || confirmPass.isEmpty())){
-				Customer customer = new Customer(fName, lName, email, password, phone, customerAdrs);
+				customer = new Customer(fName, lName, email, password, phone, customerAdrs);
 				if(crud.updateCustomer(customer)) {
 					cardLayout.show(mainContent, "Login");
 					return true;
