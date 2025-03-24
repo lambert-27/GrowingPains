@@ -42,6 +42,7 @@ public class GrowingPains extends JFrame{
 	private static JButton cartBtn;
 	private static JButton remindersBtn;
 	private static JButton exitBtn;
+	private static JButton editAccountBtn;
 	
 	private static final long serialVersionUID = 1L;
 	//	ImageIcon holds the path to the image for our icon
@@ -195,7 +196,20 @@ public class GrowingPains extends JFrame{
 				System.exit(0);
 			}
 		});
-
+		
+		editAccountBtn = createButton("Edit Account", "");
+		sideBar.add(editAccountBtn);
+		editAccountBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					mainContent.add(new EditAccountPanel(ARIAL, GREEN, cardLayout, mainContent), "Edit Account");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				cardLayout.show(mainContent,  "Edit Account");
+			}
+		});
 	}
 	
 	/**

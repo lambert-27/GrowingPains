@@ -153,9 +153,9 @@ public class CustomerCrud extends Crud{
 		 *  Updates a Customer from the Customer table based on its customer ID
 		 * @param Customer cust The Customer object with which is being edited
 		 */
-		public void updateCustomer(Customer cust) throws SQLException {
+		public boolean updateCustomer(Customer cust) throws SQLException {
 			try {
-				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, password=?, phone=? WHERE customerID=?");
+				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, password=?, phone=? WHERE email=?");
 				
 				pstat.setString(1,  cust.getfName());
 				pstat.setString(2,  cust.getlName());
@@ -163,12 +163,14 @@ public class CustomerCrud extends Crud{
 				pstat.setString(4,  cust.getAddress());
 				pstat.setString(5, cust.getPassword());
 				pstat.setString(6, cust.getPhone());
-				pstat.setInt(7,  cust.getCustomerID());
+				pstat.setString(7,  cust.getEmail());
 				pstat.executeUpdate();
+				return true;
 			}catch(SQLException sqlException) {
 				System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
+			return false;
 		}
 		
 		/**
