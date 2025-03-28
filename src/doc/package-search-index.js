@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"GrowingPains","l":"controller"},{"m":"GrowingPains","l":"crud"},{"m":"GrowingPains","l":"model"},{"m":"GrowingPains","l":"view"}];updateSearchResults();

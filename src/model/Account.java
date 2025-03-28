@@ -112,7 +112,7 @@ public class Account {
 	}
     /**
      * Gets the phone number of the Account 
-     * @param phone The Phone Number associated with the Account
+     * @return The phone number associated with an account
      */
 	public String getPhone() {
 		return phone;

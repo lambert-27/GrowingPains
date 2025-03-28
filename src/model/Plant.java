@@ -18,7 +18,9 @@ public class Plant extends Item {
     private String difficulty;
 
     //Constructors
-    //Default Constructor
+    /**
+     * Default Constructor
+     */
     public Plant() {
     	
     }
@@ -45,6 +47,9 @@ public class Plant extends Item {
      * @param price The Price of the Accessory
      * @param qty The Quantity of the Accessory
      * @param image_path The Image Path of the Accessory
+     * @param difficulty The difficulty level of the plant
+     * @param species The species of the plant
+     * 
      */
     public Plant(String itemName, String description, double price, int qty, String species, String difficulty, String image_path) {
     	//Calls super class constructor

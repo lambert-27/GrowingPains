@@ -78,7 +78,7 @@ public class Cart {
     /**
      * Set the total price of the Cart
      * 
-     * @param itemPrice The price associated with the Item
+     * @param totalPrice The price total price of the cart
      */
     public void setTotalPrice(double totalPrice) {
     	this.totalPrice = totalPrice;

@@ -26,6 +26,7 @@ public abstract class Crud {
 
 	/**
 	 * Constructs a new CRUD object and establishes a connection to the databases
+	 * @throws SQLException should an error occur with connection
 	 */
 	public Crud() throws SQLException {
 		connection = DriverManager.getConnection(DATABSE_URL, USER_NAME, PASS_WORD);
@@ -34,6 +35,7 @@ public abstract class Crud {
 	}
 	/**
 	 * Closes the connection and statement objects - freeing database resources from use
+	 * @throws SQLException should an error occur with connection
 	 */
 	 public static void closeConnection() throws SQLException {
 		 connection.close();

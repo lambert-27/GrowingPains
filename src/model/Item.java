@@ -18,7 +18,9 @@ public abstract class Item {
 	private String type;
 	private String image_path;
 	//Constructors
-	//Default constructor
+	/**
+	 * Default constructor
+	 */
 	public Item() {
 		
 	}
@@ -110,9 +112,9 @@ public abstract class Item {
     	this.itemID = itemID;
     }
     /**
-     * Gets the Image Path of the Item
+     * Sets the Image Path of the Item
+     * @param image_path The path to the image for the item
      * 
-     * @return The Image Path associated with the Product
      */
     public void setImgPath(String image_path) {
     	this.image_path = image_path;
@@ -139,6 +141,8 @@ public abstract class Item {
     /**
      * Abstract method getType used by child class' of Item
      * as Item won't be instantiated (due to it being an abstract class)
+     * 
+     * @return The type of product (e.g Plant, Accessory)
      */
     public abstract String getType();
     

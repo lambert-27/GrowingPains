@@ -60,6 +60,8 @@ public class CreateAccountPanel extends JPanel {
 	 * @param GREEN the colour used
 	 * @param cardLayout the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
+	 * 
+	 * @throws SQLException Error for DB operations
 	 */
 	public CreateAccountPanel(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent) throws SQLException {
 		//Declare a new ErrorWriter and open the error log file
@@ -219,7 +221,7 @@ public class CreateAccountPanel extends JPanel {
 	 * 
 	 * @param name the text displayed on the button
 	 * @param GREEN the colour used
-	 * @param cart the cart containing the list of products to be displayed
+	 * @param ARIAL the font used	
 	 * @return the JButton created
 	 */
 	public JButton createButton(String name, Font ARIAL, Color GREEN) {
@@ -234,7 +236,7 @@ public class CreateAccountPanel extends JPanel {
 	}
 	/**
 	 * Create a text field method, encapsulates common code
-	 * 
+	 *@return The JTextField object 
 	 */
 	public JTextField createTextField() {
 		JTextField txt = new JTextField();
@@ -250,10 +252,10 @@ public class CreateAccountPanel extends JPanel {
 	 * 
 	 * @param cardLayout the layout manager used
 	 * @param mainContent	the main content panel
-	 * @return
-	 * @throws AccountCreationException 
-	 * @throws ValidationException, note how we throw ValidationException, which means we can use our child
-	 * exception classes PasswordInconsistent and EmptyField, as ValidationException is their super class
+	 * @throws AccountCreationException For error with account creation
+	 * @throws ValidationException note how we throw ValidationException, which means we can use our child exception classes 
+	 * PasswordInconsistent and EmptyField, as ValidationException is their super class
+	 * 
 	 */
 	public void createAccount(CardLayout cardLayout, JPanel mainContent) throws AccountCreationException, ValidationException {
 
@@ -293,7 +295,8 @@ public class CreateAccountPanel extends JPanel {
 	 * Valid a text field method, encapsulates common code
 	 * 
 	 * @param fieldName for displaying the correct field name in the error message
-	 * @throws EmptyFieldException, occurs when an input field that is required is left empty
+	 * @param txt The JTextField object
+	 * @throws EmptyFieldException occurs when an input field that is required is left empty
 	 */
 	public void checkInfo(JTextField txt, String fieldName) throws EmptyFieldException {
 //		Basic validation to check if the user has atleast input some info in each textbox
@@ -310,7 +313,7 @@ public class CreateAccountPanel extends JPanel {
 	/**
 	 * Iterates through each text field in the form to check for empty inputs
 	 * 
-	 * @throws ValidationException, occurs when some input field does not meet required validation
+	 * @throws ValidationException occurs when some input field does not meet required validation
 	 * 
 	 */
 	public void validateForm() throws ValidationException {
@@ -341,6 +344,12 @@ public class CreateAccountPanel extends JPanel {
 				
 	}
 	
+	/**
+	 * Holds logic for password validation checks 
+	 * @param password The customers new Password
+	 * @param confirmPass The confirmation of their password
+	 * @throws ValidationException Exception for problem with password validation
+	 */
 	public void validatePasswords(String password, String confirmPass) throws ValidationException{
 		
 		//If the passwords don't match, throw a PasswordInconsistentException

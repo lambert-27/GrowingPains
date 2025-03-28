@@ -18,7 +18,10 @@ import model.Accessory;
 
 public class AccessoryCrud extends Crud {
 
-	//Constructs an AccessoryCrud object which initialises the database connection via its superclass
+	/**
+	 * Constructs an AccessoryCrud object which initialises the database connection via its superclass
+	 * @throws SQLException Error should a connection problem occur
+	 */
 	public AccessoryCrud() throws SQLException {
 		super();
 	}
@@ -27,6 +30,7 @@ public class AccessoryCrud extends Crud {
  *  Retrieves an Accessory item from the Product table based on its product ID
  * @param productID The ID of the product to retrieve
  * @return An Accessory object
+ * @throws SQLException Error should an accessory not be found in the table
  */
 	public Accessory getAccessory(int productID) throws SQLException {
 		//Instantiate a new empty Plant object
@@ -64,6 +68,7 @@ public class AccessoryCrud extends Crud {
 /**
  * Deletes an Accessory item from the Product table based on its product ID
  * @param productID The ID of the product to retrieve
+ *  @throws SQLException Error should an accessory not be found in the table
  */
 	public void deleteAccessory(int productID) throws SQLException {
 		
@@ -83,14 +88,14 @@ public class AccessoryCrud extends Crud {
 				System.out.println("The Product with product ID: " + productID + " was not found");
 			}
 		}catch(SQLException sqlException) {
-			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+			System.err.println("Error retrieving Accesoory from table: " + sqlException.getMessage());
 			sqlException.printStackTrace();
 		}
 }
 	
 /**
- * Retrieves all Accessory items from the Product table 
- * @return An Accessory object
+ * Retrieves all Accessory items from the Product table
+ * @throws SQLException Error should an accessory not be found in the table
  */
 	public void getAllAccessories() throws SQLException {
 		ResultSet resultSet = null;

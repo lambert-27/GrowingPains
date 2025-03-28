@@ -52,9 +52,9 @@ public class LoginPanel extends JPanel{
 	 * 
 	 * @param ARIAL the font used
 	 * @param GREEN the colour used
-	 * @param cart the cart containing the list of products to be displayed
 	 * @param cl the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
+	 * @throws SQLException Error should a Customer not be found in the table 
 	 */
 	public LoginPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent) throws SQLException {
 		crud = new CustomerCrud();
@@ -70,20 +70,20 @@ public class LoginPanel extends JPanel{
 		JLabel emailLbl = new JLabel("Email: ");
 		//Set pos (Note, start at 0 for x on labels, then for the textfield to appear beside x =1
 		gbc.gridx = 0;
-		gbc.gridy=5;
+		gbc.gridy=0;
 		emailLbl.setFont(ARIAL);
 		add(emailLbl, gbc);
 		
 //		Email TextField
 		email = new JTextField(20);
 		gbc.gridx = 1;
-		gbc.gridy=5;
+		gbc.gridy=0;
 		add(email, gbc);
 		
 		//Password Label
-//		Note new line, meaning y pos has increased to 6
+//		Note new line, meaning y pos has increased to 1
 		gbc.gridx = 0;
-		gbc.gridy=6;
+		gbc.gridy=1;
 		JLabel passlLbl = new JLabel("Password: ");
 		passlLbl.setFont(ARIAL);
 		add(passlLbl, gbc);
@@ -104,7 +104,7 @@ public class LoginPanel extends JPanel{
 			}
 		});
 		gbc.gridx = 1;
-		gbc.gridy=6;
+		gbc.gridy=1;
 		add(pass, gbc);
 		
 		//Submit button
@@ -126,9 +126,9 @@ public class LoginPanel extends JPanel{
 			}
 		});
 		
-		//Note skipped a line, y pos = 8;
+		//Note skipped a line, y pos = 3;
 		gbc.gridx = 0;
-		gbc.gridy=8;	
+		gbc.gridy=3;	
 		add(submit, gbc);
 		
 		//Cancel button
@@ -151,7 +151,7 @@ public class LoginPanel extends JPanel{
 		});
 		
 		gbc.gridx = 1;
-		gbc.gridy = 8;
+		gbc.gridy = 3;
 		add(createAccount, gbc);
 		
 		
@@ -162,6 +162,7 @@ public class LoginPanel extends JPanel{
 	 * 
 	 * @param cl the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
+	 * @return The logged in customer object
 	 */
 	public Customer handleLogin(CardLayout cl, JPanel mainContent) {
 		String custEmail = email.getText();
@@ -192,6 +193,9 @@ public class LoginPanel extends JPanel{
 	
 	/**
 	 * Returns the current customer logged in
+	 * @throws SQLException Error should a Customer not be found in the table 
+	 * 
+	 * @return The Logged in Customer Object
 	 */
 	public Customer getLoggedInCustomer() throws SQLException {
 		return this.customer;
@@ -199,10 +203,9 @@ public class LoginPanel extends JPanel{
 	
 	/**
 	 * Create a button method, encapsulate common code
-	 * 
+	 * @param ARIAL the font used
 	 * @param name the text displayed on the button
 	 * @param GREEN the colour used
-	 * @param cart the cart containing the list of products to be displayed
 	 * @return the JButton created
 	 */
 	public JButton createButton(String name, Font ARIAL, Color GREEN) {

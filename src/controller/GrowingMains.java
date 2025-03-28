@@ -24,11 +24,5 @@ public class GrowingMains {
 			}
 			}
 		}
-
 //JCombo boxes
 //Hash passwords
-//Error handling for various fields
-//Error handling must go to a log file (pop-up to tell user the input data was invalid, or highlisgt a field in red text etc)
-//Documentation up-to-date
-
-

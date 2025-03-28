@@ -31,6 +31,8 @@ public class Catalogue {
     /**
      * Retrieves all products from the database and populates the List of DisplayItem's by using 
      * a local scope ProductCrud class variable which queries the database for all Products
+     * 
+     * @throws SQLException Error for connection to DB
      */
     public void getCatalogue() throws SQLException {
     	ProductCrud crud = new ProductCrud();
@@ -42,6 +44,8 @@ public class Catalogue {
      * and then returns the list of items
      * 
      * @return A list of all Products in the Catalogue
+     * 
+     * @throws SQLException Error for retrieving products
      */
     public List<DisplayItem> displayCatalogue() throws SQLException{
     	getCatalogue();

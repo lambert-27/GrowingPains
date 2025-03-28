@@ -66,7 +66,7 @@ public class OrderItem extends Item{
     }
     /**
      * Sets the Product of the OrderItem
-     * @param iteem The Product associated with the OrderItem
+     * @param item The Product associated with the OrderItem
      */
     public void setItem(Item item) {
     	this.item = item;
@@ -114,6 +114,10 @@ public class OrderItem extends Item{
 		return item.getType();
 	}
 	
+    /**
+     * Gets the neq quantity of an Item in the Cart
+     * @return The quantity of item
+     */
 	public int getNewQty() {
 		return this.item.getQty() - this.qty;
 	}

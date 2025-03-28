@@ -210,6 +210,10 @@ public class Customer {
 		return this.isLoggedIn;
 	}
 
+	/**
+	 * Set the address of the Customer to a STRING by using the Account.setAddress method
+	 * @param address The address of the current Customer
+	 */
 	public void setAddress(String address) {
 		// TODO Auto-generated method stub
 		acc.setAddress(address);

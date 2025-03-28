@@ -46,6 +46,7 @@ public class BrowsePanel extends JPanel{
 	 * @param cardLayout the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
 	 * @param p the ProductPanel that displays product details
+	 * @throws SQLException Error for DB Operations
 	 */
 	public BrowsePanel(Font ARIAL, Color GREEN, Catalogue catalogue, CardLayout cardLayout, JPanel mainContent, ProductPanel p) throws SQLException {
 			setLayout(new BorderLayout());

@@ -12,7 +12,10 @@ import model.Plant;
 *Specifically, this class provides methods for Plants of type Plant
 */
 public class PlantCrud extends Crud{
-	//Constructs an PlantCrud object which initialises the database connection via its superclass
+	/**
+	 * Constructs an PlantCrud object used for CRUD operations on Plant items
+	 * @throws SQLException Error should a connection problem occur
+	 */
 	public PlantCrud() throws SQLException {
 		super();
 		// TODO Auto-generated constructor stub
@@ -23,6 +26,7 @@ public class PlantCrud extends Crud{
 	 *  Retrieves an Plant item from the Product table based on its product ID
 	 * @param productID The ID of the product to retrieve
 	 * @return An Plant object
+	 * @throws SQLException Error should a plant not be found in the table
 	 */
 	public Plant getPlant(int productID) throws SQLException {
 		//Instantiate a new empty Plant object
@@ -59,6 +63,7 @@ public class PlantCrud extends Crud{
 	/**
 	 * Deletes an Plant item from the Product table based on its product ID
 	 * @param productID The ID of the product to retrieve
+	 * @throws SQLException Error should a plant not be found in the table
 	 */
 	public void deletePlant(int productID) throws SQLException {
 		
@@ -85,7 +90,8 @@ public class PlantCrud extends Crud{
 		
 	/**
 	 *  Retrieves all Plant items from the Product table 
-	 * @return An Plant object
+	 * @throws SQLException Error should a plant not be found in the table
+	 * @throws SQLException Error should a plant not be found in the table
 	 */
 	public void getAllPlants() throws SQLException {
 		ResultSet resultSet = null;

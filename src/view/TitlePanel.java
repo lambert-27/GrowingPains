@@ -24,8 +24,7 @@ public class TitlePanel extends JPanel {
 	 * 
 	 * @param title the title displayed on the panel
 	 * @param GREEN the colour used
-	 * @param cart the cart containing the list of products to be displayed
-	 * @return the title panel
+	 * @param ARIAL the font used
 	 */
 	public TitlePanel(String title, Font ARIAL, Color GREEN) {
 //		Title Panel shows the user what page they have currently clicked on 
@@ -42,6 +41,7 @@ public class TitlePanel extends JPanel {
 
 	/**
 	 * 	Calls the label.setText() method to set the title to a new one
+	 * @param title The title for the panel
 	 */
 	public void setTitle(String title) {
 		titleLbl.setText(title);

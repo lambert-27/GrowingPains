@@ -16,7 +16,10 @@ import model.Order;
  * operations in the Order Table
 */
 public class OrderCrud extends Crud{
-	//Constructs an OrderCrud object which initialises the database connection via its superclass
+	/**
+	 * Constructs an OrderCrud object used for CRUD operations on Orders
+	 * @throws SQLException Error should a connection problem occur
+	 */
 	public OrderCrud() throws SQLException {
 		super();
 	}
@@ -24,9 +27,10 @@ public class OrderCrud extends Crud{
 	
 	/**
 	 *  Inserts a Order into the Orders table 
-	 * @param Order order An Order Object containing all details 
+	 * @param order An Order Object containing all details 
 	 * (customerID, productID, date, time, address, price)
 	 * to be entered into the Order table
+	 * @throws SQLException Error for insertion of an Order into the Order table
 	 */
 	public void insertOrder(Order order) throws SQLException {
 		try {
@@ -49,6 +53,7 @@ public class OrderCrud extends Crud{
 	 *  Retrieves an Order item from the Orders table based on its order ID
 	 * @param orderID The ID of the order to retrieve
 	 * @return An Order object
+	 * @throws SQLException Error should an Order not be found in the table
 	 */
 	public Order getOrder(int orderID) throws SQLException {
 		//Declare a new Order
@@ -87,6 +92,7 @@ public class OrderCrud extends Crud{
 	/**
 	 *  Retrieves all Orders from the Orders table
 	 * @return A List of Order objects
+	 * @throws SQLException Error should an Order not be found in the table
 	 */
 	public List<Order> getAllOrders() throws SQLException {
 		ResultSet resultSet = null;
@@ -123,6 +129,8 @@ public class OrderCrud extends Crud{
 	/**
 	 *  Deletes an Order from the Orders table based on its order ID
 	 * @param orderID The ID of the order to retrieve
+	 * 
+	 * @throws SQLException Error should an Order not be found in the table
 	 */
 	public void deleteOrder(int orderID) throws SQLException {
 
@@ -149,7 +157,8 @@ public class OrderCrud extends Crud{
 	
 	/**
 	 *  Updates an Order from the Orders table based on its order ID
-	 * @param Order order The Order Object with which is being edited
+	 * @param order The Order Object with which is being edited
+	 * @throws SQLException Error should an Order not be found in the table
 	 */
 	public void updateOrder(Order order) throws SQLException {
 		try {
@@ -162,7 +171,7 @@ public class OrderCrud extends Crud{
 			pstat.setInt(7,  order.getOrderID());
 			pstat.executeUpdate();
 		}catch(SQLException sqlException) {
-			System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+			System.err.println("Error retrieving Order from table: " + sqlException.getMessage());
 			sqlException.printStackTrace();
 		}
 	}

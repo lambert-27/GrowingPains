@@ -17,6 +17,10 @@ import model.Item;
 */
 public class ProductCrud extends Crud{
 	
+	/**
+	 * Constructs a ProductCrud object
+	 * @throws SQLException Error should a connection problem occur
+	 */
 	public ProductCrud() throws SQLException {
 		super();
 		// TODO Auto-generated constructor stub
@@ -24,10 +28,11 @@ public class ProductCrud extends Crud{
 	
 	/**
 	 *  Inserts a Product into the Product table 
-	 * @param Item item An Item Object containing all details 
+	 * @param item An Item Object containing all details 
 	 * (itemName, description, price, qty, type, imgPath)
 	 * to be entered into the Product table.
 	 * Note: imgPath is the associated file location to the image for each respective Product
+	 * @throws SQLException Error for insertion of a product
 	 */
 	public void insertProduct(Item item) throws SQLException{
 		try {
@@ -50,6 +55,7 @@ public class ProductCrud extends Crud{
 	/**
 	 *  Retrieves all Products from the Product table 
 	 * @return A List of DisplayItem object's
+	 * @throws SQLException Error should a product not be found in the table
 	 */
 	public List<DisplayItem> getAllProducts() throws SQLException {
 		ResultSet resultSet = null;
@@ -84,6 +90,7 @@ public class ProductCrud extends Crud{
 	/**
 	 *  Retrieves all Products from the Product table 
 	 * @return A List of DisplayItem object's
+	 * @throws SQLException Error should a product not be found in the table
 	 */
 	public List<DisplayItem> getProductsInStock() throws SQLException {
 		ResultSet resultSet = null;
@@ -118,6 +125,7 @@ public class ProductCrud extends Crud{
 	/**
 	 *  Deletes an Product item from the Product table based on its product ID
 	 * @param productID The ID of the product to retrieve
+	 * @throws SQLException Error should a product not be found in the table
 	 */
 	public void deleteProduct(int productID) throws SQLException {
 		
@@ -143,7 +151,8 @@ public class ProductCrud extends Crud{
 }
 	/**
 	 *  Updates a Product from the Product table based on its Product ID
-	 * @param Item i The Item object with which is being updated
+	 * @param i The Item object with which is being updated
+	 * @throws SQLException Error should a product not be found in the table
 	 */
 	public void updateItem(Item i) throws SQLException {
 		try {
@@ -164,7 +173,9 @@ public class ProductCrud extends Crud{
 	
 	/**
 	 *  Updates a Product from the Product table based on its Product ID
-	 * @param Item i The Item object with which is being updated
+	 * @param i The Item object with which is being updated
+	 * @param amount The qty of the item 
+	 * @throws SQLException Error should a product not be found in the table
 	 */
 	public void updateQty(Item i, int amount) throws SQLException {
 		try {			

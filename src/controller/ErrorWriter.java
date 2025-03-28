@@ -6,10 +6,15 @@ import java.lang.SecurityException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 
-
+/**
+ * ErrorWriter class, creates a class that Formats any exceptions and writes them to a file
+ */
 public class ErrorWriter {
 	private Formatter output;
 	
+	/**
+	 * Opens a file "error.txt" when called
+	 */
 	public void openFile() {
 		try {
 			output = new Formatter("error.txt");
@@ -20,6 +25,11 @@ public class ErrorWriter {
 		}
 	}
 	
+	/**
+	 * Method to write an error to a file
+	 * @param type The type of exception that occured
+	 * @param message A message describing in more detail the error
+	 */
 	public void logError(String type, String message) {
 		try {
             output.format("%s: %s%n", type, message);
@@ -31,6 +41,9 @@ public class ErrorWriter {
 		}
 	}
 	
+	/**
+	 * Closes the file on call
+	 */
 	public void closeFile (){
 		if (output != null )
 		output. close () ;

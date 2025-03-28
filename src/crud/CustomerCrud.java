@@ -13,16 +13,21 @@ import model.Customer;
  * operations in the Customer Table
 */
 public class CustomerCrud extends Crud{
-	//Constructs an CustomerCrud object which initialises the database connection via its superclass
+	/**
+	 * Constructs a CustomerCrud object
+	 * @throws SQLException Error should a connection problem occur
+	 */
 	public CustomerCrud() throws SQLException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	/**
 	 *  Inserts a Customer into the Customer table 
-	 * @param Customer cust A customer Object containing all details 
+	 * @param cust A customer Object containing all details 
 	 * (fName, lName, email, address, passWord, phone)
 	 * to be entered into the Customer table
+	 * @throws SQLException Error for insertion of a Customer
+	 * @return True/False 
 	 */
 		public boolean insertCustomer(Customer cust) throws SQLException{
 			try {
@@ -50,6 +55,7 @@ public class CustomerCrud extends Crud{
 		 *  Retrieves a Customer item from the Customer table based on its customer ID
 		 * @param customerID The ID of the customer to retrieve
 		 * @return A Customer object
+		 * @throws SQLException Error should a Customer not be found in the table 
 		 */
 		public Customer getCustomer(int customerID) throws SQLException {
 			//Declare a new Customer
@@ -89,6 +95,8 @@ public class CustomerCrud extends Crud{
 		/**
 		 *  Retrieves all Customers from the Customer table
 		 * @return A List of Customer objects
+		 * 
+		 * @throws SQLException Error should a Customer not be found in the table 
 		 */
 		public List<Customer> getAllCustomers() throws SQLException {
 			ResultSet resultSet = null;
@@ -125,6 +133,7 @@ public class CustomerCrud extends Crud{
 		/**
 		 *  Deletes a Customer from the Customer table based on its customer ID
 		 * @param customerID The ID of the customer to retrieve
+		 * @throws SQLException Error should a Customer not be found in the table 
 		 */
 		public void deleteCustomer(int customerID) throws SQLException {
 
@@ -151,7 +160,9 @@ public class CustomerCrud extends Crud{
 		
 		/**
 		 *  Updates a Customer from the Customer table based on its customer ID
-		 * @param Customer cust The Customer object with which is being edited
+		 * @param cust The Customer object with which is being edited
+		 * @throws SQLException Error should a Customer not be found in the table 
+		 * @return True/False
 		 */
 		public boolean updateCustomer(Customer cust) throws SQLException {
 			try {
@@ -177,9 +188,11 @@ public class CustomerCrud extends Crud{
 		 *  Verifies the credentials of a customer by checking the entered email and password
 		 * against the existing customers in the Customer table
 		 * @param email and passWord Retrieves a customer based on the email and password provided.
+		 * @param passWord the users password
 		 * @return true if a customer with the provided password and email exists, otherwise false.
+		 * @throws SQLException Error should a Customer not be found in the table 
 		 */
-		public Boolean login(String email, String passWord) throws SQLException{
+		public boolean login(String email, String passWord) throws SQLException{
 			try
 			{
 				PreparedStatement pstat = connection.prepareStatement("SELECT * FROM Customer where email=? AND password=?");
@@ -198,6 +211,13 @@ public class CustomerCrud extends Crud{
 
 		}
 		
+		/**
+		 *  Retrieves all Customers from the Customer table by email
+		 *  @param email The email to search for in the Customer table
+		 * @return A List of Customer objects
+		 * 
+		 * @throws SQLException Error should a Customer not be found in the table 
+		 */
 		public Customer getCustomerByEmail(String email) throws SQLException {
 			//Declare a new Customer
 			Customer c = new Customer();

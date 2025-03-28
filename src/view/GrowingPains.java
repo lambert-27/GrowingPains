@@ -68,6 +68,7 @@ public class GrowingPains extends JFrame{
 
 	/**
 	 * Constructs the GrowingPains application frame, setting the layout, panels and buttons necessary
+	 * @throws SQLException Error for DB Connection 
 	 */
 	public GrowingPains() throws SQLException {
 //		Invokes the superclass constructor (JFrame), passing in a String as the title
@@ -330,6 +331,7 @@ public class GrowingPains extends JFrame{
 	}
 	/**
 	 * Creates a customer object and if the Customer is logged in, returns the details of the customer
+	 * @throws SQLException Error should a Customer not be found in the table 
 	 */
 	 public void checkLoggedIn() throws SQLException {
 		 Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);

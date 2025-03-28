@@ -52,6 +52,9 @@ public class CartPanel extends JPanel {
 	 * @param ARIAL the font used
 	 * @param GREEN the colour used
 	 * @param cart the cart containing the list of products to be displayed
+	 * @param customer the Customer currently logged in
+	 * @param cl the Layout Manager used
+	 * @param mainContent The main panel that holds the cards
 	 */
 	public CartPanel(Font ARIAL, Color GREEN, Cart cart, Customer customer, CardLayout cl, JPanel mainContent) {
 		setLayout(new BorderLayout());
@@ -187,8 +190,8 @@ public class CartPanel extends JPanel {
 	 * Create a button method, encapsulate common code
 	 * 
 	 * @param name the the displayed on the button
+	 * @param ARIAL the font used
 	 * @param GREEN the colour used
-	 * @param cart the cart containing the list of products to be displayed
 	 * @return the JButton created
 	 */
 	public JButton createButton(String name, Font ARIAL, Color GREEN) {

@@ -12,7 +12,9 @@ public class Accessory extends Item {
 	//Class instance variables
     private String accessoryType;
     //Constructors
-    //Default constructor for the Accessory class
+    /**
+     * Default constructor for the Accessory class
+     */
     public Accessory() {
     	
     }
@@ -41,6 +43,7 @@ public class Accessory extends Item {
      * @param price The Price of the Accessory
      * @param qty The Quantity of the Accessory
      * @param image_path The Image Path of the Accessory
+     * @param accessoryType the type of accessory
      */
     public Accessory(String itemName, String description, double price, int qty, String accessoryType, String image_path)  {
     	super(itemName, description, price, qty, image_path);
@@ -71,7 +74,7 @@ public class Accessory extends Item {
     }
     /**
      *  Gets the type of Accessory (e.g Pot, Tool etc)
-     * return The type of Accessory (e.g Pot, Tool etc)
+     * @return The type of Accessory (e.g Pot, Tool etc)
      */
     public String getAccessoryType() {
     	return this.accessoryType;

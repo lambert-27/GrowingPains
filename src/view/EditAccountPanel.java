@@ -67,6 +67,7 @@ public class EditAccountPanel extends JPanel{
 	 * @param cl the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
 	 * @param cust The currently logged in customer
+	 * @throws SQLException for error with DB operations
 	 */
 	public EditAccountPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent, Customer cust) throws SQLException {
 		//Declare a new ErrorWriter and open the error log file
@@ -90,6 +91,7 @@ public class EditAccountPanel extends JPanel{
 	 * @param GREEN the colour used
 	 * @param cardLayout the Layout Manager used
 	 * @param mainContent The main panel that holds the cards
+	 * @param cust The currently logged in Customer
 	 */
 	public void buildForm(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent, Customer cust) {
 		//First Name
@@ -237,7 +239,7 @@ public class EditAccountPanel extends JPanel{
 	 * 
 	 * @param name the text displayed on the button
 	 * @param GREEN the colour used
-	 * @param cart the cart containing the list of products to be displayed
+	 * @param ARIAL the font used	  
 	 * @return the JButton edited
 	 */
 	public JButton createButton(String name, Font ARIAL, Color GREEN) {
@@ -253,7 +255,8 @@ public class EditAccountPanel extends JPanel{
 	
 	/**
 	 * Create a text field method, encapsulates common code
-	 * 
+	 * @param value The text to display on the text field
+	 * @return the JTextField object
 	 */
 	public JTextField createTextField(String value) {
 		JTextField txt = new JTextField(value);
@@ -266,7 +269,13 @@ public class EditAccountPanel extends JPanel{
 	 * Method which handles the account edit process
 	 * On success (if passwords are equal and not empty as well as all other form fields containing
 	 * some info, then update
-	 * 
+	 * @param cardLayout the layout manager used
+	 * @param mainContent	the main content panel
+	 * @param cust The currently logged in customer
+	 * @throws AccountEditException For error with account edit
+	 * @throws ValidationException note how we throw ValidationException, which means we can use our child exception classes 
+	 * @throws PasswordInconsistentException Error for password validation  
+	 * @return True/False if the update was succesful
 	 */
 	public boolean updateAccount(CardLayout cardLayout, JPanel mainContent, Customer cust) throws AccountEditException, ValidationException, PasswordInconsistentException {
 		try {
@@ -311,7 +320,8 @@ public class EditAccountPanel extends JPanel{
 	 * Valid a text field method, encapsulates common code
 	 * 
 	 * @param fieldName for displaying the correct field name in the error message
-	 * @throws EmptyFieldException, occurs when an input field that is required is left empty
+	 * @param txt The JTextField Object
+	 * @throws EmptyFieldException occurs when an input field that is required is left empty
 	 */
 	public void checkInfo(JTextField txt, String fieldName) throws EmptyFieldException {
 //		Basic validation to check if the user has atleast input some info in each textbox
@@ -329,7 +339,7 @@ public class EditAccountPanel extends JPanel{
 	/**
 	 * Iterates through each text field in the form to check for empty inputs
 	 * 
-	 * @throws ValidationException, occurs when some input field does not meet required validation
+	 * @throws ValidationException occurs when some input field does not meet required validation
 	 * 
 	 */
 	public void validateForm() throws ValidationException {
@@ -363,6 +373,14 @@ public class EditAccountPanel extends JPanel{
 				
 	}
 	
+	/**
+	 * Holds logic for password validation checks 
+	 * @param oldPassEntered The Customers old password
+	 * @param password The customers new Password
+	 * @param confirmPass The confirmation of their password
+	 * @param cust Current logged in customer
+	 * @throws PasswordInconsistentException Exception for problem with password validation
+	 */
 	public void validatePasswords(String oldPassEntered, String password, String confirmPass, Customer cust) throws PasswordInconsistentException{
 		//Check if the user has input the correct OLD password
 		if(!(oldPassEntered.equals(cust.getPassword()))) {

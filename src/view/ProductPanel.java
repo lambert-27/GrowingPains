@@ -102,6 +102,7 @@ public class ProductPanel extends JPanel {
 	
 	/**
 	 * 	Set the location of the image and location of imagePath
+	 * @param imagePath The path to the image for the product
 	 */
 	public void setImage(String imagePath) {
 		imgLbl.setIcon(new ImageIcon(getClass().getResource(imagePath)));

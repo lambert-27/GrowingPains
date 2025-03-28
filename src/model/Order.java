@@ -21,7 +21,7 @@ public class Order {
     private double totalPrice;
     
     //Constructors
-    /* *
+    /**
      * Default Constructor
      */
     public Order() {
@@ -32,7 +32,6 @@ public class Order {
      * Constructor for INSERTING an Order into database
      * 
      * @param customerID The ID of the Customer placing the order
-     * @param productID A list of Product ID's in the Order
      * @param shippingAdrs The shipping address
      * @param totalPrice The total price of the order
      */
@@ -50,7 +49,8 @@ public class Order {
      * 
      * @param orderID The ID of the Order
      * @param customerID The ID of the Customer placing the order
-     * @param productID A list of Product ID's in the Order
+     * @param date The date the order was made
+     * @param time The time the order was made
      * @param shippingAdrs The shipping address
      * @param totalPrice The total price of the order
      */
@@ -110,7 +110,7 @@ public class Order {
     /**
      * Sets the Address of the Order
      * 
-     * @param Address The Address of the Order
+     * @param shippingAdrs The Address of the Order
      */
     public void setAddress(Address shippingAdrs) {
     	this.shippingAdrs = shippingAdrs;
@@ -119,7 +119,7 @@ public class Order {
     /**
      * Sets the Address of the Order
      * 
-     * @param Address The Address of the Order
+     * @param shippingAdrs The Address of the Order
      */
     public void setAddress(String shippingAdrs) {
     	this.shippingAdrs = new Address(shippingAdrs);
