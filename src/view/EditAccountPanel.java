@@ -1,5 +1,6 @@
 package view;
-
+//GROWING PAINS - Mark Lambert - C00192497
+//EditAccountPanel View class - Contains structure for editing a logged in users account
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,7 +45,7 @@ public class EditAccountPanel extends JPanel{
 	private JPasswordField password;
 	private JPasswordField confirmPass;
 	private JButton submit;
-	private JButton returnToLogin;
+	private JButton returnToBrowse;
 	private GridBagLayout gbl;
 	private GridBagConstraints gbc;
 	private CustomerCrud crud;
@@ -182,19 +183,19 @@ public class EditAccountPanel extends JPanel{
 		gbc.gridy = 10;
 		add(submit, gbc);
 
-//		Return back to login screen
-		returnToLogin = createButton("Return to Login", ARIAL, GREEN);
-		returnToLogin.addActionListener(new ActionListener() {
+//		Return back to browse screen
+		returnToBrowse = createButton("Return to Browse", ARIAL, GREEN);
+		returnToBrowse.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				cardLayout.show(mainContent,  "Login");
+				cardLayout.show(mainContent,  "Browse");
 			}			
 		});
 		
 		gbc.gridx = 1;
 		gbc.gridy = 10;
-		add(returnToLogin, gbc);
+		add(returnToBrowse, gbc);
 		
 	}
 	
@@ -271,7 +272,7 @@ public class EditAccountPanel extends JPanel{
 					this.password.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				customer = new Customer(fName, lName, email, password, phone, customerAdrs);
 				if(crud.updateCustomer(customer)) {
-					cardLayout.show(mainContent, "Login");
+					cardLayout.show(mainContent, "Browse");
 					return true;
 				}
 			}

@@ -1,2 +1,6 @@
 /growingpains.class
 /GrowingMains.class
+/AccountCreationException.class
+/ValidationException.class
+/PasswordInconsistentException.class
+/EmptyFieldException.class
