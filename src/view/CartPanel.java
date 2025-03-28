@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -17,8 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import crud.OrderCrud;
 import crud.ProductCrud;
@@ -38,9 +37,13 @@ public class CartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JButton checkoutBtn;
+	private JButton updateCartBtn;
 	JLabel totalPrice;
 	JPanel checkoutPanel;
-	private int oldVal;
+	private List<OrderItem> cartItems;
+	private Cart cart;
+	//List of spinners for each product
+	private List<JSpinner> spinners;
 	
 
 	/**
@@ -52,11 +55,20 @@ public class CartPanel extends JPanel {
 	 */
 	public CartPanel(Font ARIAL, Color GREEN, Cart cart, Customer customer, CardLayout cl, JPanel mainContent) {
 		setLayout(new BorderLayout());
+		//Set the CartPanel Cart to the Customers Cart
+		this.cart = cart;
+		this.cartItems = cart.getCart();
+		spinners = new ArrayList();
+		
 //		Add the title to the NORTH 
 		add(new TitlePanel("Cart", ARIAL, GREEN), BorderLayout.NORTH);
 		getProducts(ARIAL, GREEN, cart);
 		
+//		Buttons
 		checkoutBtn = createButton("Checkout", ARIAL, GREEN);
+		updateCartBtn = createButton("Update Cart", ARIAL, GREEN);
+		
+//		Event Handling for buttons
 		checkoutBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				Create a new order object for insertion
@@ -64,6 +76,7 @@ public class CartPanel extends JPanel {
 				try {
 					OrderCrud crud = new OrderCrud();
 					ProductCrud productCrud = new ProductCrud();
+					//Get an updated list of the cart
 					List<OrderItem> cartItems = cart.getCart();
 //					Iterate through the cart
 					for(OrderItem product : cartItems) {
@@ -81,13 +94,49 @@ public class CartPanel extends JPanel {
 				
 			}
 		});
+		
+		updateCartBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateCartValues();
+			}
+		});
+		
+		
 //		Panel that holds the total price andd the checkout button, pushed to the RIGHT BOTTOM of screen
 		checkoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		totalPrice = new JLabel("Total Price: €" + (float)cart.getTotalPrice());
 		checkoutPanel.add(checkoutBtn);
+		checkoutPanel.add(updateCartBtn);
 		checkoutPanel.add(totalPrice);
 //		Code to push to South
 		add(checkoutPanel, BorderLayout.SOUTH);
+	}
+	
+	/**
+	 * Updates the cart values based on the spinner value for each cart item
+	 */
+	public void updateCartValues() {
+		double total = 0;
+		int index = 0;
+		//For each loop ot iterate through spinners
+		for(JSpinner spin: spinners) {
+			//Get the spinner @ current index
+			spin = spinners.get(index);
+			//Get product @ current index
+			OrderItem product = cartItems.get(index);
+			
+			//New qty of items 
+			int newQty = (int) spin.getValue();
+			//Calculate total price
+			total += newQty * product.getPrice();
+			//Set the new qty of items
+			cartItems.get(index).setQty(newQty);
+			//Increment index
+			index++;
+
+		}
+		cart.setTotalPrice(total);
+		totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
 	}
 	
 	/**
@@ -98,11 +147,9 @@ public class CartPanel extends JPanel {
 	 * @param cart the cart containing the list of products to be displayed
 	 */
 	public void getProducts(Font ARIAL, Color GREEN, Cart cart) {
-		List<OrderItem> cartItems = cart.getCart();
 //Panel to hold all cart details
 		JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-
 //		For each Item in the List of Items
 		for (OrderItem product : cartItems){
 			//Place each product into its own container, as we want to display the image, 
@@ -120,35 +167,9 @@ public class CartPanel extends JPanel {
 			ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
 			JLabel imgLabel = new JLabel(icon);
 			
-//			oldVal holds the qty before the spinner is altered
-			oldVal = (int)qtySpinner.getValue();
+			//Add each spinner to the list of spinners
+			spinners.add(qtySpinner);
 
-//			Method to update the price of the cart depending on the current quantity of the spinner
-			qtySpinner.addChangeListener(new ChangeListener() {
-				public void stateChanged (ChangeEvent e) {
-//					JSpinner.getValue returns an Object, so cast it to an int
-					int currentVal = (int) qtySpinner.getValue();
-//					If the values aren't the same
-					if(currentVal != oldVal) {
-					product.setQty(currentVal);
-//					Increment the totalPrice if the quantity goes UP
-					if(currentVal > oldVal) {
-					cart.updatePrice(product.getPrice());
-					}
-//					Otherwise, decrement the quantity
-					else {
-						cart.updatePriceDec(product.getPrice());
-					}
-					price.setText("Price: €" + product.getPrice() * product.getQty());
-					totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
-					
-//					Update oldVal with the currentVal, so that if user changes mind, price updates accordingly
-					oldVal = currentVal;
-					product.setQty(currentVal);
-				}
-			}
-		});
-						
 //			Container for the image AND the text
 			productPanel.add(imgLabel);
 			infoPanel.add(name, BorderLayout.NORTH);
@@ -159,9 +180,8 @@ public class CartPanel extends JPanel {
 		}
 		
 		add(cartPanel, BorderLayout.CENTER);
-
-
-		}
+	
+	}
 	
 	/**
 	 * Create a button method, encapsulate common code
