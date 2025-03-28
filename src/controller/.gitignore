@@ -4,3 +4,4 @@
 /ValidationException.class
 /PasswordInconsistentException.class
 /EmptyFieldException.class
+/AccountEditException.class

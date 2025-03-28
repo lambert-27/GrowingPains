@@ -66,8 +66,7 @@ public class CreateAccountPanel extends JPanel {
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5,5,5,5); //Set padding
 		
-		buildForm(ARIAL, GREEN, cardLayout, mainContent);
-				
+		buildForm(ARIAL, GREEN, cardLayout, mainContent);			
 	}
 	
 	/**
@@ -157,34 +156,33 @@ public class CreateAccountPanel extends JPanel {
 			{
 				try {
 					createAccount(cardLayout, mainContent); 
-					{
-						//Display a success message when the user succesfully creates an account
-						//CreateAccountPanel.this ensures the OptionPane appears centered over the window
-						//Message Text is the main content of the alert
-						//Success is the title
-						//INFORMATION_MESSAGE indicates the message type, in this case, for information
-						JOptionPane.showMessageDialog(CreateAccountPanel.this, "Account created!", "Success", JOptionPane.INFORMATION_MESSAGE);
-					}
+					//Display a success message when the user succesfully creates an account
+					//CreateAccountPanel.this ensures the OptionPane appears centered over the window
+					//Message Text is the main content of the alert
+					//Success is the title
+					//INFORMATION_MESSAGE indicates the message type, in this case, for information
+					JOptionPane.showMessageDialog(CreateAccountPanel.this, "Account created!", "Success", JOptionPane.INFORMATION_MESSAGE);
 				}
+				//Catch the Exceptions in order of the Exception hierarchy, from more specific to broad
 				catch(PasswordInconsistentException e1) 
 				{
-					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e1.getMessage(), "Password Field Error", JOptionPane.ERROR_MESSAGE);
-					password.setBorder(BorderFactory.createLineBorder(Color.RED));
-					confirmPass.setBorder(BorderFactory.createLineBorder(Color.RED));
+					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e1.getMessage(), "Password Error", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
 				}
 				catch (EmptyFieldException e2) 
 				{
 					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e2.getMessage(), "Empty Input Field", JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace();
 				}
 				catch(AccountCreationException e3) 
 				{
 					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e3.getMessage(), "Account Creation Failure", JOptionPane.ERROR_MESSAGE);
 					e3.printStackTrace();
 				}
-				catch (ValidationException e1) 
+				catch (ValidationException e4) 
 				{
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e4.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
+					e4.printStackTrace();
 				}
 				
 			}
@@ -251,11 +249,9 @@ public class CreateAccountPanel extends JPanel {
 	 * @throws ValidationException, note how we throw ValidationException, which means we can use our child
 	 * exception classes PasswordInconsistent and EmptyField, as ValidationException is their super class
 	 */
-	public boolean createAccount(CardLayout cardLayout, JPanel mainContent) throws AccountCreationException, ValidationException {
+	public void createAccount(CardLayout cardLayout, JPanel mainContent) throws AccountCreationException, ValidationException {
 
 		try {
-			//Validate the inputs of the form
-			validateForm();
 			
 			String fName = this.fName.getText();
 			String lName = this.lName.getText();
@@ -263,21 +259,14 @@ public class CreateAccountPanel extends JPanel {
 			String adrs = this.adrs.getText();
 	//		Note for JPasswordField we cast the char array returned by getPassword to a String
 			String password = new String(this.password.getPassword());
-			String confirmPass = new String(this.password.getPassword());
+			String confirmPass = new String(this.confirmPass.getPassword());
 			String phone = this.phone.getText();
 			Address customerAdrs = new Address(adrs);
 			
-			//If the passwords don't match, throw a PasswordInconsistentException
-			if(!(password.equals(confirmPass)))
-			{
-				throw new PasswordInconsistentException("Passwords do not match");
-			}
-			//If the passwords are empty, throw a EmptyFieldException
-			if(password.isEmpty() || confirmPass.isEmpty())
-			{
-				throw new EmptyFieldException("Either password fields ");
-			}
-			
+			//Validate the inputs of the form
+			validateForm();
+
+			validatePasswords(password, confirmPass);
 			//Create the customer for insertion
 			Customer customer = new Customer(fName, lName, email, password, phone, customerAdrs);
 			
@@ -288,8 +277,6 @@ public class CreateAccountPanel extends JPanel {
 			
 			//Switch to the Login panel on success
 			cardLayout.show(mainContent,  "Login");
-			return true;
-
 			//Catch an SQLException if all other Exception throws do not yield
 		}catch (SQLException e) {
 			throw new AccountCreationException("An error occured with your SQL Statement/Database: " + e.getMessage());
@@ -302,7 +289,7 @@ public class CreateAccountPanel extends JPanel {
 	 * @param fieldName for displaying the correct field name in the error message
 	 * @throws EmptyFieldException, occurs when an input field that is required is left empty
 	 */
-	public boolean checkInfo(JTextField txt, String fieldName) throws EmptyFieldException {
+	public void checkInfo(JTextField txt, String fieldName) throws EmptyFieldException {
 //		Basic validation to check if the user has atleast input some info in each textbox
 		if(txt.getText().isEmpty()) {
 			txt.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -312,7 +299,6 @@ public class CreateAccountPanel extends JPanel {
 		else
 //			Set it back to black if it's valid
 			txt.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			return true;
 	}
 	
 	/**
@@ -328,15 +314,18 @@ public class CreateAccountPanel extends JPanel {
 			checkInfo(email, "Email");
 			checkInfo(adrs, "Address");
 			checkInfo(phone, "Phone");
-			
+						
 			//Check if password fields are empty
 			if(password.getPassword().length == 0) {
 				//Concatenate the name of the field onto the string for the exception
+				this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
 				throw new EmptyFieldException("Password Field");
 			}
-			
-			if(confirmPass.getPassword().length == 0) {
-				throw new EmptyFieldException("Confirm Password field");
+				
+			//Check if the phone number field contains digits and spaces and plus (A very simple phone number validation using regex pattern)
+			if(!(phone.getText().matches("[\\d +]*"))) {
+				phone.setBorder(BorderFactory.createLineBorder(Color.RED));
+				throw new ValidationException("Phone Number must only have digits or spaces");
 			}
 			
 			//Catch the EmptyFieldException and throw the ValidationException, with the EmptyFieldException's error message
@@ -344,5 +333,21 @@ public class CreateAccountPanel extends JPanel {
 			throw new ValidationException("Form could not validate: " + e.getMessage());
 		}
 				
+	}
+	
+	public void validatePasswords(String password, String confirmPass) throws ValidationException{
+		
+		//If the passwords don't match, throw a PasswordInconsistentException
+		if(!(password.equals(confirmPass)))
+		{
+			this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
+			this.confirmPass.setBorder(BorderFactory.createLineBorder(Color.RED));
+			throw new PasswordInconsistentException("Passwords do not match");
+		}
+		//If the passwords are empty, throw a EmptyFieldException
+		if(password.isEmpty() || confirmPass.isEmpty())
+		{
+			throw new EmptyFieldException("Either password fields ");
+		}
 	}
 }

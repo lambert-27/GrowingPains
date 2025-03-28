@@ -20,6 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controller.AccountEditException;
+import controller.EmptyFieldException;
+import controller.PasswordInconsistentException;
+import controller.ValidationException;
 import crud.CustomerCrud;
 import model.Address;
 import model.Customer;
@@ -29,7 +33,7 @@ import model.Customer;
  * 
  * It holds the structure and logic for handling the account editing process with the use of a JPasswordField
  * for the password input. Before submission, some basic validation is done and on success a Customer object is
- * created and sent to the database. Error messages are displayed in accordance to the state of the users attempt 
+ * edited and sent to the database. Error messages are displayed in accordance to the state of the users attempt 
  * at changing password. Visual cues are given when errors occur. 
  */
 public class EditAccountPanel extends JPanel{
@@ -54,7 +58,7 @@ public class EditAccountPanel extends JPanel{
 	/**
 	 * 	
 	/**
-	 * Constructs a new CreateAccountPanel, initialising the layout,  buttons and input fields
+	 * Constructs a new EditAccountPanel, initialising the layout,  buttons and input fields
 	 * 
 	 * @param ARIAL the font used
 	 * @param GREEN the colour used
@@ -72,11 +76,10 @@ public class EditAccountPanel extends JPanel{
 		gbc.insets = new Insets(5,5,5,5); //Set padding
 		
 		buildForm(ARIAL, GREEN, cl, mainContent, cust);
-		
 	}
 	
 	/**
-	 * Builds the form for account creation
+	 * Builds the form for account edit
 	 * 
 	 * @param ARIAL the font used
 	 * @param GREEN the colour used
@@ -168,14 +171,39 @@ public class EditAccountPanel extends JPanel{
 		submit = createButton("Submit", ARIAL, GREEN);
 		submit.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) 
+			{
 				try {
-					updateAccount(cardLayout, mainContent, cust);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					updateAccount(cardLayout, mainContent, customer); 
+					//Display a success message when the user succesfully creates an account
+					//EditAccountPanel.this ensures the OptionPane appears centered over the window
+					//Message Text is the main content of the alert
+					//Success is the title
+					//INFORMATION_MESSAGE indicates the message type, in this case, for information
+					JOptionPane.showMessageDialog(EditAccountPanel.this, "Account edited!", "Success", JOptionPane.INFORMATION_MESSAGE);
+				}
+				//Catch the Exceptions in order of the Exception hierarchy, from more specific to broad
+				catch(PasswordInconsistentException e1) 
+				{
+					JOptionPane.showMessageDialog(EditAccountPanel.this,  e1.getMessage(), "Password Error", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
+				catch (EmptyFieldException e2) 
+				{
+					JOptionPane.showMessageDialog(EditAccountPanel.this,  e2.getMessage(), "Empty Input Field", JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace();
+				}
+				catch(AccountEditException e3) 
+				{
+					JOptionPane.showMessageDialog(EditAccountPanel.this,  e3.getMessage(), "Account edit Failure", JOptionPane.ERROR_MESSAGE);
+					e3.printStackTrace();
+				}
+				catch (ValidationException e4) 
+				{
+		            JOptionPane.showMessageDialog(EditAccountPanel.this, e4.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
+		            e4.printStackTrace();
+				}
+				
 			}
 		});
 		
@@ -205,7 +233,7 @@ public class EditAccountPanel extends JPanel{
 	 * @param name the text displayed on the button
 	 * @param GREEN the colour used
 	 * @param cart the cart containing the list of products to be displayed
-	 * @return the JButton created
+	 * @return the JButton edited
 	 */
 	public JButton createButton(String name, Font ARIAL, Color GREEN) {
 		JButton btn = new JButton(name);
@@ -230,112 +258,125 @@ public class EditAccountPanel extends JPanel{
 	}
 	
 	/**
-	 * Method which handles the account creation process
+	 * Method which handles the account edit process
 	 * On success (if passwords are equal and not empty as well as all other form fields containing
-	 * some info, then insert
+	 * some info, then update
 	 * 
 	 */
-	public boolean updateAccount(CardLayout cardLayout, JPanel mainContent, Customer cust) throws SQLException {
-		
-		//Check for empty input fields
-		if(validateForm()) {
+	public boolean updateAccount(CardLayout cardLayout, JPanel mainContent, Customer cust) throws AccountEditException, ValidationException, PasswordInconsistentException {
+		try {
+			//Check for empty input fields
+			validateForm();
+			
 			String fName = this.fName.getText();
 			String lName = this.lName.getText();
 			String email = this.email.getText();
 			String adrs = this.adrs.getText();
 			String oldPassEntered = new String(this.oldPass.getPassword());
-			//Check if the user has input the correct OLD password
-			if(!(oldPassEntered.equals(cust.getPassword()))) {
-				//If the user doesn't, set the border to an error colour
-				oldPass.setBorder(BorderFactory.createLineBorder(Color.RED));
-				//Display an error message 
-				showError("Old Pasword does not match!");
-				return false;
-			}
-			else
-				//Include an else for when the user retries, ensuring that the border gets updated
-				oldPass.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	//		Note for JPasswordField we cast the char array returned by getPassword to a String
 			String password = new String(this.password.getPassword());
 			String confirmPass = new String(this.confirmPass.getPassword());
 			String phone = this.phone.getText();
 			Address customerAdrs = new Address(adrs);
 			
-			//Check to ensure the passwords entered match/if they are empty
-			if(password.equals(confirmPass) && !(password.isEmpty() || confirmPass.isEmpty())){
-				if(password.equals(oldPassEntered)) {
-					this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
-					showError("Your new password must be unique to your old password!");
-					return false;
-				}
-				else
-					this.password.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				customer = new Customer(fName, lName, email, password, phone, customerAdrs);
-				if(crud.updateCustomer(customer)) {
-					cardLayout.show(mainContent, "Browse");
-					return true;
-				}
+			validatePasswords(oldPassEntered, password, confirmPass, cust);
+			//If the passwords are empty, throw a EmptyFieldException
+			if(password.isEmpty() || confirmPass.isEmpty())
+			{
+				throw new EmptyFieldException("Password fields cannot be empty");
 			}
-			else {
-				this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
-				this.confirmPass.setBorder(BorderFactory.createLineBorder(Color.RED));
-				showError("Passwords do not match!");
-				return false;
+			this.password.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			
+			customer = new Customer(fName, lName, email, password, phone, customerAdrs);
+			
+			//Finally, if the crud operation fails, throw an AccountEditException
+			if(!(crud.updateCustomer(customer))) {
+				throw new AccountEditException("Account edit failed");
 			}
-
+			
+			//Switch to the Login panel on success
+			cardLayout.show(mainContent,  "Browse");
+			return true;
+		}catch (SQLException e) {
+			throw new AccountEditException("An error occured with your SQL Statement/Database: " + e.getMessage());
 		}
-		return false;
-	}
+}
 	
 	/**
 	 * Valid a text field method, encapsulates common code
 	 * 
+	 * @param fieldName for displaying the correct field name in the error message
+	 * @throws EmptyFieldException, occurs when an input field that is required is left empty
 	 */
-	public boolean checkInfo(JTextField txt) {
+	public void checkInfo(JTextField txt, String fieldName) throws EmptyFieldException {
 //		Basic validation to check if the user has atleast input some info in each textbox
 		if(txt.getText().isEmpty()) {
-			
 			txt.setBorder(BorderFactory.createLineBorder(Color.RED));
-			return false;
+			//Throw the new EmptyFieldException with the fieldName for output readability
+			throw new EmptyFieldException(fieldName);
 		}
 		else
-//			Set it back to black if it's valid
+			//Set the broder back to black, ensuring that when the user retries, the input box resets to default
 			txt.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			return true;
 	}
+	
 	
 	/**
 	 * Iterates through each text field in the form to check for empty inputs
 	 * 
+	 * @throws ValidationException, occurs when some input field does not meet required validation
+	 * 
 	 */
-	public boolean validateForm() {
-		boolean isValid = true;
-		
-		if(checkInfo(fName) == false) {
-			isValid = false;
+	public void validateForm() throws ValidationException {
+		try {
+			checkInfo(fName, "First Name");
+			checkInfo(lName, "Last Name");
+			checkInfo(email, "Email");
+			checkInfo(adrs, "Address");
+			checkInfo(phone, "Phone");
+			
+			//Check if password fields are empty
+			if(password.getPassword().length == 0) {
+				//Concatenate the name of the field onto the string for the exception
+				throw new EmptyFieldException("Password Field");
+			}
+			
+			if(confirmPass.getPassword().length == 0) {
+				throw new EmptyFieldException("Confirm Password field");
+			}
+			
+			//Check if the phone number field contains digits and spaces only (A very simple phone number validation using regex pattern)
+			if(!(phone.getText().matches("[\\d ]*"))) {
+				phone.setBorder(BorderFactory.createLineBorder(Color.RED));
+				throw new ValidationException("Phone Number must only have digits or spaces");
+				
+			}
+			//Catch the EmptyFieldException and throw the ValidationException, with the EmptyFieldException's error message
+		}catch(EmptyFieldException e) {
+			throw new ValidationException("Form could not validate: " + e.getMessage());
 		}
-		if(checkInfo(lName) == false) {
-			isValid = false;
-		}
-		if(checkInfo(email) == false) {
-			isValid = false;
-		}
-		if(checkInfo(adrs) == false) {
-			isValid = false;
-		}
-		if(checkInfo(phone) == false) {
-			isValid = false;
-		}
-		
-		return isValid;
+				
 	}
 	
-	/**
-	 * Helper variable used to display error messages to the user via a JOptionPane
-	 * @param message
-	 */
-	private void showError(String message) {
-	    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+	public void validatePasswords(String oldPassEntered, String password, String confirmPass, Customer cust) throws PasswordInconsistentException{
+		//Check if the user has input the correct OLD password
+		if(!(oldPassEntered.equals(cust.getPassword()))) {
+			//If the user doesn't, set the border to an error colour
+			oldPass.setBorder(BorderFactory.createLineBorder(Color.RED));
+			throw new PasswordInconsistentException("Current password is incorrect");
+		}
+		//Check if the old password and new password are the same, if so, throw an exception
+		if(oldPassEntered.equals(password)) {
+			this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
+			throw new PasswordInconsistentException("New password cannot match old password");
+		}
+		//If the passwords don't match, throw a PasswordInconsistentException
+		if(!(password.equals(confirmPass)))
+		{
+			this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
+			this.confirmPass.setBorder(BorderFactory.createLineBorder(Color.RED));
+			throw new PasswordInconsistentException("Passwords do not match");
+		}
+		
 	}
-	
 }
