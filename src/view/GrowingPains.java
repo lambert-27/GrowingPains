@@ -63,7 +63,7 @@ public class GrowingPains extends JFrame{
 	private CartPanel cartPanel;
 	private Cart cart;
 	private Customer customer;
-	private final int WIDTH = 1200;
+	private final int WIDTH = 1400;
 	private final int HEIGHT = 900;
 
 	/**

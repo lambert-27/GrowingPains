@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +14,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -23,13 +23,23 @@ import crud.CustomerCrud;
 import model.Address;
 import model.Customer;
 
-
+/** 
+ * The EditAccountPanel class represents the Create Account Panel in the GrowingPains application
+ * 
+ * It holds the structure and logic for handling the account editing process with the use of a JPasswordField
+ * for the password input. Before submission, some basic validation is done and on success a Customer object is
+ * created and sent to the database. Error messages are displayed in accordance to the state of the users attempt 
+ * at changing password. Visual cues are given when errors occur. 
+ */
 public class EditAccountPanel extends JPanel{
+
+	private static final long serialVersionUID = 1L;
 	//Instance variables
 	private JTextField fName;
 	private JTextField lName;
 	private JTextField email;
 	private JTextField adrs;
+	private JPasswordField oldPass;
 	private JTextField phone;
 	private JPasswordField password;
 	private JPasswordField confirmPass;
@@ -40,6 +50,17 @@ public class EditAccountPanel extends JPanel{
 	private CustomerCrud crud;
 	private Customer customer;
 	
+	/**
+	 * 	
+	/**
+	 * Constructs a new CreateAccountPanel, initialising the layout,  buttons and input fields
+	 * 
+	 * @param ARIAL the font used
+	 * @param GREEN the colour used
+	 * @param cl the Layout Manager used
+	 * @param mainContent The main panel that holds the cards
+	 * @param cust The currently logged in customer
+	 */
 	public EditAccountPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent, Customer cust) throws SQLException {
 		//customer = new Customer();
 		customer = cust;
@@ -101,7 +122,6 @@ public class EditAccountPanel extends JPanel{
 		add(phone, gbc);
 		
 		//Address (next line)
-		gbc.gridwidth = 2;
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		add(new JLabel("Address: "), gbc);
@@ -109,6 +129,17 @@ public class EditAccountPanel extends JPanel{
 		gbc.gridy = 5;
 		adrs = createTextField(cust.getAddress());
 		add(adrs, gbc);
+		
+		//Old Password 
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		add(new JLabel("Old Password: "), gbc);
+		
+		gbc.gridy = 5;
+		oldPass = new JPasswordField();
+		oldPass.setPreferredSize(new Dimension(300, 30));
+		add(oldPass, gbc);
+		
 		
 		//Pass (next line)
 		gbc.gridwidth = 1;
@@ -204,28 +235,53 @@ public class EditAccountPanel extends JPanel{
 	 * 
 	 */
 	public boolean updateAccount(CardLayout cardLayout, JPanel mainContent, Customer cust) throws SQLException {
-
+		
+		//Check for empty input fields
 		if(validateForm()) {
 			String fName = this.fName.getText();
 			String lName = this.lName.getText();
 			String email = this.email.getText();
 			String adrs = this.adrs.getText();
+			String oldPassEntered = new String(this.oldPass.getPassword());
+			//Check if the user has input the correct OLD password
+			if(!(oldPassEntered.equals(cust.getPassword()))) {
+				//If the user doesn't, set the border to an error colour
+				oldPass.setBorder(BorderFactory.createLineBorder(Color.RED));
+				//Display an error message 
+				showError("Old Pasword does not match!");
+				return false;
+			}
+			else
+				//Include an else for when the user retries, ensuring that the border gets updated
+				oldPass.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	//		Note for JPasswordField we cast the char array returned by getPassword to a String
 			String password = new String(this.password.getPassword());
-			String confirmPass = new String(this.password.getPassword());
+			String confirmPass = new String(this.confirmPass.getPassword());
 			String phone = this.phone.getText();
 			Address customerAdrs = new Address(adrs);
 			
+			//Check to ensure the passwords entered match/if they are empty
 			if(password.equals(confirmPass) && !(password.isEmpty() || confirmPass.isEmpty())){
+				if(password.equals(oldPassEntered)) {
+					this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
+					showError("Your new password must be unique to your old password!");
+					return false;
+				}
+				else
+					this.password.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				customer = new Customer(fName, lName, email, password, phone, customerAdrs);
 				if(crud.updateCustomer(customer)) {
 					cardLayout.show(mainContent, "Login");
 					return true;
 				}
-				else {
-					System.out.println("Error creating account!");
-				}
 			}
+			else {
+				this.password.setBorder(BorderFactory.createLineBorder(Color.RED));
+				this.confirmPass.setBorder(BorderFactory.createLineBorder(Color.RED));
+				showError("Passwords do not match!");
+				return false;
+			}
+
 		}
 		return false;
 	}
@@ -270,9 +326,15 @@ public class EditAccountPanel extends JPanel{
 			isValid = false;
 		}
 		
-		
-		
 		return isValid;
+	}
+	
+	/**
+	 * Helper variable used to display error messages to the user via a JOptionPane
+	 * @param message
+	 */
+	private void showError(String message) {
+	    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 }

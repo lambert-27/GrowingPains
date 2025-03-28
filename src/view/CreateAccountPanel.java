@@ -21,15 +21,15 @@ import javax.swing.JTextField;
 import crud.CustomerCrud;
 import model.Address;
 import model.Customer;
-
+/** 
+ * The CreateAccountPanel class represents the Create Account Panel in the GrowingPains application
+ * 
+ * It holds the structure and logic for handling the account creation process with the use of a JPasswordField
+ * for the password input. Before submission, some basic validation is done and on success a Customer object is
+ * created and sent to the database
+ */
 public class CreateAccountPanel extends JPanel {
-	/** 
-	 * The CreateAccountPanel class represents the Create Account Panel in the GrowingPains application
-	 * 
-	 * It holds the structure and logic for handling the account creation process with the use of a JPasswordField
-	 * for the password input. Before submission, some basic validation is done and on success a Customer object is
-	 * created and sent to the database
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JTextField fName;
 	private JTextField lName;
