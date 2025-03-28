@@ -58,7 +58,7 @@ public class CartPanel extends JPanel {
 		//Set the CartPanel Cart to the Customers Cart
 		this.cart = cart;
 		this.cartItems = cart.getCart();
-		spinners = new ArrayList();
+		spinners = new ArrayList<JSpinner>();
 		
 //		Add the title to the NORTH 
 		add(new TitlePanel("Cart", ARIAL, GREEN), BorderLayout.NORTH);

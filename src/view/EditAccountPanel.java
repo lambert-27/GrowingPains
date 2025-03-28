@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 import controller.AccountEditException;
 import controller.EmptyFieldException;
+import controller.ErrorWriter;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -54,6 +55,7 @@ public class EditAccountPanel extends JPanel{
 	private GridBagConstraints gbc;
 	private CustomerCrud crud;
 	private Customer customer;
+	private ErrorWriter errorWriter;
 	
 	/**
 	 * 	
@@ -67,7 +69,10 @@ public class EditAccountPanel extends JPanel{
 	 * @param cust The currently logged in customer
 	 */
 	public EditAccountPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent, Customer cust) throws SQLException {
-		//customer = new Customer();
+		//Declare a new ErrorWriter and open the error log file
+		errorWriter = new ErrorWriter();
+		errorWriter.openFile();
+
 		customer = cust;
 		crud = new CustomerCrud();
 		gbl = new GridBagLayout();
@@ -185,23 +190,23 @@ public class EditAccountPanel extends JPanel{
 				//Catch the Exceptions in order of the Exception hierarchy, from more specific to broad
 				catch(PasswordInconsistentException e1) 
 				{
-					JOptionPane.showMessageDialog(EditAccountPanel.this,  e1.getMessage(), "Password Error", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
+					handleError(e1, "Password Error");
+//					e1.printStackTrace();
 				}
 				catch (EmptyFieldException e2) 
 				{
-					JOptionPane.showMessageDialog(EditAccountPanel.this,  e2.getMessage(), "Empty Input Field", JOptionPane.ERROR_MESSAGE);
-					e2.printStackTrace();
+					handleError(e2,  "Empty Input Field");
+//					e2.printStackTrace();
 				}
 				catch(AccountEditException e3) 
 				{
-					JOptionPane.showMessageDialog(EditAccountPanel.this,  e3.getMessage(), "Account edit Failure", JOptionPane.ERROR_MESSAGE);
-					e3.printStackTrace();
+					handleError(e3,  "Account Edit Failure");
+//					e3.printStackTrace();
 				}
 				catch (ValidationException e4) 
 				{
-		            JOptionPane.showMessageDialog(EditAccountPanel.this, e4.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
-		            e4.printStackTrace();
+					handleError(e4, "Validation Error");
+//					e4.printStackTrace();
 				}
 				
 			}
@@ -378,5 +383,15 @@ public class EditAccountPanel extends JPanel{
 			throw new PasswordInconsistentException("Passwords do not match");
 		}
 		
+	}
+	
+	/**
+	 * Helper variable used to display error messages to the user via a JOptionPane and write the error to an error file
+	 * @param errorType The type of error that occured
+	 * @param e The Exception occured
+	 */
+	private void handleError(Exception e, String errorType) {
+	    JOptionPane.showMessageDialog(EditAccountPanel.this, e.getMessage(), errorType, JOptionPane.ERROR_MESSAGE);
+	    errorWriter.logError(errorType, e.getMessage());
 	}
 }

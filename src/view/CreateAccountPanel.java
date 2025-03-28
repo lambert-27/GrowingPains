@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import controller.AccountCreationException;
 import controller.EmptyFieldException;
+import controller.ErrorWriter;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -50,6 +51,7 @@ public class CreateAccountPanel extends JPanel {
 	private GridBagLayout gbl;
 	private GridBagConstraints gbc;
 	private CustomerCrud crud;
+	private ErrorWriter errorWriter;
 	
 	/**
 	 * Constructs a new CreateAccountPanel, initialising the layout,  buttons and input fields
@@ -60,6 +62,10 @@ public class CreateAccountPanel extends JPanel {
 	 * @param mainContent The main panel that holds the cards
 	 */
 	public CreateAccountPanel(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent) throws SQLException {
+		//Declare a new ErrorWriter and open the error log file
+		errorWriter = new ErrorWriter();
+		errorWriter.openFile();
+		
 		crud = new CustomerCrud();
 		gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -166,23 +172,23 @@ public class CreateAccountPanel extends JPanel {
 				//Catch the Exceptions in order of the Exception hierarchy, from more specific to broad
 				catch(PasswordInconsistentException e1) 
 				{
-					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e1.getMessage(), "Password Error", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
+					handleError(e1, "Password Error");
+//					e1.printStackTrace();
 				}
 				catch (EmptyFieldException e2) 
 				{
-					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e2.getMessage(), "Empty Input Field", JOptionPane.ERROR_MESSAGE);
-					e2.printStackTrace();
+					handleError(e2,  "Empty Input Field");
+//					e2.printStackTrace();
 				}
 				catch(AccountCreationException e3) 
 				{
-					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e3.getMessage(), "Account Creation Failure", JOptionPane.ERROR_MESSAGE);
-					e3.printStackTrace();
+					handleError(e3,  "Account Creation Failure");
+//					e3.printStackTrace();
 				}
 				catch (ValidationException e4) 
 				{
-					JOptionPane.showMessageDialog(CreateAccountPanel.this,  e4.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
-					e4.printStackTrace();
+					handleError(e4, "Validation Error");
+//					e4.printStackTrace();
 				}
 				
 			}
@@ -349,5 +355,15 @@ public class CreateAccountPanel extends JPanel {
 		{
 			throw new EmptyFieldException("Either password fields ");
 		}
+	}
+	
+	/**
+	 * Helper variable used to display error messages to the user via a JOptionPane and write the error to an error file
+	 * @param errorType The type of error that occured
+	 * @param e The Exception occured
+	 */
+	private void handleError(Exception e, String errorType) {
+	    JOptionPane.showMessageDialog(CreateAccountPanel.this, e.getMessage(), errorType, JOptionPane.ERROR_MESSAGE);
+	    errorWriter.logError(errorType, e.getMessage());
 	}
 }
