@@ -43,6 +43,7 @@ public class GrowingPains extends JFrame{
 	private static JButton remindersBtn;
 	private static JButton exitBtn;
 	private static JButton editAccountBtn;
+	private static JButton ordersBtn;
 	
 	private static final long serialVersionUID = 1L;
 	//	ImageIcon holds the path to the image for our icon
@@ -87,7 +88,7 @@ public class GrowingPains extends JFrame{
 		
 //		Declare and initialise a new Catalogue
 		Catalogue catalogue = new Catalogue();
-		productPanel = new ProductPanel(ARIAL, GREEN, "", "", 0.0, cart);
+		productPanel = new ProductPanel(ARIAL, GREEN, "", "", 0.0, cart, cardLayout, mainContent);
 		login = new LoginPanel(ARIAL, GREEN, cardLayout, mainContent);
 
 		browse = new BrowsePanel(ARIAL, GREEN, catalogue, cardLayout, mainContent, productPanel);
@@ -154,6 +155,12 @@ public class GrowingPains extends JFrame{
 		sideBar.add(browseBtn);
 		browseBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					checkLoggedIn();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				cardLayout.show(mainContent, "Browse");
 			}
 		});
@@ -184,9 +191,32 @@ public class GrowingPains extends JFrame{
 		sideBar.add(remindersBtn);
 		remindersBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					checkLoggedIn();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				cardLayout.show(mainContent, "Reminder");
 			}
 		});
+		
+		//ORDERS Button
+		ordersBtn = createButton("Orders", "images/orders.png");
+		sideBar.add(ordersBtn);
+		ordersBtn.addActionListener((new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					checkLoggedIn();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				mainContent.add(new OrdersPanel(customer.getCustomerID()), "Orders");
+				cardLayout.show(mainContent, "Orders");
+			}
+		}));
+		
 //		EDIT ACCOUNT Button
 		editAccountBtn = createButton("Account","images/account.png");
 		sideBar.add(editAccountBtn);
@@ -255,7 +285,6 @@ public class GrowingPains extends JFrame{
 		mainContent.add(browse, "Browse");
 		mainContent.add(reminderPanel(), "Reminder");
 		mainContent.add(productPanel, "Product");
-
 	}
 	
 /**
@@ -318,9 +347,11 @@ public class GrowingPains extends JFrame{
 		remindersBtn.setVisible(false);
 		exitBtn.setVisible(false);
 		editAccountBtn.setVisible(false);
+		ordersBtn.setVisible(false);
 	}
 	/**
-	 * Shows the sidebar buttons after the user logs in
+	 * Shows the sidebar buttons after the user logs in, as this is the first point of contact
+	 * with the application after logging in, this is where we set the customer details once logged in
 	 */
 	 public static void showButtons() {
 		browseBtn.setVisible(true);
@@ -328,16 +359,18 @@ public class GrowingPains extends JFrame{
 		remindersBtn.setVisible(true);
 		exitBtn.setVisible(true);
 		editAccountBtn.setVisible(true);
+		ordersBtn.setVisible(true);
+
 	}
 	/**
 	 * Creates a customer object and if the Customer is logged in, returns the details of the customer
 	 * @throws SQLException Error should a Customer not be found in the table 
 	 */
 	 public void checkLoggedIn() throws SQLException {
+
 		 Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
 		 	 
 			 if(loggedInCustomer != null) {
-				 
 				 this.customer = loggedInCustomer;
 				 this.customer.setLoggedIn();
 			 }

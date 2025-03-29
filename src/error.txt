@@ -1,2 +1,0 @@
-Validation Error: Form could not validate: Password Field cannot be empty
-Validation Error: Phone Number must only have digits or spaces

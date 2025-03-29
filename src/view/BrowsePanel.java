@@ -63,9 +63,7 @@ public class BrowsePanel extends JPanel{
 			JScrollPane scrollPane = new JScrollPane(gridPanel);
 //			Sets the increment value for when scrolling w/ mouse to a custom amount (Enables faster scrolling higher the number)
 			scrollPane.getVerticalScrollBar().setUnitIncrement(8);
-			add(scrollPane, BorderLayout.CENTER);
-			
-					
+			add(scrollPane, BorderLayout.CENTER);		
 		}
 		
 		/**

@@ -46,7 +46,7 @@ public class LoginPanel extends JPanel{
 	private CustomerCrud crud;
 	private Customer customer;
 	private String customerEmail;
-	
+	private boolean loggedIn;
 	/**
 	 * Constructs a new LoginPanel, initialising the layout, title, buttons and input fields
 	 * 
@@ -57,6 +57,7 @@ public class LoginPanel extends JPanel{
 	 * @throws SQLException Error should a Customer not be found in the table 
 	 */
 	public LoginPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent) throws SQLException {
+		loggedIn = false;
 		crud = new CustomerCrud();
 //		Using a gridbag layout for flexibility
 		gbl = new GridBagLayout();
@@ -96,6 +97,7 @@ public class LoginPanel extends JPanel{
 				if(handleLogin(cl, mainContent) != null) {
 					try {
 						customer = crud.getCustomerByEmail(customerEmail);
+						loggedIn = true;
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -118,6 +120,7 @@ public class LoginPanel extends JPanel{
 				if(handleLogin(cl, mainContent) != null) {
 					try {
 						customer = crud.getCustomerByEmail(customerEmail);
+						loggedIn = true;
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -138,13 +141,11 @@ public class LoginPanel extends JPanel{
 		createAccount.setFocusPainted(false);
 		createAccount.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				//TODO: INCORPORATE CREATEACCOUNT PANEL
 				try {
 					CreateAccountPanel createAccountPanel = new CreateAccountPanel(ARIAL, GREEN, cl, mainContent);
 					mainContent.add(createAccountPanel, "CreateAccount");
 					cl.show(mainContent, "CreateAccount");
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -173,10 +174,11 @@ public class LoginPanel extends JPanel{
 
 		try {
 			if(crud.login(custEmail, passWord)) {
+				loggedIn = true;
 //				Retrieve the customer from the database 
 				customer = crud.getCustomerByEmail(custEmail);
 				if(customer != null) {
-				cl.show(mainContent, "Browse");
+				cl.show(mainContent, "Welcome");
 //				Call of static method showButtons, to show the sideBar when the customer is logged in
 				GrowingPains.showButtons();
 				return customer;
@@ -199,6 +201,10 @@ public class LoginPanel extends JPanel{
 	 */
 	public Customer getLoggedInCustomer() throws SQLException {
 		return this.customer;
+	}
+	
+	public boolean checkLoggedIn() {
+		return this.loggedIn;
 	}
 	
 	/**

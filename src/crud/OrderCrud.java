@@ -90,25 +90,26 @@ public class OrderCrud extends Crud{
 	}
 	
 	/**
-	 *  Retrieves all Orders from the Orders table
+	 *  Retrieves all Orders from the Orders table via an INNER JOIN on the Customer table using the customer ID
 	 * @return A List of Order objects
 	 * @throws SQLException Error should an Order not be found in the table
 	 */
-	public List<Order> getAllOrders() throws SQLException {
+	public List<Order> getAllOrders(int customerID) throws SQLException {
 		ResultSet resultSet = null;
 		List<Order> orders = new ArrayList<Order>();
 		
 		try {
-			PreparedStatement pstat = connection.prepareStatement("SELECT orderID, customerID, productID, date, time, shippingAddress, totalPrice FROM Orders");
+			PreparedStatement pstat = connection.prepareStatement("SELECT orderID, Orders.customerID, productID, date, time, shippingAddress, totalPrice FROM Orders INNER JOIN Customer ON "
+					+ "Customer.customerID = Orders.customerID WHERE Customer.customerID = ?");
+			//Set the customerID to look for
+			pstat.setInt(1, customerID);
 			//Assign resultSet the value of the query
 			resultSet = pstat.executeQuery();
 			
-			System.out.println("-----\nAll Orders in Order Table in GrowingPains DB-----");
-//			Check if resultSet has a value
+//			Iterate through the resultSet
 			while(resultSet.next()) {
 //				Assign values to a new temp Order and add it to the list
 				int orderID = resultSet.getInt("orderID");
-				int customerID = resultSet.getInt("customerID");
 				Date date = resultSet.getDate("date");
 				Time time = resultSet.getTime("time");
 				String address = resultSet.getString("shippingAddress");

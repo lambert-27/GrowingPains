@@ -2,6 +2,7 @@ package view;
 //GROWING PAINS - Mark Lambert - C00192497
 //GrowingPains ProductPanel class - Contains structure for the individual select product area 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -48,7 +49,7 @@ public class ProductPanel extends JPanel {
 	 * @param cart hte shopping cart which the product will be added to
 	 * 
 	 */
-	public ProductPanel(Font ARIAL, Color GREEN, String title, String imagePath, double price, Cart cart) {
+	public ProductPanel(Font ARIAL, Color GREEN, String title, String imagePath, double price, Cart cart, CardLayout cl, JPanel mainContent) {
 //		gbc = new GridBagConstraints();
 //		gbc.insets = new Insets(0,0,5,5);
 		setLayout(new BorderLayout());
