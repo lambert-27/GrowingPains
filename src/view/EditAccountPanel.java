@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 import controller.AccountEditException;
 import controller.EmptyFieldException;
+import controller.InvalidEmailException;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -359,8 +360,16 @@ public class EditAccountPanel extends JPanel{
 			if(!(phone.getText().matches("[\\d ]*"))) {
 				phone.setBorder(BorderFactory.createLineBorder(Color.RED));
 				throw new ValidationException("Phone Number must only have digits or spaces");
-				
 			}
+			
+			//Check if the email at least has some text w/ an @ symbol
+			//the . represents any character, followed by a * token to indicate at least once
+			//then exactly one @ symbol, followed by more text
+			if(!(email.getText().matches(".*@.*"))) {
+				email.setBorder(BorderFactory.createLineBorder(Color.RED));
+				throw new InvalidEmailException("Email must have an @");
+			}
+			
 			//Catch the EmptyFieldException and throw the ValidationException, with the EmptyFieldException's error message
 		}catch(EmptyFieldException e) {
 			throw new ValidationException("Form could not validate: " + e.getMessage());

@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -30,7 +31,9 @@ import model.Payment;
 public class PaymentPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JTextField cardNumber;
-	private JTextField expiryDate;
+	//Use of JComboBoxes for getting card expiry information
+	private JComboBox<String> expiryMonth;
+	private JComboBox<String> expiryYear;
 	private JTextField cvv;
 	private JTextField cardHolderFName;
 	private JTextField cardHolderLName;
@@ -49,7 +52,7 @@ public class PaymentPanel extends JPanel{
 	}
 	
 	/**
-	 * Builds the form for account creation
+	 * Builds the form for making a payment
 	 * 
 	 * @param ARIAL the font used
 	 * @param GREEN the colour used
@@ -85,25 +88,36 @@ public class PaymentPanel extends JPanel{
 		cardNumber = createTextField();
 		add(cardNumber, gbc);
 		
-
-		//Expiry Date
+		//cvv (next line)
 		gbc.gridx = 1;
 		gbc.gridy = 2;
-		add(new JLabel("Expiry Date: "), gbc);
-		
-		gbc.gridy = 3;
-		expiryDate = createTextField();
-		add(expiryDate, gbc);
-		
-		//cvv (next line)
-		gbc.gridwidth = 2;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
 		add(new JLabel("CVV: "), gbc);
 		
-		gbc.gridy = 5;
+		gbc.gridy = 3;
 		cvv = createTextField();
 		add(cvv, gbc);
+
+		//Expiry Month
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		add(new JLabel("Expiry Month: "), gbc);
+		
+		gbc.gridy = 5;
+		//String containing the numeric representation of the months of the year, note -- used as a default
+		String months[] = {"--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+		expiryMonth = new JComboBox<String>(months);
+		add(expiryMonth, gbc);
+		
+		//Expiry Year
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		add(new JLabel("Expiry Year: "), gbc);
+		
+		gbc.gridy = 5;
+		//String of abbreviated years, leading to 2031, as most credit cards at latest expire in 2031, note -- used as a default
+		String years[] = {"--", "25", "26", "27", "28", "29", "30", "31"};
+		expiryYear = new JComboBox<String>(years);
+		add(expiryYear, gbc);
 		
 				
 //		Send data to DB
@@ -115,8 +129,8 @@ public class PaymentPanel extends JPanel{
 				try {
 					makeOrder(cart, order, mainContent, cl);
 				} catch (ValidationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//Send the error to log file if user doesn't enter valid info
+					GrowingPains.errorWriter.logError("Validation Error",  e1.getMessage());
 				}
 			}
 		});
@@ -145,7 +159,8 @@ public class PaymentPanel extends JPanel{
 	public void makeOrder(Cart cart, Order order, JPanel mainContent, CardLayout cl) throws ValidationException {
 		try {
 			//Demonstration of a Payment object being made and temp call of a pament method to prevent java displaying warning
-			Payment payment = new Payment(cardNumber.getText(), expiryDate.getText(), cvv.getText(), cart.getTotalPrice());
+			String expiryDate =  expiryMonth.getSelectedItem() + "/" + expiryYear.getSelectedItem();
+			Payment payment = new Payment(cardNumber.getText(), expiryDate,  cvv.getText(), cart.getTotalPrice());
 			payment.getTotalPrice();
 			//order.setPrice(payment.getTotalPrice());
 			OrderCrud crud = new OrderCrud();
@@ -163,7 +178,6 @@ public class PaymentPanel extends JPanel{
 			cart.clearCart();
 			cl.show(mainContent, "Browse");
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}				
 	}
@@ -209,7 +223,6 @@ public class PaymentPanel extends JPanel{
 			checkInfo(cardHolderFName, "First Name");
 			checkInfo(cardHolderLName, "Last Name");
 			checkInfo(cardNumber, "Card Number");
-			checkInfo(expiryDate, "Expiry Date");
 			checkInfo(cvv, "CVV");
 
 			//Check if the CVV is exactly 3 digits long
@@ -222,6 +235,11 @@ public class PaymentPanel extends JPanel{
 			if(!(cardNumber.getText().matches("[\\d]{16}"))) {
 				cardNumber.setBorder(BorderFactory.createLineBorder(Color.RED));
 				throw new ValidationException("Card Number must be exactly 16 digits long");
+			}
+			
+			//Check if the user selected an expiry date by checking if the default value is still selected
+			if((expiryMonth.getSelectedItem() == "--" || expiryYear.getSelectedItem() == "--")) {
+				throw new ValidationException("Must select expiry date");
 			}
 			
 			//Catch the EmptyFieldException and throw the ValidationException, with the EmptyFieldException's error message
