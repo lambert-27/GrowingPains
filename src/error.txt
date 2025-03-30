@@ -1,1 +1,12 @@
+Validation Error: Form could not validate: First Name cannot be empty
+Validation Error: Form could not validate: Address cannot be empty
+Validation Error: Form could not validate: Phone cannot be empty
+Validation Error: Form could not validate: Password Field cannot be empty
+Validation Error: Phone Number must only have digits or spaces
 Validation Error: Email must have an @
+Login Error: : Must be logged in before proceeding to Edit Account
+Login Error: : Must be logged in before proceeding to Cart
+Validation Error: Form could not validate: Password Field cannot be empty
+Validation Error: Form could not validate: Password Field cannot be empty
+Password Error: Current password is incorrect
+Empty Cart Error: : Cannt proceed to checkout with an empty cart

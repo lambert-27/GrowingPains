@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import controller.EmptyCartException;
 import model.Cart;
 import model.Customer;
 import model.Order;
@@ -72,10 +73,22 @@ public class CartPanel extends JPanel {
 //		Event Handling for buttons
 		checkoutBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				Create a new order object for insertion
-				Order order = new Order(customer.getCustomerID(), customer.getAddress(), cart.getTotalPrice());
-				mainContent.add(new PaymentPanel(ARIAL, GREEN, cl, mainContent, order, cart), "Payment");
-				cl.show(mainContent, "Payment");
+				//Try block, checks if the cartItems list is empty, if it is, throw EmptyCartException
+				try {
+				if(!cartItems.isEmpty()) {
+//					Create a new order object for insertion
+					Order order = new Order(customer.getCustomerID(), customer.getAddress(), cart.getTotalPrice());
+					mainContent.add(new PaymentPanel(ARIAL, GREEN, cl, mainContent, order, cart), "Payment");
+					cl.show(mainContent, "Payment");
+				}else
+				{
+					throw new EmptyCartException("Cannt proceed to checkout with an empty cart");
+				}
+			}catch(EmptyCartException e1) {
+				//Write the error to log
+				GrowingPains.errorWriter.logError("Empty Cart Error: ", e1.getMessage());
+			}
+
 			}
 		});
 		
