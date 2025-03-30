@@ -57,6 +57,7 @@ public class OrdersPanel extends JPanel {
         
         cancelOrderBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		try {
         		//Check if the user has selected a row to delete
         		if(table.getSelectedRow() != -1) {
         			//Get the orderID from the table, by calling the table.getSelectedRow and then 0 represents the first column, which is orderID
@@ -78,10 +79,14 @@ public class OrdersPanel extends JPanel {
             			//Finally, remove the order from the table
             			tableModel.removeRow(table.getSelectedRow());
             		}
-        		}else
-        			throw new EmptyOrderException("You must select an order from the table to cancel an order");
+        		}
+        		else {
+        			throw new EmptyOrderException("Must select an order from the table before cancelling an order");
+        		}
+        	}catch(EmptyOrderException e1) {
+        		GrowingPains.errorWriter.logError("Cancel Order Error: " , e1.getMessage());
         	}
-        });
+        	}});
         
         // Create a panel for the button with FlowLayout, aligning it to the RIGHT, keeping with the design of the other pages
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); 
