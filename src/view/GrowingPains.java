@@ -212,7 +212,7 @@ public class GrowingPains extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					checkLoggedIn("Orders");
-					mainContent.add(new OrdersPanel(customer.getCustomerID()), "Orders");
+					mainContent.add(new OrdersPanel(customer.getCustomerID(), ARIAL, GREEN), "Orders");
 					cardLayout.show(mainContent, "Orders");
 				} catch (UserNotLoggedInException e1) {
 					handleError(e1);

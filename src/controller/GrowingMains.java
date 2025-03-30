@@ -26,4 +26,3 @@ public class GrowingMains {
 		}
 //JCombo boxes
 //Hash passwords
-//Payments
