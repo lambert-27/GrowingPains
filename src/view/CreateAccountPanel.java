@@ -23,7 +23,6 @@ import javax.swing.JTextField;
 
 import controller.AccountCreationException;
 import controller.EmptyFieldException;
-import controller.ErrorWriter;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -51,7 +50,6 @@ public class CreateAccountPanel extends JPanel {
 	private GridBagLayout gbl;
 	private GridBagConstraints gbc;
 	private CustomerCrud crud;
-	private ErrorWriter errorWriter;
 	
 	/**
 	 * Constructs a new CreateAccountPanel, initialising the layout,  buttons and input fields
@@ -63,11 +61,7 @@ public class CreateAccountPanel extends JPanel {
 	 * 
 	 * @throws SQLException Error for DB operations
 	 */
-	public CreateAccountPanel(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent) throws SQLException {
-		//Declare a new ErrorWriter and open the error log file
-		errorWriter = new ErrorWriter();
-		errorWriter.openFile();
-		
+	public CreateAccountPanel(Font ARIAL, Color GREEN, CardLayout cardLayout, JPanel mainContent) throws SQLException {		
 		crud = new CustomerCrud();
 		gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -373,6 +367,6 @@ public class CreateAccountPanel extends JPanel {
 	 */
 	private void handleError(Exception e, String errorType) {
 	    JOptionPane.showMessageDialog(CreateAccountPanel.this, e.getMessage(), errorType, JOptionPane.ERROR_MESSAGE);
-	    errorWriter.logError(errorType, e.getMessage());
+	    GrowingPains.errorWriter.logError(errorType, e.getMessage());
 	}
 }

@@ -10,7 +10,7 @@ public class ValidationException extends Exception {
 	 * Default Constructor for ValidationException
 	 */
 	public ValidationException() {
-		
+		super("");
 	}
 	/**
 	 * Constructs a new ValidationException with a more detailed error message

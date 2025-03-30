@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import controller.ErrorWriter;
+import controller.UserNotLoggedInException;
 import model.Cart;
 import model.Catalogue;
 import model.Customer;
@@ -44,6 +46,9 @@ public class GrowingPains extends JFrame{
 	private static JButton exitBtn;
 	private static JButton editAccountBtn;
 	private static JButton ordersBtn;
+	//Package private static ErrorWriter variable, shared within view package, ensuring all contents 
+	//get appended to the file
+	static ErrorWriter errorWriter;
 	
 	private static final long serialVersionUID = 1L;
 	//	ImageIcon holds the path to the image for our icon
@@ -64,8 +69,10 @@ public class GrowingPains extends JFrame{
 	private CartPanel cartPanel;
 	private Cart cart;
 	private Customer customer;
+	private EditAccountPanel edit = null;
 	private final int WIDTH = 1400;
 	private final int HEIGHT = 900;
+
 
 	/**
 	 * Constructs the GrowingPains application frame, setting the layout, panels and buttons necessary
@@ -78,6 +85,8 @@ public class GrowingPains extends JFrame{
 		cardLayout = new CardLayout();
 		mainContent = new JPanel(cardLayout);
 		customer = new Customer();
+		errorWriter = new ErrorWriter();
+		errorWriter.openFile();
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(WIDTH, HEIGHT);
@@ -97,7 +106,7 @@ public class GrowingPains extends JFrame{
 		mainContent();
 		topBar();
 		sideBar();
-		hideButtons();
+		//hideButtons();
 	}
 	/**
 	 * Sets all elements within the container to visibile, signifying
@@ -154,12 +163,11 @@ public class GrowingPains extends JFrame{
 		browseBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					checkLoggedIn();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					checkLoggedIn("Browse");
+					cardLayout.show(mainContent, "Browse");
+				} catch (UserNotLoggedInException e1) {
+					handleError(e1);
 				}
-				cardLayout.show(mainContent, "Browse");
 			}
 		});
 
@@ -172,15 +180,14 @@ public class GrowingPains extends JFrame{
 //				doing so, then updates the Customer object in this class to have all info about the customer 
 //				to make an order
 				try {
-					checkLoggedIn();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					checkLoggedIn("Cart");
+//					Instantiate a new CartPanel so that it updates Dynamically when the user inserts new items
+					cartPanel = new CartPanel(ARIAL, GREEN, cart, customer, cardLayout, mainContent);
+					mainContent.add(cartPanel, "Cart");
+					cardLayout.show(mainContent,  "Cart");
+				} catch (UserNotLoggedInException e1) {
+					handleError(e1);
 				}
-//				Instantiate a new CartPanel so that it updates Dynamically when the user inserts new items
-				cartPanel = new CartPanel(ARIAL, GREEN, cart, customer, cardLayout, mainContent);
-				mainContent.add(cartPanel, "Cart");
-				cardLayout.show(mainContent,  "Cart");
 			}
 		});
 		
@@ -190,10 +197,9 @@ public class GrowingPains extends JFrame{
 		remindersBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					checkLoggedIn();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					checkLoggedIn("Reminders");
+				} catch (UserNotLoggedInException e1) {
+					handleError(e1);
 				}
 				cardLayout.show(mainContent, "Reminder");
 			}
@@ -205,13 +211,12 @@ public class GrowingPains extends JFrame{
 		ordersBtn.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					checkLoggedIn();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					checkLoggedIn("Orders");
+					mainContent.add(new OrdersPanel(customer.getCustomerID()), "Orders");
+					cardLayout.show(mainContent, "Orders");
+				} catch (UserNotLoggedInException e1) {
+					handleError(e1);
 				}
-				mainContent.add(new OrdersPanel(customer.getCustomerID()), "Orders");
-				cardLayout.show(mainContent, "Orders");
 			}
 		}));
 		
@@ -219,19 +224,23 @@ public class GrowingPains extends JFrame{
 		editAccountBtn = createButton("Account","images/account.png");
 		sideBar.add(editAccountBtn);
 		editAccountBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					//When the user clicks on the account button, then assign
-					//the GrowingPains Class Customer obj the details
-					//of the logged in customer
-					customer = login.getLoggedInCustomer();
-					mainContent.add(new EditAccountPanel(ARIAL, GREEN, cardLayout, mainContent, customer), "Edit Account");
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				cardLayout.show(mainContent,  "Edit Account");
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        try {
+		            checkLoggedIn("Edit Account");
+		            customer = login.getLoggedInCustomer(); // Get current customer
+		            
+		            // Create edit panel with current customer
+		            edit = new EditAccountPanel(ARIAL, GREEN, cardLayout, mainContent, customer);
+		            mainContent.add(edit, "Edit Account");
+		            cardLayout.show(mainContent, "Edit Account");
+		            
+		            // No need to get updated customer here - it will be updated in the panel
+		        } catch (UserNotLoggedInException e1) {
+		            handleError(e1);
+		        } catch (SQLException e1) {
+		            e1.printStackTrace();
+		        }
+		    }
 		});
 		
 		//Glue the Exit down to the bottom of the side bar for workflow priority
@@ -362,19 +371,40 @@ public class GrowingPains extends JFrame{
 	}
 	/**
 	 * Creates a customer object and if the Customer is logged in, returns the details of the customer
+	 * @param exceptionMsg Passes the location to which the user is trying to access into the error message
 	 * @throws SQLException Error should a Customer not be found in the table 
-	 */
-	 public void checkLoggedIn() throws SQLException {
+	 */	 
+	 public void checkLoggedIn(String exceptionMsg) throws UserNotLoggedInException {
+		    // First check if we have an edited customer
+		    if (edit != null && edit.getUpdatedCustomer() != null) {
+		        customer = edit.getUpdatedCustomer();
+		    }
+		    
+		    // Then check normal login
+		    Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
+		    if (loggedInCustomer != null) {
+		        this.customer = loggedInCustomer;
+		        this.customer.setLoggedIn();
+		    } else {
+		        throw new UserNotLoggedInException(exceptionMsg);
+		    }
+		}
+	 
+		/**
+		 * Helper method used to display error messages to the user via a JOptionPane and write the error to an error file
+		 * @param errorType The type of error that occured
+		 * @param e The Exception occured
+		 */
+		private void handleError(Exception e) {
+			try {
+				//Open the file
+				//errorWriter.openFile();
+				
+			    errorWriter.logError("Login Error: ", e.getMessage());
+			    //Finally block to close file once operation is complete
+			} finally {
+				//errorWriter.closeFile();
+			}
 
-		 Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
-		 	 
-			 if(loggedInCustomer != null) {
-				 this.customer = loggedInCustomer;
-				 this.customer.setLoggedIn();
-			 }
-			 else
-			 {
-				 //TODO: CUSTOM EXCEPTION?
-			 }
-		 }
-	 }
+		}
+}

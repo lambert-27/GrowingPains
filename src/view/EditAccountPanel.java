@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 
 import controller.AccountEditException;
 import controller.EmptyFieldException;
-import controller.ErrorWriter;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -55,8 +54,7 @@ public class EditAccountPanel extends JPanel{
 	private GridBagConstraints gbc;
 	private CustomerCrud crud;
 	private Customer customer;
-	private ErrorWriter errorWriter;
-	
+
 	/**
 	 * 	
 	/**
@@ -70,10 +68,6 @@ public class EditAccountPanel extends JPanel{
 	 * @throws SQLException for error with DB operations
 	 */
 	public EditAccountPanel(Font ARIAL, Color GREEN, CardLayout cl, JPanel mainContent, Customer cust) throws SQLException {
-		//Declare a new ErrorWriter and open the error log file
-		errorWriter = new ErrorWriter();
-		errorWriter.openFile();
-
 		customer = cust;
 		crud = new CustomerCrud();
 		gbl = new GridBagLayout();
@@ -302,6 +296,7 @@ public class EditAccountPanel extends JPanel{
 			this.password.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			
 			customer = new Customer(fName, lName, email, password, phone, customerAdrs);
+			customer.setLoggedIn();
 			
 			//Finally, if the crud operation fails, throw an AccountEditException
 			if(!(crud.updateCustomer(customer))) {
@@ -404,12 +399,23 @@ public class EditAccountPanel extends JPanel{
 	}
 	
 	/**
-	 * Helper variable used to display error messages to the user via a JOptionPane and write the error to an error file
+	 * Helper method used to display error messages to the user via a JOptionPane and write the error to an error file
 	 * @param errorType The type of error that occured
 	 * @param e The Exception occured
 	 */
 	private void handleError(Exception e, String errorType) {
-	    JOptionPane.showMessageDialog(EditAccountPanel.this, e.getMessage(), errorType, JOptionPane.ERROR_MESSAGE);
-	    errorWriter.logError(errorType, e.getMessage());
+		try {			
+			//Write the error to screen and then to file
+		    JOptionPane.showMessageDialog(EditAccountPanel.this, e.getMessage(), errorType, JOptionPane.ERROR_MESSAGE);
+		    GrowingPains.errorWriter.logError(errorType, e.getMessage());
+		    //Finally block to close file once operation is complete
+		} finally {
+			//errorWriter.closeFile();
+		}
+
+	}
+	
+	public Customer getUpdatedCustomer() {
+		return this.customer;
 	}
 }

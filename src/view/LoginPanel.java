@@ -181,6 +181,7 @@ public class LoginPanel extends JPanel{
 				cl.show(mainContent, "Welcome");
 //				Call of static method showButtons, to show the sideBar when the customer is logged in
 				GrowingPains.showButtons();
+				customer.setLoggedIn();
 				return customer;
 				}
 			}
@@ -227,5 +228,9 @@ public class LoginPanel extends JPanel{
 		btn.setBorderPainted(false);
 		
 		return btn;
+	}
+	
+	public void updateCustomer(Customer customer) {
+		this.customer = customer;
 	}
 }

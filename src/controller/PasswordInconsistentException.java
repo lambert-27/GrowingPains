@@ -12,7 +12,7 @@ public class PasswordInconsistentException extends ValidationException {
 	 * Default Constructor for PasswordInconsistentException
 	 */
 	public PasswordInconsistentException() {
-		
+		super("");
 	}
 	/**
 	 * Constructs a new PasswordInconsistentException with a more detailed error message
