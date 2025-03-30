@@ -1,5 +1,1 @@
-Login Error: : Must be logged in before proceeding to Orders
-Login Error: : Must be logged in before proceeding to Orders
-Login Error: : Must be logged in before proceeding to Orders
-Login Error: : Must be logged in before proceeding to Orders
-Login Error: : Must be logged in before proceeding to Orders
+Validation Error: Email must have an @

@@ -388,7 +388,7 @@ public class GrowingPains extends JFrame{
 		    } else {
 		        throw new UserNotLoggedInException(exceptionMsg);
 		    }
-		}
+	 }
 	 
 		/**
 		 * Helper method used to display error messages to the user via a JOptionPane and write the error to an error file
