@@ -93,13 +93,11 @@ public class GrowingPains extends JFrame{
 
 		browse = new BrowsePanel(ARIAL, GREEN, catalogue, cardLayout, mainContent, productPanel);
 
-
 //		Methods to create respective panels for GUI
 		mainContent();
 		topBar();
 		sideBar();
 		hideButtons();
-
 	}
 	/**
 	 * Sets all elements within the container to visibile, signifying

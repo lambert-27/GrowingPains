@@ -91,6 +91,7 @@ public class OrderCrud extends Crud{
 	
 	/**
 	 *  Retrieves all Orders from the Orders table via an INNER JOIN on the Customer table using the customer ID
+     * @param customerID The logged in customer
 	 * @return A List of Order objects
 	 * @throws SQLException Error should an Order not be found in the table
 	 */

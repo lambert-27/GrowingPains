@@ -203,6 +203,10 @@ public class LoginPanel extends JPanel{
 		return this.customer;
 	}
 	
+	/**
+	 * Returns the state of the current user
+	 * @return true/false if logged in
+	 */
 	public boolean checkLoggedIn() {
 		return this.loggedIn;
 	}

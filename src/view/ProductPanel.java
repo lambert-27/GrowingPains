@@ -47,7 +47,8 @@ public class ProductPanel extends JPanel {
 	 * @param imagePath the path to the image of the product
 	 * @param price the price of the product
 	 * @param cart hte shopping cart which the product will be added to
-	 * 
+	 * @param cl The layout used by the main application content area
+	 * @param mainContent the mainJPanel
 	 */
 	public ProductPanel(Font ARIAL, Color GREEN, String title, String imagePath, double price, Cart cart, CardLayout cl, JPanel mainContent) {
 //		gbc = new GridBagConstraints();

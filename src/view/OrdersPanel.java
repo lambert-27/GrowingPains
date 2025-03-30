@@ -19,6 +19,10 @@ public class OrdersPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
 
+    /**
+     * Creates a new OrdersPanel which creates the headings for the JTable, adds a scroll pane to it and populates w/orders
+     * @param customerID The logged in customer
+     */
     public OrdersPanel(int customerID) {
         setLayout(new BorderLayout(0, 0));
         

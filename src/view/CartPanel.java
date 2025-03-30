@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import crud.OrderCrud;
-import crud.ProductCrud;
 import model.Cart;
 import model.Customer;
 import model.Order;
@@ -44,6 +41,7 @@ public class CartPanel extends JPanel {
 	private Cart cart;
 	//List of spinners for each product
 	private List<JSpinner> spinners;
+	
 	
 
 	/**
@@ -76,25 +74,8 @@ public class CartPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 //				Create a new order object for insertion
 				Order order = new Order(customer.getCustomerID(), customer.getAddress(), cart.getTotalPrice());
-				try {
-					OrderCrud crud = new OrderCrud();
-					ProductCrud productCrud = new ProductCrud();
-					//Get an updated list of the cart
-					List<OrderItem> cartItems = cart.getCart();
-//					Iterate through the cart
-					for(OrderItem product : cartItems) {
-//						For each item in the cart, execute the update query to update the product quantity
-						productCrud.updateQty(product, product.getNewQty());
-					}
-//					Finally, insert the order
-					crud.insertOrder(order);
-					cart.clearCart();
-					cl.show(mainContent, "Browse");
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+				mainContent.add(new PaymentPanel(ARIAL, GREEN, cl, mainContent, order, cart), "Payment");
+				cl.show(mainContent, "Payment");
 			}
 		});
 		
