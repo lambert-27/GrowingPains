@@ -415,7 +415,8 @@ public class EditAccountPanel extends JPanel{
 
 	}
 	
-	public Customer getUpdatedCustomer() {
+	public Customer getUpdatedCustomer(Customer cust) {
+		customer.setCustomerID(cust.getCustomerID());
 		return this.customer;
 	}
 }

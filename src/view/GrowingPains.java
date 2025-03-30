@@ -227,7 +227,7 @@ public class GrowingPains extends JFrame{
 		    public void actionPerformed(ActionEvent e) {
 		        try {
 		            checkLoggedIn("Edit Account");
-		            customer = login.getLoggedInCustomer(); // Get current customer
+		            //customer = login.getLoggedInCustomer(); // Get current customer
 		            
 		            // Create edit panel with current customer
 		            edit = new EditAccountPanel(ARIAL, GREEN, cardLayout, mainContent, customer);
@@ -376,17 +376,18 @@ public class GrowingPains extends JFrame{
 	 */	 
 	 public void checkLoggedIn(String exceptionMsg) throws UserNotLoggedInException {
 		    // First check if we have an edited customer
-		    if (edit != null && edit.getUpdatedCustomer() != null) {
-		        customer = edit.getUpdatedCustomer();
-		    }
+		    if (edit != null && edit.getUpdatedCustomer(customer) != null) {
+		        customer = edit.getUpdatedCustomer(customer);
+		    }else {
 		    
-		    // Then check normal login
-		    Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
-		    if (loggedInCustomer != null) {
-		        this.customer = loggedInCustomer;
-		        this.customer.setLoggedIn();
-		    } else {
-		        throw new UserNotLoggedInException(exceptionMsg);
+			    // Then check normal login
+			    Customer loggedInCustomer = login.handleLogin(cardLayout, mainContent);
+			    if (loggedInCustomer != null) {
+			        this.customer = loggedInCustomer;
+			        this.customer.setLoggedIn();
+			    } else {
+			        throw new UserNotLoggedInException(exceptionMsg);
+			    }
 		    }
 	 }
 	 

@@ -1,0 +1,4 @@
+Validation Error: Form could not validate: First Name cannot be empty
+Login Error: : Must be logged in before proceeding to Edit Account
+Empty Cart Error: : Cannt proceed to checkout with an empty cart
+Password Error: Current password is incorrect
