@@ -40,6 +40,8 @@ import javax.swing.JButton;
  *  It sets up the main JFrame (window), including the app size, logo and other window behaviours
  */
 public class GrowingPains extends JFrame{
+	//Class instance variables, note the static fields, which are commonly accessed
+	//elements throughout the View portion of the application
 	private static JButton browseBtn;
 	private static JButton cartBtn;
 	private static JButton remindersBtn;
@@ -49,18 +51,19 @@ public class GrowingPains extends JFrame{
 	//Package private static ErrorWriter variable, shared within view package, ensuring all contents 
 	//get appended to the file
 	static ErrorWriter errorWriter;
-	
-	private static final long serialVersionUID = 1L;
-	//	ImageIcon holds the path to the image for our icon
-//	getClass -> retrieve a reference to the Class obj that represents the GrowingPains class
-//	getResource() -> returns the location of the image as a URL
-	private final ImageIcon ICON = new ImageIcon(getClass().getResource("images/growing_pains.png"));
 //	Custom green colour 
 	private static final Color GREEN = new Color(24, 65, 15);
 //	Common font used for buttons and headings
 	private static final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
 	private static CardLayout cardLayout;
 	private static JPanel mainContent;
+	
+	private static final long serialVersionUID = 1L;
+	//	ImageIcon holds the path to the image for our icon
+//	getClass -> retrieve a reference to the Class obj that represents the GrowingPains class
+//	getResource() -> returns the location of the image as a URL
+	private final ImageIcon ICON = new ImageIcon(getClass().getResource("images/growing_pains.png"));
+
 	private TitlePanel titlePanel;
 	//Declare new LoginPanel
 	private LoginPanel login;
@@ -198,10 +201,10 @@ public class GrowingPains extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					checkLoggedIn("Reminders");
+					cardLayout.show(mainContent, "Reminder");
 				} catch (UserNotLoggedInException e1) {
 					handleError(e1);
 				}
-				cardLayout.show(mainContent, "Reminder");
 			}
 		});
 		
