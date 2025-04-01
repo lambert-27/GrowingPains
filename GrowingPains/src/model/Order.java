@@ -14,7 +14,6 @@ public class Order {
 	//Class instance variables
     private int orderID;
     private int	customerID;
-//    private int productID;
     private Date date;
     private Time time;
     private Address shippingAdrs;
@@ -37,7 +36,6 @@ public class Order {
      */
     public Order(int customerID, String shippingAdrs, double totalPrice) {
     	setCustomerID(customerID);
-//    	setProductID(productID);
     	setDate();
     	setTime();
     	setAddress(shippingAdrs);
@@ -57,7 +55,6 @@ public class Order {
     public Order(int orderID, int customerID, Date date, Time time,String shippingAdrs, double totalPrice) {
     	setOrderID(orderID);
     	setCustomerID(customerID);
-//    	setProductID(productID);
     	setDate(date);
     	setTime(time);
     	setAddress(shippingAdrs);
@@ -143,14 +140,6 @@ public class Order {
     	this.customerID = customerID;
     }
     
-//    /**
-//     * Sets the list of ID's of the Order
-//     * 
-//     * @param productID The list of product ID's of the Order
-//     */
-//    public void setProductID(int productID) {
-//    	this.productID = productID;
-//    }
     /**
      * Gets the date of the Order for RETRIEVAL
      * 
@@ -191,14 +180,7 @@ public class Order {
     public int getCustomerID() {
     	return this.customerID;
     }
-//    /**
-//     * Gets the list of ID's of the Order
-//     * 
-//     * @return The ID of the Order
-//     */
-//    public int getProductID() {
-//    	return this.productID;
-//    }
+
     /**
      * Gets the ID of the Order
      * 

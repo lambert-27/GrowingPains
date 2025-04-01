@@ -34,13 +34,12 @@ public class OrderCrud extends Crud{
 	 */
 	public void insertOrder(Order order) throws SQLException {
 		try {
-			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, productID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?,?)");
+			PreparedStatement pstat = connection.prepareStatement("INSERT INTO Orders(customerID, date, time, shippingAddress, totalPrice) VALUES(?,?,?,?,?)");
 			pstat.setInt(1,  order.getCustomerID());
-			pstat.setInt(2,  0);
-			pstat.setDate(3, order.getDate());
-			pstat.setTime(4,  order.getTime());
-			pstat.setString(5,  order.getAddress());
-			pstat.setDouble(6, order.getPrice());
+			pstat.setDate(2, order.getDate());
+			pstat.setTime(3,  order.getTime());
+			pstat.setString(4,  order.getAddress());
+			pstat.setDouble(5, order.getPrice());
 			pstat.executeUpdate();
 		}
 		catch(SQLException sqlException) {
@@ -99,7 +98,7 @@ public class OrderCrud extends Crud{
 		List<Order> orders = new ArrayList<Order>();
 		
 		try {
-			PreparedStatement pstat = connection.prepareStatement("SELECT orderID, Orders.customerID, productID, date, time, shippingAddress, totalPrice FROM Orders INNER JOIN Customer ON "
+			PreparedStatement pstat = connection.prepareStatement("SELECT orderID, Orders.customerID, date, time, shippingAddress, totalPrice FROM Orders INNER JOIN Customer ON "
 					+ "Customer.customerID = Orders.customerID WHERE Customer.customerID = ?");
 			//Set the customerID to look for
 			pstat.setInt(1, customerID);
@@ -162,13 +161,13 @@ public class OrderCrud extends Crud{
 	 */
 	public void updateOrder(Order order) throws SQLException {
 		try {
-			PreparedStatement pstat = connection.prepareStatement("UPDATE Orders SET customerID=?, productID=?, date=?, time=?, shippingAddress=?, totalPrice=? WHERE orderID=?");
+			PreparedStatement pstat = connection.prepareStatement("UPDATE Orders SET customerID=?, date=?, time=?, shippingAddress=?, totalPrice=? WHERE orderID=?");
 			pstat.setInt(1,  order.getCustomerID());
-			pstat.setDate(3, order.getDate());
-			pstat.setTime(4,  order.getTime());
-			pstat.setString(5,  order.getAddress());
-			pstat.setDouble(6, order.getPrice());
-			pstat.setInt(7,  order.getOrderID());
+			pstat.setDate(2, order.getDate());
+			pstat.setTime(3,  order.getTime());
+			pstat.setString(4,  order.getAddress());
+			pstat.setDouble(5, order.getPrice());
+			pstat.setInt(6,  order.getOrderID());
 			pstat.executeUpdate();
 		}catch(SQLException sqlException) {
 			System.err.println("Error retrieving Order from table: " + sqlException.getMessage());

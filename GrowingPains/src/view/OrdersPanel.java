@@ -39,6 +39,10 @@ public class OrdersPanel extends JPanel {
         // Create table model with column names
         tableModel = new DefaultTableModel(new Object[]{"Order ID", "Date", "Time", "Address", "Total Price"}, 0);
         table = new JTable(tableModel);
+
+
+        //Set tale to not editable, but selectable
+        table.setDefaultEditor(Object.class, null);
         
         // Add scroll pane for the table
         JScrollPane scrollPane = new JScrollPane(table);
