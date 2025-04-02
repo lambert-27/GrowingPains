@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="GrowingPains" schema="GrowingPains" type="MySQL - 8.0.40-0ubuntu0.24.04.1">
+   <tables>
+      <table catalog="GrowingPains" name="Customer" numRows="6" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="customerID" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <child catalog="GrowingPains" column="customerID" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="Orders"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fName" nullable="true" remarks="" size="35" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="lName" nullable="true" remarks="" size="50" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="email" nullable="true" remarks="" size="50" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="address" nullable="true" remarks="" size="65535" type="TEXT" typeCode="-1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="password" nullable="true" remarks="" size="50" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="phone" nullable="true" remarks="" size="15" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="customerID" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="customerID"/>
+         </index>
+      </table>
+      <table catalog="GrowingPains" name="Orders" numRows="12" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="orderID" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="customerID" nullable="true" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="GrowingPains" column="customerID" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="Customer"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="date" nullable="true" remarks="" size="10" type="DATE" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="time" nullable="true" remarks="" size="8" type="TIME" typeCode="92"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="shippingAddress" nullable="true" remarks="" size="65535" type="TEXT" typeCode="-1"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="5" name="totalPrice" nullable="true" remarks="" size="10" type="DECIMAL" typeCode="3"/>
+         <primaryKey column="orderID" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="orderID"/>
+         </index>
+      </table>
+      <table catalog="GrowingPains" name="Product" numRows="15" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="productID" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="productName" nullable="true" remarks="" size="40" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="true" remarks="" size="65535" type="TEXT" typeCode="-1"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="3" name="price" nullable="true" remarks="" size="4" type="DECIMAL" typeCode="3"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="qty" nullable="true" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="category" nullable="true" remarks="" size="30" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="image_path" nullable="false" remarks="" size="255" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="productID" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="productID"/>
+         </index>
+      </table>
+   </tables>
+</database>
