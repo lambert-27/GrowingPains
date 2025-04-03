@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controller.PasswordHasher;
 import crud.CustomerCrud;
 import model.Customer;
 
@@ -165,21 +166,27 @@ public class LoginPanel extends JPanel{
 		String passWord = new String(pass.getPassword());
 
 		try {
-			if(crud.login(custEmail, passWord)) {
+			
+			String storedHashPass = crud.getHashedPass(custEmail);
+			
+			if(PasswordHasher.verifyPassword(passWord, storedHashPass)) {
 				loggedIn = true;
 //				Retrieve the customer from the database 
 				customer = crud.getCustomerByEmail(custEmail);
 				if(customer != null) {
-				GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Welcome");
-//				Call of static method showButtons, to show the sideBar when the customer is logged in
-				GrowingPains.showButtons();
-				customer.setLoggedIn();
-				return customer;
+					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Welcome");
+	//				Call of static method showButtons, to show the sideBar when the customer is logged in
+					GrowingPains.showButtons();
+					customer.setLoggedIn();
+					return customer;
 				}
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 //		Return null for login fail
@@ -227,4 +234,10 @@ public class LoginPanel extends JPanel{
 	public void updateCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
 }
+
+
+
+
+

@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -22,6 +23,7 @@ import javax.swing.JTextField;
 import controller.AccountCreationException;
 import controller.EmptyFieldException;
 import controller.InvalidEmailException;
+import controller.PasswordHasher;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -256,6 +258,9 @@ public class CreateAccountPanel extends JPanel {
 			validateForm();
 
 			validatePasswords(password, confirmPass);
+			
+			String hashedPass = PasswordHasher.hashPassword(password);
+			
 			//Create the customer for insertion
 			Customer customer = new Customer(fName, lName, email, password, phone, customerAdrs);
 			
@@ -269,6 +274,9 @@ public class CreateAccountPanel extends JPanel {
 			//Catch an SQLException if all other Exception throws do not yield
 		}catch (SQLException e) {
 			throw new AccountCreationException("An error occured with your SQL Statement/Database: " + e.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block for hashed password
+			e.printStackTrace();
 		}
 	}
 	
@@ -364,4 +372,5 @@ public class CreateAccountPanel extends JPanel {
 	    JOptionPane.showMessageDialog(CreateAccountPanel.this, e.getMessage(), errorType, JOptionPane.ERROR_MESSAGE);
 	    GrowingPains.errorWriter.logError(errorType, e.getMessage());
 	}
+
 }

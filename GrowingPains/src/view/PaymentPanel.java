@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.EmptyFieldException;
@@ -38,7 +39,7 @@ public class PaymentPanel extends JPanel{
 	//Use of JComboBoxes for getting card expiry information
 	private JComboBox<String> expiryMonth;
 	private JComboBox<String> expiryYear;
-	private JTextField cvv;
+	private JPasswordField cvv;
 	private JTextField cardHolderFName;
 	private JTextField cardHolderLName;
 	private JButton pay;
@@ -100,7 +101,8 @@ public class PaymentPanel extends JPanel{
 		add(new JLabel("CVV: "), gbc);
 		
 		gbc.gridy = 3;
-		cvv = createTextField();
+		cvv = new JPasswordField();
+		cvv.setPreferredSize(new Dimension(300, 30));
 		add(cvv, gbc);
 
 		//Expiry Month

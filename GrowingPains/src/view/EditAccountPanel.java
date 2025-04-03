@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import controller.AccountEditException;
 import controller.EmptyFieldException;
 import controller.InvalidEmailException;
+import controller.PasswordHasher;
 import controller.PasswordInconsistentException;
 import controller.ValidationException;
 import crud.CustomerCrud;
@@ -194,6 +195,9 @@ public class EditAccountPanel extends JPanel{
 				{
 					handleError(e4, "Validation Error");
 //					e4.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				
 			}
@@ -258,45 +262,41 @@ public class EditAccountPanel extends JPanel{
 	 * @throws PasswordInconsistentException Error for password validation  
 	 * @return True/False if the update was succesful
 	 */
-	public boolean updateAccount(Customer cust) throws AccountEditException, ValidationException, PasswordInconsistentException {
-		try {
-			//Check for empty input fields
-			validateForm();
-			
-			String fName = this.fName.getText();
-			String lName = this.lName.getText();
-			String email = this.email.getText();
-			String adrs = this.adrs.getText();
-			String oldPassEntered = new String(this.oldPass.getPassword());
-	//		Note for JPasswordField we cast the char array returned by getPassword to a String
-			String password = new String(this.password.getPassword());
-			String confirmPass = new String(this.confirmPass.getPassword());
-			String phone = this.phone.getText();
-			Address customerAdrs = new Address(adrs);
-			
-			validatePasswords(oldPassEntered, password, confirmPass, cust);
-			//If the passwords are empty, throw a EmptyFieldException
-			if(password.isEmpty() || confirmPass.isEmpty())
-			{
-				throw new EmptyFieldException("Password fields cannot be empty");
-			}
-			this.password.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			
-			customer = new Customer(fName, lName, email, password, phone, customerAdrs);
-			customer.setLoggedIn();
-			
-			//Finally, if the crud operation fails, throw an AccountEditException
-			if(!(crud.updateCustomer(customer))) {
-				throw new AccountEditException("Account edit failed");
-			}
-			
-			//Switch to the Login panel on success
-			GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Browse");
-			return true;
-		}catch (SQLException e) {
-			throw new AccountEditException("An error occured with your SQL Statement/Database: " + e.getMessage());
-		}
-}
+	public boolean updateAccount(Customer cust) throws AccountEditException, ValidationException, PasswordInconsistentException, Exception {
+	    try {
+	        // Check for empty input fields first
+	        validateForm();
+	        
+	        String fName = this.fName.getText();
+	        String lName = this.lName.getText();
+	        String email = this.email.getText();
+	        String adrs = this.adrs.getText();
+	        String oldPassEntered = new String(this.oldPass.getPassword());
+	        String newPassword = new String(this.password.getPassword());
+	        String confirmPass = new String(this.confirmPass.getPassword());
+	        String phone = this.phone.getText();
+	        Address customerAdrs = new Address(adrs);
+	        
+	        // Validate passwords before hashing
+	        validatePasswords(oldPassEntered, newPassword, confirmPass, cust);
+	        
+	        // Hash the new password only after validation passes
+	        String hashedPassword = PasswordHasher.hashPassword(newPassword);
+	        
+	        customer = new Customer(fName, lName, email, hashedPassword, phone, customerAdrs);
+	        customer.setLoggedIn();
+	        customer.setCustomerID(cust.getCustomerID()); // Make sure to preserve the ID
+	        
+	        if(!(crud.updateCustomer(customer))) {
+	            throw new AccountEditException("Account edit failed");
+	        }
+	        
+	        GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Browse");
+	        return true;
+	    } catch (SQLException e) {
+	        throw new AccountEditException("An error occurred with your SQL Statement/Database: " + e.getMessage());
+	    }
+	}
 	
 	/**
 	 * Valid a text field method, encapsulates common code
@@ -371,9 +371,13 @@ public class EditAccountPanel extends JPanel{
 	 * @param cust Current logged in customer
 	 * @throws PasswordInconsistentException Exception for problem with password validation
 	 */
-	public void validatePasswords(String oldPassEntered, String password, String confirmPass, Customer cust) throws PasswordInconsistentException{
+	public void validatePasswords(String oldPassEntered, String password, String confirmPass, Customer cust) throws PasswordInconsistentException, Exception{
+		
+		// Hash the entered old password for comparison
+        String hashedOldPassEntered = PasswordHasher.hashPassword(oldPassEntered);
+        
 		//Check if the user has input the correct OLD password
-		if(!(oldPassEntered.equals(cust.getPassword()))) {
+		if(!(hashedOldPassEntered.equals(cust.getPassword()))) {
 			//If the user doesn't, set the border to an error colour
 			oldPass.setBorder(BorderFactory.createLineBorder(Color.RED));
 			throw new PasswordInconsistentException("Current password is incorrect");

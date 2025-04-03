@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.PasswordHasher;
 import model.Customer;
 /**
  * The CustomerCrud class provides methods for performing CRUD (Create, Retrieve, Update, Delete)
@@ -29,8 +30,11 @@ public class CustomerCrud extends Crud{
 	 * @throws SQLException Error for insertion of a Customer
 	 * @return True/False 
 	 */
-		public boolean insertCustomer(Customer cust) throws SQLException{
+		public boolean insertCustomer(Customer cust) throws SQLException, Exception{
 			try {
+				 // Hash the password before storing
+		        String hashedPassword = PasswordHasher.hashPassword(cust.getPassword());
+				
 				//PreparedStatement for inserting a customer
 				PreparedStatement pstat = connection.prepareStatement("INSERT INTO Customer(fName, lName, email, address, password, phone) VALUES(?,?,?,?,?,?)");
 				//Sets the values for Customer table
@@ -38,7 +42,7 @@ public class CustomerCrud extends Crud{
 				pstat.setString(2,  cust.getlName());
 				pstat.setString(3,  cust.getEmail());
 				pstat.setString(4,  cust.getAddress());
-				pstat.setString(5, cust.getPassword());
+				pstat.setString(5, hashedPassword);
 				pstat.setString(6, cust.getPhone());
 				pstat.executeUpdate();
 				return true;
@@ -164,8 +168,9 @@ public class CustomerCrud extends Crud{
 		 * @throws SQLException Error should a Customer not be found in the table 
 		 * @return True/False
 		 */
-		public boolean updateCustomer(Customer cust) throws SQLException {
+		public boolean updateCustomer(Customer cust) throws SQLException, Exception {
 			try {
+				
 				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, password=?, phone=? WHERE email=?");
 				
 				pstat.setString(1,  cust.getfName());
@@ -192,13 +197,15 @@ public class CustomerCrud extends Crud{
 		 * @return true if a customer with the provided password and email exists, otherwise false.
 		 * @throws SQLException Error should a Customer not be found in the table 
 		 */
-		public boolean login(String email, String passWord) throws SQLException{
+		public boolean login(String email, String passWord) throws SQLException, Exception{
 			try
 			{
+				String storedHashedPass = getHashedPass(email);
+						
 				PreparedStatement pstat = connection.prepareStatement("SELECT * FROM Customer where email=? AND password=?");
 				
 				pstat.setString(1, email);
-				pstat.setString(2, passWord);
+				pstat.setString(2, storedHashedPass);
 				
 				try (ResultSet resultSet = pstat.executeQuery()){
 					return resultSet.next();
@@ -209,6 +216,20 @@ public class CustomerCrud extends Crud{
 				return false;
 			}
 
+		}
+		
+		public String getHashedPass(String email) throws SQLException {
+		    try (PreparedStatement pstat = connection.prepareStatement(
+		            "SELECT password FROM Customer WHERE email=?")) {
+		        pstat.setString(1, email);
+		        
+		        try (ResultSet resultSet = pstat.executeQuery()) {
+		            if (resultSet.next()) {
+		                return resultSet.getString("password");
+		            }
+		            return null;
+		        }
+		    }
 		}
 		
 		/**
