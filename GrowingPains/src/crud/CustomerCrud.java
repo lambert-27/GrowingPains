@@ -24,9 +24,7 @@ public class CustomerCrud extends Crud{
 	}
 	/**
 	 *  Inserts a Customer into the Customer table 
-	 * @param cust A customer Object containing all details 
-	 * (fName, lName, email, address, passWord, phone)
-	 * to be entered into the Customer table
+	 * @param cust A customer Object containing all details (fName, lName, email, address, passWord, phone) to be entered into the Customer table, where the password is hashed before insertion
 	 * @throws SQLException Error for insertion of a Customer
 	 * @return True/False 
 	 */

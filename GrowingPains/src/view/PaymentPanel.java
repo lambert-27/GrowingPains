@@ -173,7 +173,7 @@ public class PaymentPanel extends JPanel{
 		try {
 			//Demonstration of a Payment object being made and temp call of a pament method to prevent java displaying warning
 			String expiryDate =  expiryMonth.getSelectedItem() + "/" + expiryYear.getSelectedItem();
-			Payment payment = new Payment(cardNumber.getText(), expiryDate,  cvv.getText(), cart.getTotalPrice());
+			Payment payment = new Payment(cardNumber.getText(), expiryDate,  cvv.getPassword().toString(), cart.getTotalPrice());
 			payment.getTotalPrice();
 			//order.setPrice(payment.getTotalPrice());
 			OrderCrud crud = new OrderCrud();
@@ -236,8 +236,8 @@ public class PaymentPanel extends JPanel{
 			checkInfo(cardNumber, "Card Number");
 			checkInfo(cvv, "CVV");
 
-			//Check if the CVV is exactly 3 digits long
-			if(!(cvv.getText().matches("[\\d]{3}"))) {
+			//Check if the CVV is exactly 3 digits long, we convert the character array from .getPassword to a new String
+			if(!((new String(cvv.getPassword()).matches("[\\d]{3}")))) {
 				cvv.setBorder(BorderFactory.createLineBorder(Color.RED));
 				throw new ValidationException("CVV must be exactly 3 digits");
 			}

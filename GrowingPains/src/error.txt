@@ -1,1 +1,1 @@
-Password Error: Current password is incorrect
+Validation Error: CVV must be exactly 3 digits
