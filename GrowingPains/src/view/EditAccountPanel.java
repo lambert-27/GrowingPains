@@ -161,7 +161,7 @@ public class EditAccountPanel extends JPanel{
 		
 		
 //		Send data to DB
-		submit = createButton("Submit");
+		submit = GrowingButton.createButton("Submit");
 		submit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) 
@@ -208,7 +208,7 @@ public class EditAccountPanel extends JPanel{
 		add(submit, gbc);
 
 //		Return back to browse screen
-		returnToBrowse = createButton("Return to Browse");
+		returnToBrowse = GrowingButton.createButton("Return to Browse");
 		returnToBrowse.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -221,23 +221,6 @@ public class EditAccountPanel extends JPanel{
 		gbc.gridy = 10;
 		add(returnToBrowse, gbc);
 		
-	}
-	
-	/**
-	 * Create a button method, encapsulate common code
-	 * 
-	 * @param name the text displayed on the button
-	 * @return the JButton edited
-	 */
-	public JButton createButton(String name) {
-		JButton btn = new JButton(name);
-//		Set the imageIcon
-		btn.setForeground(Color.WHITE);
-		btn.setFont(GrowingPains.getArialFont());
-		btn.setBackground(GrowingPains.getColor());
-		btn.setBorderPainted(false);
-		
-		return btn;
 	}
 	
 	/**

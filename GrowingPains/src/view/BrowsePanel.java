@@ -2,20 +2,28 @@ package view;
 //GROWING PAINS - Mark Lambert - C00192497
 //GrowingPains BrowsePanel class - Contains structure for BrowsePanel area of app
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import crud.AccessoryCrud;
+import crud.PlantCrud;
 import model.Catalogue;
 import model.DisplayItem;
 import model.Item;
@@ -34,6 +42,11 @@ public class BrowsePanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel gridPanel;
+	//Use of JComboBoxes for getting card expiry information
+	private JComboBox<String> filterList;
+	private String[] filters = {"Select a Filter", "Plant", "Accessory"};
+	private JButton filterBtn;
+	private JPanel filterPanel;
 
 	/**
 	 * Constructs a new BrowsePanel, initialising the layout, title and other functionality like scroll speed
@@ -50,6 +63,8 @@ public class BrowsePanel extends JPanel{
 //			Add the title to the NORTH 
 			add(new TitlePanel("Browse"), BorderLayout.NORTH);
 			
+			addFilterComponents(catalogue, p);
+
 //			Disects each Item in the List of products to get all info about the product
 			getProducts(catalogue.displayCatalogue(), p);
 			
@@ -58,6 +73,7 @@ public class BrowsePanel extends JPanel{
 //			Sets the increment value for when scrolling w/ mouse to a custom amount (Enables faster scrolling higher the number)
 			scrollPane.getVerticalScrollBar().setUnitIncrement(8);
 			add(scrollPane, BorderLayout.CENTER);		
+			
 		}
 		
 		/**
@@ -112,5 +128,53 @@ public class BrowsePanel extends JPanel{
 				gridPanel.add(productPanel);
 			}
 		}		
+		/**
+		 * Method which adds the filter JComboBox and the filter JButton to the browsePanel
+		 */
+		public void addFilterComponents(Catalogue catalogue, ProductPanel p) {
+			// Inside the BrowsePanel constructor
+			filterList = new JComboBox<String>(filters);
+			filterBtn = GrowingButton.createButton("Apply Filter");
+			//Increase the size of the filter box
+			filterList.setPreferredSize(new Dimension(150, 30));
+
+			//filterPanel used to wrap the filter components in a FlowLayout, pushed to the right (in keeping with other JPanels with buttons)
+			filterPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			filterPanel.add(filterList);
+
+			filterBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					List<DisplayItem> filteredCatalogue = new ArrayList<DisplayItem>();
+					try {
+						if(filterList.getSelectedItem().toString().equals("Plant")){
+							PlantCrud crud = new PlantCrud();
+							filteredCatalogue = crud.getAllPlants();
+						}
+						else if(filterList.getSelectedItem().toString().equals("Accessory")) {
+							AccessoryCrud crud = new AccessoryCrud();
+							filteredCatalogue = crud.getAllAccessories();
+						}
+						else
+							filteredCatalogue = catalogue.displayCatalogue();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+						gridPanel.removeAll();
+						getProducts(filteredCatalogue, p);
+						revalidate();
+						repaint();
+					}
+
+				});
+			
+			filterPanel.add(filterBtn);
+			
+			// Add the filterPanel to the WEST of main Browse Panel
+			add(filterPanel, BorderLayout.SOUTH);
+		}
+		
+		
 }
 

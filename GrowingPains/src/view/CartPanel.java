@@ -2,7 +2,6 @@ package view;
 //GROWING PAINS - Mark Lambert - C00192497
 //GrowingPains CartPanel class - Contains structure for CartPanel area of app
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,8 +60,8 @@ public class CartPanel extends JPanel {
 		getProducts(cart);
 		
 //		Buttons
-		checkoutBtn = createButton("Checkout");
-		updateCartBtn = createButton("Update Cart");
+		checkoutBtn = GrowingButton.createButton("Checkout");
+		updateCartBtn = GrowingButton.createButton("Update Cart");
 		
 //		Event Handling for buttons
 		checkoutBtn.addActionListener(new ActionListener() {
@@ -170,23 +169,6 @@ public class CartPanel extends JPanel {
 		
 		add(cartPanel, BorderLayout.CENTER);
 	
-	}
-	
-	/**
-	 * Create a button method, encapsulate common code
-	 * 
-	 * @param name the the displayed on the button
-	 * @return the JButton created
-	 */
-	public JButton createButton(String name) {
-		JButton btn = new JButton(name);
-//		Set the imageIcon
-		btn.setForeground(Color.WHITE);
-		btn.setFont(GrowingPains.getArialFont());
-		btn.setBackground(GrowingPains.getColor());
-		btn.setBorderPainted(false);
-		
-		return btn;
 	}
 	
 	}

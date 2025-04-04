@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import controller.EmptyOrderException;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,11 +51,7 @@ public class OrdersPanel extends JPanel {
         loadCustomerOrders(customerID);
         
         //Build a Cancel order Button
-        cancelOrderBtn = new JButton("Cancel Order");
-        cancelOrderBtn.setForeground(Color.WHITE);
-        cancelOrderBtn.setFont(GrowingPains.getArialFont());
-        cancelOrderBtn.setBackground(GrowingPains.getColor());
-        cancelOrderBtn.setBorderPainted(false);
+        cancelOrderBtn = GrowingButton.createButton("Cancel Order");
         
         cancelOrderBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {

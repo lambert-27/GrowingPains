@@ -1,5 +1,0 @@
-Login Error: : Must be logged in before proceeding to Orders
-Login Error: : Must be logged in before proceeding to Reminders
-Login Error: : Must be logged in before proceeding to Cart
-Login Error: : Must be logged in before proceeding to Browse
-Login Error: : Must be logged in before proceeding to Edit Account

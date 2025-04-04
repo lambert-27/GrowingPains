@@ -5,6 +5,10 @@ package crud;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import model.DisplayItem;
 import model.Plant;
 /**
  * The PlantCrud class provides methods for performing CRUD (Create, Retrieve, Update, Delete)
@@ -89,30 +93,38 @@ public class PlantCrud extends Crud{
 }
 		
 	/**
-	 *  Retrieves all Plant items from the Product table 
-	 * @throws SQLException Error should a plant not be found in the table
-	 * @throws SQLException Error should a plant not be found in the table
+	 *  Retrieves all Plants from the Product table 
+	 * @return A List of DisplayItem object's
+	 * @throws SQLException Error should a product not be found in the table
 	 */
-	public void getAllPlants() throws SQLException {
+	public List<DisplayItem> getAllPlants() throws SQLException {
 		ResultSet resultSet = null;
-		
+//		ArrayList of products to store all selected products
+		List<DisplayItem> products = new ArrayList<>();
 		try {
-			PreparedStatement pstat = connection.prepareStatement("SELECT productID, productName, description, price, qty, category, image_path FROM Product where category='Plant'");
+			PreparedStatement pstat = connection.prepareStatement("SELECT productID, productName, description, price, qty, category, image_path FROM Product WHERE category='Plant'");
 			//Assign resultSet the value of the query
 			resultSet = pstat.executeQuery();
 			
-			System.out.println("\n-----All Plants in Product Table in GrowingPains DB-----");
 //			Check if resultSet has a value
 			while(resultSet.next()) {
-				System.out.println(resultSet.getInt("productID") + ", " + resultSet.getString("productName") + ", " + 
-				resultSet.getString("description") + ", " + resultSet.getDouble("price") + ", " +
-				resultSet.getInt("qty") + ", " + resultSet.getString("category") + " " + resultSet.getString("image_path"));
+				int id = resultSet.getInt("productID");
+				String name = resultSet.getString("productName");
+				String desc = resultSet.getString("description");
+				double price = resultSet.getDouble("price");
+				int qty = resultSet.getInt("qty");
+				String image_path = resultSet.getString("image_path");
+				
+				DisplayItem product = new DisplayItem(id, name, desc, price, qty, image_path);
+				products.add(product);
+				}
 			}
-		}
 			catch(SQLException sqlException) {
-				System.err.println("Error retrieving all Plants from table : " + sqlException.getMessage());
+				System.err.println("Error retrieving all Products from table : " + sqlException.getMessage());
 				sqlException.printStackTrace();
 			}
+		
+		return products;
 	}
 
 	

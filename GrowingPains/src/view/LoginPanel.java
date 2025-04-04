@@ -121,7 +121,7 @@ public class LoginPanel extends JPanel{
 		add(pass, gbc);
 		
 		//Submit button
-		submit = createButton("Login");
+		submit = GrowingButton.createButton("Login");
 
 		submit.setBorderPainted(false);
 		submit.setFocusPainted(false);
@@ -146,7 +146,7 @@ public class LoginPanel extends JPanel{
 		add(submit, gbc);
 		
 		//Cancel button
-		createAccount = createButton("Create an Account");
+		createAccount = GrowingButton.createButton("Create an Account");
 		
 		createAccount.setBorderPainted(false);
 		createAccount.setFocusPainted(false);
@@ -230,22 +230,6 @@ public class LoginPanel extends JPanel{
 	 */
 	public boolean checkLoggedIn() {
 		return this.loggedIn;
-	}
-	
-	/**
-	 * Create a button method, encapsulate common code
-	 * @param name the text displayed on the button
-	 * @return the JButton created
-	 */
-	public JButton createButton(String name) {
-		JButton btn = new JButton(name);
-//		Set the imageIcon
-		btn.setForeground(Color.WHITE);
-		btn.setFont(GrowingPains.getArialFont());
-		btn.setBackground(GrowingPains.getColor());
-		btn.setBorderPainted(false);
-		
-		return btn;
 	}
 	
 	/**

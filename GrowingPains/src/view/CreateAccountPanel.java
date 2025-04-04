@@ -142,7 +142,7 @@ public class CreateAccountPanel extends JPanel {
 		
 		
 //		Send data to DB
-		submit = createButton("Submit");
+		submit = GrowingButton.createButton("Submit");
 		submit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) 
@@ -186,7 +186,7 @@ public class CreateAccountPanel extends JPanel {
 		add(submit, gbc);
 
 //		Return back to login screen
-		returnToLogin = createButton("Return to Login");
+		returnToLogin = GrowingButton.createButton("Return to Login");
 		returnToLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -200,23 +200,7 @@ public class CreateAccountPanel extends JPanel {
 		add(returnToLogin, gbc);
 		
 	}
-	
-	/**
-	 * Create a button method, encapsulate common code
-	 * 
-	 * @param name the text displayed on the button
-	 * @return the JButton created
-	 */
-	public JButton createButton(String name) {
-		JButton btn = new JButton(name);
-//		Set the imageIcon
-		btn.setForeground(Color.WHITE);
-		btn.setFont(GrowingPains.getArialFont());
-		btn.setBackground(GrowingPains.getColor());
-		btn.setBorderPainted(false);
-		
-		return btn;
-	}
+
 	/**
 	 * Create a text field method, encapsulates common code
 	 *@return The JTextField object 

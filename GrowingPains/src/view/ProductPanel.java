@@ -2,7 +2,6 @@ package view;
 //GROWING PAINS - Mark Lambert - C00192497
 //GrowingPains ProductPanel class - Contains structure for the individual select product area 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -66,13 +65,7 @@ public class ProductPanel extends JPanel {
 
 		setImage(imagePath);
 
-		addToCart = new JButton("Add to Cart");
-		addToCart.setFont(new Font("Arial", Font.PLAIN, 18));
-		addToCart.setBackground(GrowingPains.getColor());
-		addToCart.setForeground(Color.WHITE);
-
-		addToCart.setBorderPainted(false);
-		addToCart.setFocusPainted(false);
+		addToCart = GrowingButton.createButton("Add to Cart");
 		
 		addToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -129,7 +129,7 @@ public class PaymentPanel extends JPanel{
 		
 				
 //		Send data to DB
-		pay = createButton("Place Order");
+		pay = GrowingButton.createButton("Place Order");
 		pay.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) 
@@ -148,7 +148,7 @@ public class PaymentPanel extends JPanel{
 		add(pay, gbc);
 
 //		Return back to login screen
-		returnToMenu = createButton("Return to Cart");
+		returnToMenu = GrowingButton.createButton("Return to Cart");
 		returnToMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -195,22 +195,6 @@ public class PaymentPanel extends JPanel{
 		}				
 	}
 	
-	/**
-	 * Create a button method, encapsulate common code
-	 * 
-	 * @param name the text displayed on the button
-	 * @return the JButton created
-	 */
-	public JButton createButton(String name) {
-		JButton btn = new JButton(name);
-//		Set the imageIcon
-		btn.setForeground(Color.WHITE);
-		btn.setFont(GrowingPains.getArialFont());
-		btn.setBackground(GrowingPains.getColor());
-		btn.setBorderPainted(false);
-		
-		return btn;
-	}
 	/**
 	 * Create a text field method, encapsulates common code
 	 *@return The JTextField object 
