@@ -277,25 +277,44 @@ public class EditAccountPanel extends JPanel{
 	        String phone = this.phone.getText();
 	        Address customerAdrs = new Address(adrs);
 	        
-	        // Validate passwords before hashing
-	        validatePasswords(oldPassEntered, newPassword, confirmPass, cust);
-	        
-	        // Hash the new password only after validation passes
-	        String hashedPassword = PasswordHasher.hashPassword(newPassword);
-	        
-	        customer = new Customer(fName, lName, email, hashedPassword, phone, customerAdrs);
-	        customer.setLoggedIn();
-	        customer.setCustomerID(cust.getCustomerID()); // Make sure to preserve the ID
-	        
-	        if(!(crud.updateCustomer(customer))) {
-	            throw new AccountEditException("Account edit failed");
+
+	        //Check if the user has input something into one of the old password/new password fields, if so, require
+	        //the user to commence the change password process
+	        if(oldPassEntered.isBlank() || newPassword.isBlank()) {
+	        	//Update just normal details, calling customer.getPassword to get the customers current password to ensure
+	        	//the edited customer Object does have the password assigned to its account object
+	        	customer = new Customer(fName, lName, email, customer.getPassword(), phone, customerAdrs);
+		        customer.setLoggedIn();
+		        customer.setCustomerID(cust.getCustomerID()); // Make sure to preserve the ID
+	        	if(!(crud.updateCustomerExclPass(customer))) {
+	        		throw new AccountEditException("Account edit, excluding passwords, failed");
+	        	}
+	        	
 	        }
-	        
+	        else {
+	        	//Update all details
+		        // Validate passwords before hashing
+		        validatePasswords(oldPassEntered, newPassword, confirmPass, cust);
+		        
+		        // Hash the new password only after validation passes
+		        String hashedPassword = PasswordHasher.hashPassword(newPassword);
+		        
+		        //Create new customer object with new password field
+		        customer = new Customer(fName, lName, email, hashedPassword, phone, customerAdrs);
+		        customer.setLoggedIn();
+		        customer.setCustomerID(cust.getCustomerID()); // Make sure to preserve the ID
+		        
+		        if(!(crud.updateCustomer(customer))) {
+		            throw new AccountEditException("Account edit failed");
+		        }
+	        }
+	                
 	        GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Browse");
 	        return true;
 	    } catch (SQLException e) {
 	        throw new AccountEditException("An error occurred with your SQL Statement/Database: " + e.getMessage());
 	    }
+	    
 	}
 	
 	/**
@@ -332,16 +351,6 @@ public class EditAccountPanel extends JPanel{
 			checkInfo(adrs, "Address");
 			checkInfo(phone, "Phone");
 			
-			//Check if password fields are empty
-			if(password.getPassword().length == 0) {
-				//Concatenate the name of the field onto the string for the exception
-				throw new EmptyFieldException("Password Field");
-			}
-			
-			if(confirmPass.getPassword().length == 0) {
-				throw new EmptyFieldException("Confirm Password field");
-			}
-			
 			//Check if the phone number field contains digits and spaces only (A very simple phone number validation using regex pattern)
 			if(!(phone.getText().matches("[\\d ]*"))) {
 				phone.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -375,6 +384,7 @@ public class EditAccountPanel extends JPanel{
 		
 		// Hash the entered old password for comparison
         String hashedOldPassEntered = PasswordHasher.hashPassword(oldPassEntered);
+        
         
 		//Check if the user has input the correct OLD password
 		if(!(hashedOldPassEntered.equals(cust.getPassword()))) {

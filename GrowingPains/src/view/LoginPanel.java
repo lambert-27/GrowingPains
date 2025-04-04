@@ -46,6 +46,7 @@ public class LoginPanel extends JPanel{
 	private Customer customer;
 	private String customerEmail;
 	private boolean loggedIn;
+	private JLabel errorLbl;
 	/**
 	 * Constructs a new LoginPanel, initialising the layout, title, buttons and input fields
 	 * 
@@ -62,24 +63,39 @@ public class LoginPanel extends JPanel{
 //		Padding above and below each component in the GridBag container
 		gbc.insets = new Insets(0, 0, 5, 5);
 		
+		
+		//Initialise the error label
+		errorLbl = new JLabel("Account not found!");
+		errorLbl.setForeground(Color.RED); // Make it red for visibility
+		errorLbl.setFont(GrowingPains.getArialFont());
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		// Span both columns
+		gbc.gridwidth = 2; 
+		add(errorLbl, gbc);
+		// Hide by default
+		errorLbl.setVisible(false); 
+		
+		//Set grid width back to normal
+		gbc.gridwidth = 1;
 //		Email Label
 		JLabel emailLbl = new JLabel("Email: ");
 		//Set pos (Note, start at 0 for x on labels, then for the textfield to appear beside x =1
 		gbc.gridx = 0;
-		gbc.gridy=0;
+		gbc.gridy=1;
 		emailLbl.setFont(GrowingPains.getArialFont());
 		add(emailLbl, gbc);
 		
 //		Email TextField
 		email = new JTextField(20);
 		gbc.gridx = 1;
-		gbc.gridy=0;
+		gbc.gridy=1;
 		add(email, gbc);
 		
 		//Password Label
 //		Note new line, meaning y pos has increased to 1
 		gbc.gridx = 0;
-		gbc.gridy=1;
+		gbc.gridy=2;
 		JLabel passlLbl = new JLabel("Password: ");
 		passlLbl.setFont(GrowingPains.getArialFont());
 		add(passlLbl, gbc);
@@ -101,7 +117,7 @@ public class LoginPanel extends JPanel{
 			}
 		});
 		gbc.gridx = 1;
-		gbc.gridy=1;
+		gbc.gridy=2;
 		add(pass, gbc);
 		
 		//Submit button
@@ -126,7 +142,7 @@ public class LoginPanel extends JPanel{
 		
 		//Note skipped a line, y pos = 3;
 		gbc.gridx = 0;
-		gbc.gridy=3;	
+		gbc.gridy=4;	
 		add(submit, gbc);
 		
 		//Cancel button
@@ -147,7 +163,7 @@ public class LoginPanel extends JPanel{
 		});
 		
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		add(createAccount, gbc);
 		
 		
@@ -180,6 +196,11 @@ public class LoginPanel extends JPanel{
 					customer.setLoggedIn();
 					return customer;
 				}
+			}
+			else
+			{
+				errorLbl.setVisible(true);
+				
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

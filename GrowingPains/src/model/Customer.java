@@ -45,8 +45,7 @@ public class Customer {
     	//Composition
     	setAccount(email, password, phone, address);
     }
-
-
+    
     /**
      * Constructs a Customer for UPDATING.
      * Creates the Account object by aggregating the email, password, phone and address

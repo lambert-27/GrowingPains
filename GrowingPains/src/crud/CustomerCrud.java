@@ -169,7 +169,7 @@ public class CustomerCrud extends Crud{
 		public boolean updateCustomer(Customer cust) throws SQLException, Exception {
 			try {
 				
-				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, password=?, phone=? WHERE email=?");
+				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, password=?, phone=? WHERE customerID=?");
 				
 				pstat.setString(1,  cust.getfName());
 				pstat.setString(2,  cust.getlName());
@@ -177,7 +177,33 @@ public class CustomerCrud extends Crud{
 				pstat.setString(4,  cust.getAddress());
 				pstat.setString(5, cust.getPassword());
 				pstat.setString(6, cust.getPhone());
-				pstat.setString(7,  cust.getEmail());
+				pstat.setInt(7,  cust.getCustomerID());
+				pstat.executeUpdate();
+				return true;
+			}catch(SQLException sqlException) {
+				System.err.println("Error retrieving customer from table: " + sqlException.getMessage());
+				sqlException.printStackTrace();
+			}
+			return false;
+		}
+		
+		/**
+		 *  Updates a Customer from the Customer table based on its customer ID, ignoring the password field
+		 * @param cust The Customer object with which is being edited
+		 * @throws SQLException Error should a Customer not be found in the table 
+		 * @return True/False
+		 */
+		public boolean updateCustomerExclPass(Customer cust) throws SQLException, Exception {
+			try {
+				
+				PreparedStatement pstat = connection.prepareStatement("UPDATE Customer SET fName=?, lName=?, email=?, address=?, phone=? WHERE customerID=?");
+				
+				pstat.setString(1,  cust.getfName());
+				pstat.setString(2,  cust.getlName());
+				pstat.setString(3,  cust.getEmail());
+				pstat.setString(4,  cust.getAddress());
+				pstat.setString(5, cust.getPhone());
+				pstat.setInt(6,  cust.getCustomerID());
 				pstat.executeUpdate();
 				return true;
 			}catch(SQLException sqlException) {
