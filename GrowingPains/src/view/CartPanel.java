@@ -38,9 +38,7 @@ public class CartPanel extends JPanel {
 	private List<OrderItem> cartItems;
 	private Cart cart;
 	//List of spinners for each product
-	private List<JSpinner> spinners;
-	
-	
+	private List<JSpinner> spinners;	
 
 	/**
 	 * Constructs a new CartPanel, initialising the layout, title and the products in the cart

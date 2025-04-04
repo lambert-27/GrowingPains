@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -91,7 +92,8 @@ public class BrowsePanel extends JPanel{
 			for (Item product : products){
 				String image_path = product.getImgPath();
 				ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
-				JLabel imgLabel = new JLabel(icon);
+				Image img = icon.getImage().getScaledInstance(250,  250,  Image.SCALE_SMOOTH);
+				JLabel imgLabel = new JLabel(new ImageIcon(img));
 				
 //				Add event for clicking on the image of a product, so user can visit a detailed screen of that product
 				imgLabel.addMouseListener(new MouseAdapter() {

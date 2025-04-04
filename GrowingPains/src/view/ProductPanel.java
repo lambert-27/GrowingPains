@@ -4,6 +4,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -95,7 +96,9 @@ public class ProductPanel extends JPanel {
 	 * @param imagePath The path to the image for the product
 	 */
 	public void setImage(String imagePath) {
-		imgLbl.setIcon(new ImageIcon(getClass().getResource(imagePath)));
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource(imagePath));
+		Image img = imageIcon.getImage().getScaledInstance(400,  400,  Image.SCALE_SMOOTH);
+		imgLbl.setIcon(new ImageIcon(img));
 		
 		imgLbl.setAlignmentX(CENTER_ALIGNMENT);
 //		Add padding to the image so that it isn't stuck to the top by the title
