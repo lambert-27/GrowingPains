@@ -191,8 +191,6 @@ public class LoginPanel extends JPanel{
 				customer = crud.getCustomerByEmail(custEmail);
 				if(customer != null) {
 					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Welcome");
-	//				Call of static method showButtons, to show the sideBar when the customer is logged in
-					GrowingPains.showButtons();
 					customer.setLoggedIn();
 					return customer;
 				}

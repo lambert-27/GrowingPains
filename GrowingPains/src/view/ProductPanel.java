@@ -72,6 +72,8 @@ public class ProductPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 //				When user clicks add to cart button, add the item to cart, with a quantity amount
 				cart.addItem(item, 1);
+				
+				GrowingPains.showCart();
 			}
 		});
 

@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import controller.ErrorWriter;
 import controller.UserNotLoggedInException;
+import crud.Crud;
 import model.Cart;
 import model.Catalogue;
 import model.Customer;
@@ -48,6 +49,7 @@ public class GrowingPains extends JFrame{
 	private static JButton exitBtn;
 	private static JButton editAccountBtn;
 	private static JButton ordersBtn;
+
 	//Package private static ErrorWriter variable, shared within view package, ensuring all contents 
 	//get appended to the file
 	static ErrorWriter errorWriter;
@@ -57,6 +59,9 @@ public class GrowingPains extends JFrame{
 	private static final Font ARIAL = new Font("Arial", Font.PLAIN, 20);
 	private static CardLayout cardLayout;
 	private static JPanel mainContent;
+	private static CartPanel cartPanel;
+	private static Cart cart;
+	private static Customer customer;
 	
 	private static final long serialVersionUID = 1L;
 	//	ImageIcon holds the path to the image for our icon
@@ -69,9 +74,8 @@ public class GrowingPains extends JFrame{
 	private LoginPanel login;
 	private BrowsePanel browse;
 	private ProductPanel productPanel;
-	private CartPanel cartPanel;
-	private Cart cart;
-	private Customer customer;
+
+
 	private EditAccountPanel edit = null;
 	private final int WIDTH = 1400;
 	private final int HEIGHT = 900;
@@ -109,7 +113,6 @@ public class GrowingPains extends JFrame{
 		mainContent();
 		topBar();
 		sideBar();
-		//hideButtons();
 	}
 	/**
 	 * Sets all elements within the container to visibile, signifying
@@ -253,6 +256,14 @@ public class GrowingPains extends JFrame{
 		sideBar.add(exitBtn);
 		exitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					//Close the connection to the DB when user presses the exit button
+					Crud.closeConnection();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//Exit system
 				System.exit(0);
 			}
 		});
@@ -349,30 +360,6 @@ public class GrowingPains extends JFrame{
 	}
 	
 	/**
-	 * Hides the sidebar buttons when the user is logged out
-	 */
-	public static void hideButtons() {
-		browseBtn.setVisible(false);
-		cartBtn.setVisible(false);
-		remindersBtn.setVisible(false);
-		exitBtn.setVisible(false);
-		editAccountBtn.setVisible(false);
-		ordersBtn.setVisible(false);
-	}
-	/**
-	 * Shows the sidebar buttons after the user logs in, as this is the first point of contact
-	 * with the application after logging in, this is where we set the customer details once logged in
-	 */
-	 public static void showButtons() {
-		browseBtn.setVisible(true);
-		cartBtn.setVisible(true);
-		remindersBtn.setVisible(true);
-		exitBtn.setVisible(true);
-		editAccountBtn.setVisible(true);
-		ordersBtn.setVisible(true);
-
-	}
-	/**
 	 * Creates a customer object and if the Customer is logged in, returns the details of the customer
 	 * @param exceptionMsg Passes the location to which the user is trying to access into the error message
 	 * @throws UserNotLoggedInException Error for if user is not logged in
@@ -386,8 +373,8 @@ public class GrowingPains extends JFrame{
 			    // Then check normal login
 			    Customer loggedInCustomer = login.handleLogin();
 			    if (loggedInCustomer != null) {
-			        this.customer = loggedInCustomer;
-			        this.customer.setLoggedIn();
+			        customer = loggedInCustomer;
+			        customer.setLoggedIn();
 			    } else {
 			        throw new UserNotLoggedInException(exceptionMsg);
 			    }
@@ -443,4 +430,11 @@ public class GrowingPains extends JFrame{
 		public static JPanel getMainContent() {
 			return mainContent;
 		}
+		
+		public static void showCart() {
+			cartPanel = new CartPanel(customer, cart);
+			mainContent.add(cartPanel, "Cart");
+			cardLayout.show(mainContent,  "Cart");
+		}
+		
 }

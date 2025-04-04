@@ -3,15 +3,18 @@ package view;
 //GrowingPains CartPanel class - Contains structure for CartPanel area of app
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -98,6 +101,7 @@ public class CartPanel extends JPanel {
 		checkoutPanel.add(totalPrice);
 //		Code to push to South
 		add(checkoutPanel, BorderLayout.SOUTH);
+		
 	}
 	
 	/**
@@ -110,6 +114,7 @@ public class CartPanel extends JPanel {
 		for(JSpinner spin: spinners) {
 			//Get the spinner @ current index
 			spin = spinners.get(index);
+
 			//Get product @ current index
 			OrderItem product = cartItems.get(index);
 			
@@ -121,7 +126,6 @@ public class CartPanel extends JPanel {
 			cartItems.get(index).setQty(newQty);
 			//Increment index
 			index++;
-
 		}
 		cart.setTotalPrice(total);
 		totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
@@ -133,13 +137,13 @@ public class CartPanel extends JPanel {
 	 * @param cart the cart containing the list of products to be displayed
 	 */
 	public void getProducts(Cart cart) {
-//Panel to hold all cart details
-		JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		
+		//Container panel for adding products into a list format by using BoxLayout.Y_AXIS
+		JPanel cartPanel = new JPanel();
+		cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
+
 //		For each Item in the List of Items
 		for (OrderItem product : cartItems){
-			//Place each product into its own container, as we want to display the image, 
-			//product name and price
+			//Place each product into its own container, as we want to display the image, product name and price
 			JPanel productPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			JPanel infoPanel = new JPanel(new BorderLayout());
 			
@@ -151,11 +155,13 @@ public class CartPanel extends JPanel {
 			price.setFont(GrowingPains.getArialFont());
 			String image_path = product.getImgPath();
 			ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
-			JLabel imgLabel = new JLabel(icon);
+			//Scale image
+			Image img = icon.getImage().getScaledInstance(200,  200,  Image.SCALE_SMOOTH);
+			JLabel imgLabel = new JLabel(new ImageIcon(img));
 			
 			//Add each spinner to the list of spinners
 			spinners.add(qtySpinner);
-
+			
 //			Container for the image AND the text
 			productPanel.add(imgLabel);
 			infoPanel.add(name, BorderLayout.NORTH);
@@ -165,7 +171,11 @@ public class CartPanel extends JPanel {
 			cartPanel.add(productPanel);		
 		}
 		
-		add(cartPanel, BorderLayout.CENTER);
+//		Allows the cart to be a scrollable page, displays the contents of the cartPanel in the scroll pane
+		JScrollPane scrollPane = new JScrollPane(cartPanel);
+//		Sets the increment value for when scrolling w/ mouse to a custom amount (Enables faster scrolling higher the number)
+		scrollPane.getVerticalScrollBar().setUnitIncrement(8);
+		add(scrollPane, BorderLayout.CENTER);
 	
 	}
 	
