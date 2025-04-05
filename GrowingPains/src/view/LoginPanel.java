@@ -22,8 +22,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.AccountControl;
-import controller.PasswordHasher;
-import crud.CustomerCrud;
 import model.Customer;
 
 /** 
@@ -43,9 +41,7 @@ public class LoginPanel extends JPanel{
 	private GridBagConstraints gbc;
 	private JButton submit;
 	private JButton createAccount;
-	private CustomerCrud crud;
 	private Customer customer;
-	private String customerEmail;
 	private boolean loggedIn;
 	private JLabel errorLbl;
 	private final AccountControl CONTROL = new AccountControl();
@@ -56,7 +52,6 @@ public class LoginPanel extends JPanel{
 	 */
 	public LoginPanel() throws SQLException {
 		loggedIn = false;
-		crud = new CustomerCrud();
 //		Using a gridbag layout for flexibility
 		gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -162,7 +157,6 @@ public class LoginPanel extends JPanel{
 	 */
 	public Customer handleLogin() {
 		String custEmail = email.getText();
-		customerEmail = custEmail;
 //		.getPassword() returns to us the array of characters that make up the password
 //		therefore, we first want to cast it as a String
 		String passWord = new String(pass.getPassword());
@@ -173,8 +167,11 @@ public class LoginPanel extends JPanel{
 				//Display error label if the user doesn't log in successfully
 				errorLbl.setVisible(true);
 			}
+			else {
+				loggedIn = true;
+				return customer;
+			}
 		} catch (Exception e) {
-			errorLbl.setVisible(loggedIn);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
