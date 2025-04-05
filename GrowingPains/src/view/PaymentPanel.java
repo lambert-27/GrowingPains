@@ -19,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.EmptyFieldException;
+import controller.PaymentControl;
 import controller.ValidationException;
 import crud.OrderCrud;
 import crud.ProductCrud;
@@ -46,7 +47,11 @@ public class PaymentPanel extends JPanel{
 	private JButton returnToMenu;
 	private GridBagLayout gbl;
 	private GridBagConstraints gbc;
-	
+	//String containing the numeric representation of the months of the year, note -- used as a default
+	private final String MONTHS[] = {"--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+	//String of abbreviated years, leading to 2031, as most credit cards at latest expire in 2031, note -- used as a default
+	private final String YEARS[] = {"--", "25", "26", "27", "28", "29", "30", "31"};
+	private final PaymentControl CONTROL = new PaymentControl();
 	/**
 	 * Constructor for the PaymentPanel, which builds the form for displaying
 	 * @param order The order the customer makes
@@ -111,9 +116,8 @@ public class PaymentPanel extends JPanel{
 		add(new JLabel("Expiry Month: "), gbc);
 		
 		gbc.gridy = 5;
-		//String containing the numeric representation of the months of the year, note -- used as a default
-		String months[] = {"--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
-		expiryMonth = new JComboBox<String>(months);
+
+		expiryMonth = new JComboBox<String>(MONTHS);
 		add(expiryMonth, gbc);
 		
 		//Expiry Year
@@ -122,9 +126,8 @@ public class PaymentPanel extends JPanel{
 		add(new JLabel("Expiry Year: "), gbc);
 		
 		gbc.gridy = 5;
-		//String of abbreviated years, leading to 2031, as most credit cards at latest expire in 2031, note -- used as a default
-		String years[] = {"--", "25", "26", "27", "28", "29", "30", "31"};
-		expiryYear = new JComboBox<String>(years);
+
+		expiryYear = new JComboBox<String>(YEARS);
 		add(expiryYear, gbc);
 		
 				
@@ -215,6 +218,7 @@ public class PaymentPanel extends JPanel{
 	 */
 	public void validateForm() throws ValidationException {
 		try {
+			CONTROL.checkFields(cardHolderFName, cardHolderLName, cardNumber, cvv, expiryMonth, expiryMonth);
 			checkInfo(cardHolderFName, "First Name");
 			checkInfo(cardHolderLName, "Last Name");
 			checkInfo(cardNumber, "Card Number");
