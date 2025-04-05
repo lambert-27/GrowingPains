@@ -156,20 +156,22 @@ public class LoginPanel extends JPanel{
 	
 	/**
 	 * Handles the event when users presses the login button
+	 * @return 
 	 */
-	public void handleLogin() {
+	public Customer handleLogin() {
 		submit.addMouseListener(new MouseAdapter() {
 			//When the user clicks the button to login, let them login
 			public void mouseClicked(MouseEvent e) {
-				login();
+				customer = login();
 			}
 		});
 		pass.addActionListener(new ActionListener(){
 			//When the user presses ENTER, let them login
 			public void actionPerformed(ActionEvent e) {
-				handleLogin();
+				customer = login();
 			}
 		});
+		return customer;
 	}
 	
 	/**
