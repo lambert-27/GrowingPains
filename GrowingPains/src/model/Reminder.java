@@ -4,6 +4,7 @@ package model;
 
 /**
  * Reminder class will hold all of the logic behind setting a watering reminder for a plant the Customer owns
+ * Coming Summer 2025
  */
 public class Reminder {
 

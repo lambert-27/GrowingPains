@@ -1,4 +1,6 @@
 controller
 crud
+exception
 model
+test
 view
