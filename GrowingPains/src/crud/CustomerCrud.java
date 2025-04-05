@@ -262,7 +262,7 @@ public class CustomerCrud extends Crud{
 		 * 
 		 * @throws SQLException Error should a Customer not be found in the table 
 		 */
-		public Customer getCustomerByEmail(String email) throws SQLException {
+		public Customer getCustomerByEmail(String email, String password) throws SQLException {
 			//Declare a new Customer
 			Customer c = new Customer();
 			//Declare a new ResultSet, default to null
@@ -270,8 +270,9 @@ public class CustomerCrud extends Crud{
 			
 			try {
 				//Prepared statement for Querying the Customer table
-				PreparedStatement pstat = connection.prepareStatement("SELECT customerID, fName, lName, email, address, password, phone FROM Customer WHERE email=?");
+				PreparedStatement pstat = connection.prepareStatement("SELECT customerID, fName, lName, email, address, password, phone FROM Customer WHERE email=? AND password=?");
 				pstat.setString(1,  email);
+				pstat.setString(2,  password);
 				//resultSet is assigned the result of the query
 				resultSet = pstat.executeQuery();
 

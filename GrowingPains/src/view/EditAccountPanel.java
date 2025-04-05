@@ -160,6 +160,43 @@
 			
 	//		Send data to DB
 			submit = GrowingButton.createButton("Submit");
+			gbc.gridx = 0;
+			gbc.gridy = 10;
+			handleEditEvent();
+			add(submit, gbc);
+	
+	//		Return back to browse screen
+			returnToBrowse = GrowingButton.createButton("Return to Browse");			
+			gbc.gridx = 1;
+			gbc.gridy = 10;
+			returnToBrowse();
+			add(returnToBrowse, gbc);
+			
+		}
+		
+		/**
+		 * Create a text field method, encapsulates common code
+		 * @param value The text to display on the text field
+		 * @return the JTextField object
+		 */
+		public JTextField createTextField(String value) {
+			JTextField txt = new JTextField(value);
+			txt.setPreferredSize(new Dimension(300, 30));
+			return txt;
+			
+		}
+		
+		public void returnToBrowse() {
+			returnToBrowse.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Browse");
+				}			
+			});
+		}
+		
+		public void handleEditEvent() {
 			submit.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) 
@@ -201,37 +238,6 @@
 					
 				}
 			});
-			
-			gbc.gridx = 0;
-			gbc.gridy = 10;
-			add(submit, gbc);
-	
-	//		Return back to browse screen
-			returnToBrowse = GrowingButton.createButton("Return to Browse");
-			returnToBrowse.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Browse");
-				}			
-			});
-			
-			gbc.gridx = 1;
-			gbc.gridy = 10;
-			add(returnToBrowse, gbc);
-			
-		}
-		
-		/**
-		 * Create a text field method, encapsulates common code
-		 * @param value The text to display on the text field
-		 * @return the JTextField object
-		 */
-		public JTextField createTextField(String value) {
-			JTextField txt = new JTextField(value);
-			txt.setPreferredSize(new Dimension(300, 30));
-			return txt;
-			
 		}
 		
 		/**

@@ -255,4 +255,28 @@
 			}
 			
 		}
+		
+		public Customer login(String custEmail, String passWord, Customer customer) {
+				try {
+					
+					String storedHashPass = crud.getHashedPass(custEmail);
+					if(PasswordHasher.verifyPassword(passWord, storedHashPass) ) {
+//						Retrieve the customer from the database 
+						customer = crud.getCustomerByEmail(custEmail, storedHashPass);
+						if(customer != null) {
+							GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Welcome");
+							customer.setLoggedIn();
+							return customer;
+						}
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//Return null if the customer cannot be logged in
+				return null;
+		}
 	}

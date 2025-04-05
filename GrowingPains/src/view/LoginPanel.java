@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controller.AccountControl;
 import controller.PasswordHasher;
 import crud.CustomerCrud;
 import model.Customer;
@@ -47,6 +48,7 @@ public class LoginPanel extends JPanel{
 	private String customerEmail;
 	private boolean loggedIn;
 	private JLabel errorLbl;
+	private final AccountControl CONTROL = new AccountControl();
 	/**
 	 * Constructs a new LoginPanel, initialising the layout, title, buttons and input fields
 	 * 
@@ -105,15 +107,7 @@ public class LoginPanel extends JPanel{
 		pass.addActionListener(new ActionListener(){
 			//When the user presses ENTER, let them login
 			public void actionPerformed(ActionEvent e) {
-				if(handleLogin() != null) {
-					try {
-						customer = crud.getCustomerByEmail(customerEmail);
-						loggedIn = true;
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				handleLogin();
 			}
 		});
 		gbc.gridx = 1;
@@ -128,24 +122,16 @@ public class LoginPanel extends JPanel{
 		submit.addMouseListener(new MouseAdapter() {
 			//When the user clicks the button to login, let them login
 			public void mouseClicked(MouseEvent e) {
-				if(handleLogin() != null) {
-					try {
-						customer = crud.getCustomerByEmail(customerEmail);
-						loggedIn = true;
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				handleLogin();
 			}
 		});
 		
-		//Note skipped a line, y pos = 3;
+		//Note skipped a line, y pos = 4;
 		gbc.gridx = 0;
 		gbc.gridy=4;	
 		add(submit, gbc);
 		
-		//Cancel button
+		//Create account button
 		createAccount = GrowingButton.createButton("Create an Account");
 		
 		createAccount.setBorderPainted(false);
@@ -182,32 +168,16 @@ public class LoginPanel extends JPanel{
 		String passWord = new String(pass.getPassword());
 
 		try {
-			
-			String storedHashPass = crud.getHashedPass(custEmail);
-			
-			if(PasswordHasher.verifyPassword(passWord, storedHashPass)) {
-				loggedIn = true;
-//				Retrieve the customer from the database 
-				customer = crud.getCustomerByEmail(custEmail);
-				if(customer != null) {
-					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Welcome");
-					customer.setLoggedIn();
-					return customer;
-				}
-			}
-			else
-			{
+			customer = CONTROL.login(custEmail, passWord, customer);
+			if(customer == null) {
+				//Display error label if the user doesn't log in successfully
 				errorLbl.setVisible(true);
-				
 			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		} catch (Exception e) {
+			errorLbl.setVisible(loggedIn);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 //		Return null for login fail
 		return null;
 	}
