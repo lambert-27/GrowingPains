@@ -80,7 +80,7 @@ public class BrowsePanel extends JPanel{
 	/**
 	 * Retrieves a list of all products and adds them to the grid for display
 	 * 
-	 * Iterates through each product usng a for each loop, creating the relevant details
+	 * Iterates through each product using a for each loop, creating the relevant details
 	 * about each product in the catalogue
 	 * 
 	 * @param products a List of all products in the cart
@@ -104,7 +104,7 @@ public class BrowsePanel extends JPanel{
 					p.setDescription(product.getDescription());
 					p.setPrice(product.getPrice());
 					p.setItem(product);
-//						Once the title is set, switch the cardLayout to the "Procuct" card, with the new heading matching the product
+//					Once the title is set, switch the cardLayout to the "Procuct" card, with the new heading matching the product
 					CONTROL.handleSelectedProduct();
 				}
 				

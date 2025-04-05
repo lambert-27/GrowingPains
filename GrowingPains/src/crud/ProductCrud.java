@@ -52,7 +52,7 @@ public class ProductCrud extends Crud{
 	
 	
 	/**
-	 *  Retrieves all Products from the Product table 
+	 * Retrieves all Products from the Product table 
 	 * @return A List of DisplayItem object's
 	 * @throws SQLException Error should a product not be found in the table
 	 */
