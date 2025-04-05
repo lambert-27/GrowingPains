@@ -50,9 +50,9 @@ public class GrowingPains extends JFrame{
 	private static JButton editAccountBtn;
 	private static JButton ordersBtn;
 
-	//Package private static ErrorWriter variable, shared within view package, ensuring all contents 
+	//Public static ErrorWriter variable, shared within view package, ensuring all contents 
 	//get appended to the file
-	static ErrorWriter errorWriter;
+	public static ErrorWriter errorWriter;
 //	Custom green colour 
 	private static final Color GREEN = new Color(24, 65, 15);
 //	Common font used for buttons and headings

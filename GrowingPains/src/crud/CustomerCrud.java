@@ -20,7 +20,6 @@ public class CustomerCrud extends Crud{
 	 */
 	public CustomerCrud() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 *  Inserts a Customer into the Customer table 

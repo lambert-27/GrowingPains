@@ -18,10 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import controller.EmptyCartException;
+import controller.CartControl;
 import model.Cart;
 import model.Customer;
-import model.Order;
+
 import model.OrderItem;
 
 /**
@@ -39,9 +39,9 @@ public class CartPanel extends JPanel {
 	JLabel totalPrice;
 	JPanel checkoutPanel;
 	private List<OrderItem> cartItems;
-	private Cart cart;
 	//List of spinners for each product
 	private List<JSpinner> spinners;	
+	private final CartControl CONTROL = new CartControl();
 
 	/**
 	 * Constructs a new CartPanel, initialising the layout, title and the products in the cart
@@ -51,8 +51,6 @@ public class CartPanel extends JPanel {
 	 */
 	public CartPanel(Customer customer, Cart cart) {
 		setLayout(new BorderLayout());
-		//Set the CartPanel Cart to the Customers Cart
-		this.cart = cart;
 		this.cartItems = cart.getCart();
 		spinners = new ArrayList<JSpinner>();
 		
@@ -64,34 +62,21 @@ public class CartPanel extends JPanel {
 		checkoutBtn = GrowingButton.createButton("Checkout");
 		updateCartBtn = GrowingButton.createButton("Update Cart");
 		
-//		Event Handling for buttons
+//		Event Handling for checkout button
 		checkoutBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Try block, checks if the cartItems list is empty, if it is, throw EmptyCartException
-				try {
-				if(!cartItems.isEmpty()) {
-//					Create a new order object for insertion
-					Order order = new Order(customer.getCustomerID(), customer.getAddress(), cart.getTotalPrice());
-					GrowingPains.getMainContent().add(new PaymentPanel(order, cart), "Payment");
-					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Payment");
-				}else
-				{
-					throw new EmptyCartException("Cannt proceed to checkout with an empty cart");
-				}
-			}catch(EmptyCartException e1) {
-				//Write the error to log
-				GrowingPains.errorWriter.logError("Empty Cart Error: ", e1.getMessage());
-			}
-
+				CONTROL.submitOrder(customer, cart, cartItems);
 			}
 		});
 		
+//		Event Handling for updateCart button
 		updateCartBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateCartValues();
+				CONTROL.updateCartValues(cart, cartItems, spinners);
+				//Set the totalPrice label to the updated price of the cart
+				totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
 			}
 		});
-		
 		
 //		Panel that holds the total price andd the checkout button, pushed to the RIGHT BOTTOM of screen
 		checkoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -104,32 +89,7 @@ public class CartPanel extends JPanel {
 		
 	}
 	
-	/**
-	 * Updates the cart values based on the spinner value for each cart item
-	 */
-	public void updateCartValues() {
-		double total = 0;
-		int index = 0;
-		//For each loop ot iterate through spinners
-		for(JSpinner spin: spinners) {
-			//Get the spinner @ current index
-			spin = spinners.get(index);
 
-			//Get product @ current index
-			OrderItem product = cartItems.get(index);
-			
-			//New qty of items 
-			int newQty = (int) spin.getValue();
-			//Calculate total price
-			total += newQty * product.getPrice();
-			//Set the new qty of items
-			cartItems.get(index).setQty(newQty);
-			//Increment index
-			index++;
-		}
-		cart.setTotalPrice(total);
-		totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
-	}
 	
 	/**
 	 * Retrieves a list of all products and adds them to the panel for display

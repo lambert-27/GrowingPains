@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -23,8 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import crud.AccessoryCrud;
-import crud.PlantCrud;
+import controller.BrowseControl;
 import model.Catalogue;
 import model.DisplayItem;
 import model.Item;
@@ -45,9 +43,11 @@ public class BrowsePanel extends JPanel{
 	private JPanel gridPanel;
 	//Use of JComboBoxes for getting card expiry information
 	private JComboBox<String> filterList;
-	private String[] filters = {"Select a Filter", "Plant", "Accessory"};
+	private final String[] FILTERS  = {"Select a Filter", "Plant", "Accessory"};
 	private JButton filterBtn;
 	private JPanel filterPanel;
+	private final BrowseControl CONTROL = new BrowseControl();
+	private final Font PRODUCTFONT = new Font("Arial", Font.PLAIN, 24);
 
 	/**
 	 * Constructs a new BrowsePanel, initialising the layout, title and other functionality like scroll speed
@@ -87,7 +87,7 @@ public class BrowsePanel extends JPanel{
 		 * @param p the ProductPanel that displays product details
 		 */
 		public void getProducts(List<DisplayItem> products, ProductPanel p) {
-			Font productFont = new Font("Arial", Font.PLAIN, 24);
+			
 //			For each Item in the List of Items
 			for (Item product : products){
 				String image_path = product.getImgPath();
@@ -105,14 +105,14 @@ public class BrowsePanel extends JPanel{
 						p.setPrice(product.getPrice());
 						p.setItem(product);
 //						Once the title is set, switch the cardLayout to the "Procuct" card, with the new heading matching the product
-						GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Product");
+						CONTROL.handleSelectedProduct();
 					}
 					
 				});
 				
 				JLabel nameLabel = new JLabel(product.getItemName(), SwingConstants.CENTER);
 				JLabel priceLabel = new JLabel("€" + product.getPrice(), SwingConstants.CENTER);
-				priceLabel.setFont(productFont);
+				priceLabel.setFont(PRODUCTFONT);
 				nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
 				//Place each product into its own container, as we want to display the image, 
 				//product name and price
@@ -135,7 +135,7 @@ public class BrowsePanel extends JPanel{
 		 */
 		public void addFilterComponents(Catalogue catalogue, ProductPanel p) {
 			// Inside the BrowsePanel constructor
-			filterList = new JComboBox<String>(filters);
+			filterList = new JComboBox<String>(FILTERS);
 			filterBtn = GrowingButton.createButton("Apply Filter");
 			//Increase the size of the filter box
 			filterList.setPreferredSize(new Dimension(150, 30));
@@ -144,32 +144,7 @@ public class BrowsePanel extends JPanel{
 			filterPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			filterPanel.add(filterList);
 
-			filterBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					List<DisplayItem> filteredCatalogue = new ArrayList<DisplayItem>();
-					try {
-						if(filterList.getSelectedItem().toString().equals("Plant")){
-							PlantCrud crud = new PlantCrud();
-							filteredCatalogue = crud.getAllPlants();
-						}
-						else if(filterList.getSelectedItem().toString().equals("Accessory")) {
-							AccessoryCrud crud = new AccessoryCrud();
-							filteredCatalogue = crud.getAllAccessories();
-						}
-						else
-							filteredCatalogue = catalogue.displayCatalogue();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-						gridPanel.removeAll();
-						getProducts(filteredCatalogue, p);
-						revalidate();
-						repaint();
-					}
-
-				});
+			handleFilter(p);
 			
 			filterPanel.add(filterBtn);
 			
@@ -177,6 +152,25 @@ public class BrowsePanel extends JPanel{
 			add(filterPanel, BorderLayout.SOUTH);
 		}
 		
-		
+		public void handleFilter(ProductPanel p) {
+		filterBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					//CLear grid
+					gridPanel.removeAll();
+					//Get new products, passing the string of the selected item to the controller argument
+					getProducts(CONTROL.filterCatalogue(filterList.getSelectedItem().toString()), p);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+					
+				//Revalidate screen
+				revalidate();
+				repaint();
+				}
+
+			});
+		}
 }
 
