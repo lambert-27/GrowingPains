@@ -12,9 +12,9 @@ import java.util.FormatterClosedException;
 public class ErrorWriter {
 	private Formatter output;
 	
-	/**
-	 * Opens a file "error.txt" when called
-	 */
+/**
+ * Opens a file "error.txt" when called
+ */
 	public void openFile() {
 		try {
 			output = new Formatter("error.txt");
@@ -32,10 +32,10 @@ public class ErrorWriter {
 	 */
 	public void logError(String type, String message) {
 		try {
-            output.format("%s: %s%n", type, message);
-            //Calling .flush on the formatter forces it to print the error straight to the txt file without any buffer between
-            //calls (doesn't have to wait for a list of errors to build up/certain amount of time/ close application etc)
-            output.flush();
+	        output.format("%s: %s%n", type, message);
+	        //Calling .flush on the formatter forces it to print the error straight to the txt file without any buffer between
+	        //calls (doesn't have to wait for a list of errors to build up/certain amount of time/ close application etc)
+	        output.flush();
 		}catch (FormatterClosedException f) {
 			System.err.println("Error writing to file");
 		}
@@ -47,7 +47,7 @@ public class ErrorWriter {
 	public void closeFile (){
 		if (output != null )
 		output. close () ;
-		}
+	}
 		
 } 
 

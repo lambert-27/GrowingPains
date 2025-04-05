@@ -3,7 +3,9 @@ package view;
 import java.awt.Color;
 
 import javax.swing.JButton;
-
+/**
+ * Class which holds the method for creating and styling a button according to the design requirements for the system
+ */
 public class GrowingButton {
 	/**
 	 * Create a button method, encapsulate common code

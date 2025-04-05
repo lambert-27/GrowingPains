@@ -1,19 +1,54 @@
 package controller;
-
+//GROWING PAINS - Mark Lambert - C00192497
+//GrowingPains controller package - CartControl - Controls the logic behind the different GUI operations when in the Payment section of the application
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import crud.OrderCrud;
+import crud.ProductCrud;
+import exception.EmptyFieldException;
+import exception.ValidationException;
+import model.Cart;
+import model.Order;
+import model.OrderItem;
+
+/**
+ * PaymentControl handles all of the logic behind the Order creation process
+ */
 public class PaymentControl {
+	private OrderCrud orderCrud;
+	private ProductCrud productCrud;
 	
+	/**
+	 * Constructs a new PaymentControl object, initialising OrderCrud and ProductCrud objects used to interact with the database
+	 * @throws SQLException Exception thrown if an error occurs when connecting to the db
+	 */
+	public PaymentControl() throws SQLException{
+		this.orderCrud = new OrderCrud();
+		this.productCrud = new ProductCrud();
+	}
 	
+	/**
+	 * Checks all of the fields within the PaymentPanel for some specified form of validation
+	 * @param fName JTextField representing the cardholders  First Name
+	 * @param lName JTextField representing the cardholders Last Name
+	 * @param cardNumber JTextField representing the card number 
+	 * @param cvv JPasswordField representing thee CVV
+	 * @param expiryMonth JComboBox representing the 12 months of the year 
+	 * @param expiryYear JComboBox representing the next 6 years 
+	 * @throws ValidationException Exception thrown if an error occurs with validating the data
+	 */
 	public void checkFields(JTextField fName, JTextField lName, JTextField cardNumber, JPasswordField cvv, JComboBox<String> expiryMonth, JComboBox<String> expiryYear) throws ValidationException {
 		checkInfo(fName, "First Name");
 		checkInfo(lName, "Last Name");
 		checkInfo(cardNumber, "Card Number");
+		checkInfo(cvv, "CVV");
 		
 
 		//Check if the CVV is exactly 3 digits long, we convert the character array from .getPassword to a new String
@@ -33,6 +68,29 @@ public class PaymentControl {
 			throw new ValidationException("Must select expiry date");
 		}
 		
+	}
+	
+	/**
+	 * Makes an order and inserts the details of the order into the DB. Also makes a payment object for future expansion
+	 * @param cart The customers cart
+	 * @param order The customers order
+	 * @throws ValidationException Exception for if the user enters invalid data
+	 */
+	public void makeOrder(Cart cart, Order order) throws ValidationException {
+		try {
+			//Get an updated list of the cart
+			List<OrderItem> cartItems = cart.getCart();
+//			Iterate through the cart
+			for(OrderItem product : cartItems) {
+//				For each item in the cart, execute the update query to update the product quantity
+				productCrud.updateQty(product, product.getNewQty());
+			}
+//			Finally, insert the order
+			orderCrud.insertOrder(order);
+			cart.clearCart();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}				
 	}
 	
 	/**

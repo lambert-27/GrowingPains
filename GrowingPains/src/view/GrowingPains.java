@@ -20,8 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import controller.ErrorWriter;
-import controller.UserNotLoggedInException;
 import crud.Crud;
+import exception.UserNotLoggedInException;
 import model.Cart;
 import model.Catalogue;
 import model.Customer;
@@ -436,6 +436,9 @@ public class GrowingPains extends JFrame{
 			return mainContent;
 		}
 		
+		/**
+		 * Switches the navigation to the CartPanel
+		 */
 		public static void showCart() {
 			cartPanel = new CartPanel(customer, cart);
 			mainContent.add(cartPanel, "Cart");

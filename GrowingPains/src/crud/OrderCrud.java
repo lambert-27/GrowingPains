@@ -27,9 +27,7 @@ public class OrderCrud extends Crud{
 	
 	/**
 	 *  Inserts a Order into the Orders table 
-	 * @param order An Order Object containing all details 
-	 * (customerID, productID, date, time, address, price)
-	 * to be entered into the Order table
+	 * @param order An Order Object containing all details to be entered into the Order table
 	 * @throws SQLException Error for insertion of an Order into the Order table
 	 */
 	public void insertOrder(Order order) throws SQLException {

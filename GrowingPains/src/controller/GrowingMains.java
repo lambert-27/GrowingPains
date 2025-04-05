@@ -22,6 +22,7 @@ public class GrowingMains {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			}
+			
 		}
-//TODO Change water reminder to back in stock reminder
+		
+}

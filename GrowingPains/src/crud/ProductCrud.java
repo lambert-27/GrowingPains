@@ -23,7 +23,6 @@ public class ProductCrud extends Crud{
 	 */
 	public ProductCrud() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**

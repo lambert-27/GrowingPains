@@ -8,8 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controller.EmptyOrderException;
 import controller.OrderControl;
+import exception.EmptyOrderException;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -31,13 +31,12 @@ public class OrdersPanel extends JPanel {
     /**
      * Creates a new OrdersPanel which creates the headings for the JTable, adds a scroll pane to it and populates w/orders
      * @param customerID The logged in customer
-     * @throws SQLException 
+     * @throws SQLException error thrown if problem occurs when querying the Order table
      */
     public OrdersPanel(int customerID) throws SQLException {
         setLayout(new BorderLayout());
         
         ordersTable = new JTable(ORDERSTABLEMODEL);
-
 
         //Set tale to not editable, but selectable
         ordersTable.setDefaultEditor(Object.class, null);
@@ -60,6 +59,9 @@ public class OrdersPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
+    /**
+     * Updates the Orders table by removing the record and then re-displaying the table of orders back to the user
+     */
     private void handleCancelOrder() {
     	 cancelOrderBtn.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent e) {

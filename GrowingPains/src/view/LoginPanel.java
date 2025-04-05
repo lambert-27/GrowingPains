@@ -99,27 +99,16 @@ public class LoginPanel extends JPanel{
 		
 		//Password Field
 		pass = new JPasswordField(20);
-		pass.addActionListener(new ActionListener(){
-			//When the user presses ENTER, let them login
-			public void actionPerformed(ActionEvent e) {
-				handleLogin();
-			}
-		});
 		gbc.gridx = 1;
 		gbc.gridy=2;
 		add(pass, gbc);
 		
 		//Submit button
 		submit = GrowingButton.createButton("Login");
-
+		handleLogin();
 		submit.setBorderPainted(false);
 		submit.setFocusPainted(false);
-		submit.addMouseListener(new MouseAdapter() {
-			//When the user clicks the button to login, let them login
-			public void mouseClicked(MouseEvent e) {
-				handleLogin();
-			}
-		});
+
 		
 		//Note skipped a line, y pos = 4;
 		gbc.gridx = 0;
@@ -128,26 +117,12 @@ public class LoginPanel extends JPanel{
 		
 		//Create account button
 		createAccount = GrowingButton.createButton("Create an Account");
-		
 		createAccount.setBorderPainted(false);
 		createAccount.setFocusPainted(false);
-		createAccount.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				try {
-					CreateAccountPanel createAccountPanel = new CreateAccountPanel();
-					GrowingPains.getMainContent().add(createAccountPanel, "CreateAccount");
-					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "CreateAccount");
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		
 		gbc.gridx = 1;
 		gbc.gridy = 4;
-		add(createAccount, gbc);
-		
-		
+		goToCreateAccount();
+		add(createAccount, gbc);		
 	}
 	
 	/**
@@ -155,7 +130,7 @@ public class LoginPanel extends JPanel{
 	 * 
 	 * @return The logged in customer object
 	 */
-	public Customer handleLogin() {
+	public Customer login() {
 		String custEmail = email.getText();
 //		.getPassword() returns to us the array of characters that make up the password
 //		therefore, we first want to cast it as a String
@@ -177,6 +152,24 @@ public class LoginPanel extends JPanel{
 		}
 //		Return null for login fail
 		return null;
+	}
+	
+	/**
+	 * Handles the event when users presses the login button
+	 */
+	public void handleLogin() {
+		submit.addMouseListener(new MouseAdapter() {
+			//When the user clicks the button to login, let them login
+			public void mouseClicked(MouseEvent e) {
+				login();
+			}
+		});
+		pass.addActionListener(new ActionListener(){
+			//When the user presses ENTER, let them login
+			public void actionPerformed(ActionEvent e) {
+				handleLogin();
+			}
+		});
 	}
 	
 	/**
@@ -203,6 +196,23 @@ public class LoginPanel extends JPanel{
 	 */
 	public void updateCustomer(Customer customer) {
 		this.customer = customer;
+	}
+	
+	/**
+	 * Creates a new CerateAccount panel and then switches the display to that screen
+	 */
+	public void goToCreateAccount() {
+		createAccount.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				try {
+					CreateAccountPanel createAccountPanel = new CreateAccountPanel();
+					GrowingPains.getMainContent().add(createAccountPanel, "CreateAccount");
+					GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "CreateAccount");
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 	
 }

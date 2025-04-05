@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import model.OrderItem;
  * It displays the list of items in the Cart, allowing the user to alter quantities of
  * each item, see the total price and proceed to checkout
  * 
- * It holds a value oldVal used for updating the price by using the JSpinner quantity
  */
 public class CartPanel extends JPanel {
 
@@ -65,7 +65,12 @@ public class CartPanel extends JPanel {
 //		Event Handling for checkout button
 		checkoutBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CONTROL.submitOrder(customer, cart, cartItems);
+				try {
+					CONTROL.submitOrder(customer, cart, cartItems);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		

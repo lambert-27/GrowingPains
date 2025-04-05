@@ -22,7 +22,6 @@ public class PlantCrud extends Crud{
 	 */
 	public PlantCrud() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 

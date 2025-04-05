@@ -77,100 +77,106 @@ public class BrowsePanel extends JPanel{
 			
 		}
 		
-		/**
-		 * Retrieves a list of all products and adds them to the grid for display
-		 * 
-		 * Iterates through each product usng a for each loop, creating the relevant details
-		 * about each product in the catalogue
-		 * 
-		 * @param products a List of all products in the cart
-		 * @param p the ProductPanel that displays product details
-		 */
-		public void getProducts(List<DisplayItem> products, ProductPanel p) {
-			
+	/**
+	 * Retrieves a list of all products and adds them to the grid for display
+	 * 
+	 * Iterates through each product usng a for each loop, creating the relevant details
+	 * about each product in the catalogue
+	 * 
+	 * @param products a List of all products in the cart
+	 * @param p the ProductPanel that displays product details
+	 */
+	public void getProducts(List<DisplayItem> products, ProductPanel p) {
+		
 //			For each Item in the List of Items
-			for (Item product : products){
-				String image_path = product.getImgPath();
-				ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
-				Image img = icon.getImage().getScaledInstance(250,  250,  Image.SCALE_SMOOTH);
-				JLabel imgLabel = new JLabel(new ImageIcon(img));
-				
+		for (Item product : products){
+			String image_path = product.getImgPath();
+			ImageIcon icon = new ImageIcon(getClass().getResource(image_path));
+			Image img = icon.getImage().getScaledInstance(250,  250,  Image.SCALE_SMOOTH);
+			JLabel imgLabel = new JLabel(new ImageIcon(img));
+			
 //				Add event for clicking on the image of a product, so user can visit a detailed screen of that product
-				imgLabel.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
+			imgLabel.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
 //						//Set the title of the product to that of the currently selected product by calling product.getItemName
-						p.setTitle(product.getItemName());
-						p.setImage(product.getImgPath());
-						p.setDescription(product.getDescription());
-						p.setPrice(product.getPrice());
-						p.setItem(product);
+					p.setTitle(product.getItemName());
+					p.setImage(product.getImgPath());
+					p.setDescription(product.getDescription());
+					p.setPrice(product.getPrice());
+					p.setItem(product);
 //						Once the title is set, switch the cardLayout to the "Procuct" card, with the new heading matching the product
-						CONTROL.handleSelectedProduct();
-					}
-					
-				});
+					CONTROL.handleSelectedProduct();
+				}
 				
-				JLabel nameLabel = new JLabel(product.getItemName(), SwingConstants.CENTER);
-				JLabel priceLabel = new JLabel("€" + product.getPrice(), SwingConstants.CENTER);
-				priceLabel.setFont(PRODUCTFONT);
-				nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
-				//Place each product into its own container, as we want to display the image, 
-				//product name and price
-				JPanel productPanel = new JPanel(new BorderLayout());
-				JPanel infoPanel = new JPanel(new BorderLayout());
+			});
+			
+			JLabel nameLabel = new JLabel(product.getItemName(), SwingConstants.CENTER);
+			JLabel priceLabel = new JLabel("€" + product.getPrice(), SwingConstants.CENTER);
+			priceLabel.setFont(PRODUCTFONT);
+			nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
+			//Place each product into its own container, as we want to display the image, 
+			//product name and price
+			JPanel productPanel = new JPanel(new BorderLayout());
+			JPanel infoPanel = new JPanel(new BorderLayout());
 
 //				Container just for the text info
-				infoPanel.add(nameLabel, BorderLayout.NORTH);
-				infoPanel.add(priceLabel, BorderLayout.CENTER);
-				
+			infoPanel.add(nameLabel, BorderLayout.NORTH);
+			infoPanel.add(priceLabel, BorderLayout.CENTER);
+			
 //				Container for the image AND the text
-				productPanel.add(imgLabel, BorderLayout.NORTH);
-				productPanel.add(infoPanel, BorderLayout.CENTER);
-				
-				gridPanel.add(productPanel);
-			}
-		}		
-		/**
-		 * Method which adds the filter JComboBox and the filter JButton to the browsePanel
-		 */
-		public void addFilterComponents(Catalogue catalogue, ProductPanel p) {
-			// Inside the BrowsePanel constructor
-			filterList = new JComboBox<String>(FILTERS);
-			filterBtn = GrowingButton.createButton("Apply Filter");
-			//Increase the size of the filter box
-			filterList.setPreferredSize(new Dimension(150, 30));
-
-			//filterPanel used to wrap the filter components in a FlowLayout, pushed to the right (in keeping with other JPanels with buttons)
-			filterPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			filterPanel.add(filterList);
-
-			handleFilter(p);
+			productPanel.add(imgLabel, BorderLayout.NORTH);
+			productPanel.add(infoPanel, BorderLayout.CENTER);
 			
-			filterPanel.add(filterBtn);
-			
-			// Add the filterPanel to the WEST of main Browse Panel
-			add(filterPanel, BorderLayout.SOUTH);
+			gridPanel.add(productPanel);
 		}
+	}		
+	/**
+	 * Method which adds the filter JComboBox and the filter JButton to the browsePanel
+	 * @param catalogue The catalogue of in stock items
+	 * @param p The panel of products
+	 */
+	public void addFilterComponents(Catalogue catalogue, ProductPanel p) {
+		// Inside the BrowsePanel constructor
+		filterList = new JComboBox<String>(FILTERS);
+		filterBtn = GrowingButton.createButton("Apply Filter");
+		//Increase the size of the filter box
+		filterList.setPreferredSize(new Dimension(150, 30));
+
+		//filterPanel used to wrap the filter components in a FlowLayout, pushed to the right (in keeping with other JPanels with buttons)
+		filterPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		filterPanel.add(filterList);
+
+		handleFilter(p);
 		
-		public void handleFilter(ProductPanel p) {
-		filterBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					//CLear grid
-					gridPanel.removeAll();
-					//Get new products, passing the string of the selected item to the controller argument
-					getProducts(CONTROL.filterCatalogue(filterList.getSelectedItem().toString()), p);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-					
-				//Revalidate screen
-				revalidate();
-				repaint();
-				}
+		filterPanel.add(filterBtn);
+		
+		// Add the filterPanel to the WEST of main Browse Panel
+		add(filterPanel, BorderLayout.SOUTH);
+	}
+	
+	/**
+	 * Filters products in the ProductPanel by querying the database based on the value of the filterList selected item
+	 * @param p The current panel displaying the current state of catalogue
+	 */
+	public void handleFilter(ProductPanel p) {
+	filterBtn.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				//CLear grid
+				gridPanel.removeAll();
+				//Get new products, passing the string of the selected item to the controller argument
+				getProducts(CONTROL.filterCatalogue(filterList.getSelectedItem().toString()), p);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			//Revalidate screen
+			revalidate();
+			repaint();
+			}
 
-			});
-		}
+		});
+	}
 }
 

@@ -19,10 +19,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.AccountControl;
-import controller.AccountCreationException;
-import controller.EmptyFieldException;
-import controller.PasswordInconsistentException;
-import controller.ValidationException;
+import exception.AccountCreationException;
+import exception.EmptyFieldException;
+import exception.PasswordInconsistentException;
+import exception.ValidationException;
 
 /** 
  * The CreateAccountPanel class represents the Create Account Panel in the GrowingPains application
@@ -164,6 +164,9 @@ public class CreateAccountPanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Handles the insertion of a new Customer into the Customer table of the database
+	 */
 	public void handleCreateEvent() {
 		submit.addActionListener(new ActionListener() {
 			@Override
@@ -215,6 +218,9 @@ public class CreateAccountPanel extends JPanel {
 		});
 	}
 	
+	/**
+	 * Returns the user to the login screen on click 
+	 */
 	public void returnToLoginScreen() {
 		returnToLogin.addActionListener(new ActionListener() {
 			@Override
