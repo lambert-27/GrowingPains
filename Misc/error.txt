@@ -1,0 +1,21 @@
+Empty Input Field: First Name cannot be empty
+Empty Input Field: Last Name cannot be empty
+Empty Input Field: Email cannot be empty
+Validation Error: Phone Number must only have digits or spaces
+Validation Error: Email must have an @
+Password Error: Passwords do not match
+Password Error: Passwords do not match
+Login Error: : Must be logged in before proceeding to Browse
+Login Error: : Must be logged in before proceeding to Browse
+Login Error: : Must be logged in before proceeding to Cart
+Login Error: : Must be logged in before proceeding to Cart
+Login Error: : Must be logged in before proceeding to Cart
+Login Error: : Must be logged in before proceeding to Reminders
+Login Error: : Must be logged in before proceeding to Reminders
+Login Error: : Must be logged in before proceeding to Reminders
+Login Error: : Must be logged in before proceeding to Orders
+Login Error: : Must be logged in before proceeding to Orders
+Login Error: : Must be logged in before proceeding to Edit Account
+Login Error: : Must be logged in before proceeding to Edit Account
+Password Error: Current password is incorrect
+Password Error: Passwords do not match

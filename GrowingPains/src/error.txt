@@ -1,0 +1,4 @@
+Validation Error: First Name cannot be empty
+Validation Error: CVV must be exactly 3 digits
+Validation Error: Card Number must be exactly 16 digits long
+Validation Error: Must select expiry date

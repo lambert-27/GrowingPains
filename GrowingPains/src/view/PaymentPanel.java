@@ -152,6 +152,7 @@ public class PaymentPanel extends JPanel{
 		String expiryDate =  expiryMonth.getSelectedItem() + "/" + expiryYear.getSelectedItem();
 		Payment payment = new Payment(cardNumber.getText(), expiryDate,  cvv.getPassword().toString(), cart.getTotalPrice());
 		payment.getTotalPrice();
+		CONTROL.checkFields(cardHolderFName, cardHolderLName, cardNumber, cvv, expiryMonth, expiryYear);
 		CONTROL.makeOrder(cart, order);
 		GrowingPains.getCardLayout().show(GrowingPains.getMainContent(), "Browse");			
 	}
