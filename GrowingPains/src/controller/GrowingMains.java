@@ -17,7 +17,7 @@ public class GrowingMains {
 			try {
 				//New instance of GrowingPains application
 				GrowingPains g = new GrowingPains();
-				//Set GrowingPains to visibile
+				//Set GrowingPains to visible
 				g.run();
 			} catch (SQLException e) {
 				e.printStackTrace();

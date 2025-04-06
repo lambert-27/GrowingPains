@@ -275,6 +275,22 @@ public class GrowingPains extends JFrame{
 	}
 	
 	/**
+	 * Sets up the main content area of the app, using a CardLayout
+	 * Adds different panels to the "deck" of cards for display
+	 */
+	public void mainContent() {
+//		mainContent establish the main container for this content area, with a CARDLayout
+//		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
+		add(mainContent, BorderLayout.CENTER);
+//		Add the panels into the "deck", note the names for the panels, allowing us to switch between them by a unique, easily identifiable name
+		mainContent.add(login, "Login");
+		mainContent.add(welcomePanel(), "Welcome");
+		mainContent.add(browse, "Browse");
+		mainContent.add(reminderPanel(), "Reminder");
+		mainContent.add(productPanel, "Product");
+	}
+	
+	/**
 	 *	Method that encapsulates all common code for creating a button, takes in 2 paramaters
 	*one for the name, the other containing the name of the ImageIcon
 	*@param name the the displayed on the button
@@ -295,22 +311,6 @@ public class GrowingPains extends JFrame{
 		btn.setContentAreaFilled(false);
 
 		return btn;
-	}
-	/**
-	 * Sets up the main content area of the app, using a CardLayout
-	 * Adds different panels to the "deck" of cards for display
-	 */
-	public void mainContent() {
-		
-//		mainContent establish the main container for this content area, with a CARDLayout
-//		This allows us to have a series of JPanels stacked ontop of one another like a deck of cards
-		add(mainContent, BorderLayout.CENTER);
-//		Add the panels into the "deck", note the names for the panels, allowing us to switch between them by a unique, easily identifiable name
-		mainContent.add(login, "Login");
-		mainContent.add(welcomePanel(), "Welcome");
-		mainContent.add(browse, "Browse");
-		mainContent.add(reminderPanel(), "Reminder");
-		mainContent.add(productPanel, "Product");
 	}
 	
 /**
