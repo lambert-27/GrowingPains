@@ -50,6 +50,17 @@ public class CartPanel extends JPanel {
 	 * @param customer the Customer currently logged in
 	 */
 	public CartPanel(Customer customer, Cart cart) {
+		buildCart(customer, cart);
+	}
+	
+
+	/**
+	 * Builds all page elements needed to create the CartPanel 
+	 * 
+	 * @param customer the Customer currently logged in
+	 * @param cart the cart containing the list of products to be displayed
+	 */
+	public void buildCart(Customer customer, Cart cart) {
 		setLayout(new BorderLayout());
 		this.cartItems = cart.getCart();
 		spinners = new ArrayList<JSpinner>();
@@ -57,31 +68,12 @@ public class CartPanel extends JPanel {
 //		Add the title to the NORTH 
 		add(new TitlePanel("Cart"), BorderLayout.NORTH);
 		getProducts(cart);
-		
+
 //		Buttons
 		checkoutBtn = GrowingButton.createButton("Checkout");
 		updateCartBtn = GrowingButton.createButton("Update Cart");
-		
-//		Event Handling for checkout button
-		checkoutBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					CONTROL.submitOrder(customer, cart, cartItems);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		
-//		Event Handling for updateCart button
-		updateCartBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CONTROL.updateCartValues(cart, cartItems, spinners);
-				//Set the totalPrice label to the updated price of the cart
-				totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
-			}
-		});
+		updateCart(customer, cart);
+		makeOrder(customer, cart);
 		
 //		Panel that holds the total price andd the checkout button, pushed to the RIGHT BOTTOM of screen
 		checkoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -91,10 +83,7 @@ public class CartPanel extends JPanel {
 		checkoutPanel.add(totalPrice);
 //		Code to push to South
 		add(checkoutPanel, BorderLayout.SOUTH);
-		
 	}
-	
-
 	
 	/**
 	 * Retrieves a list of all products and adds them to the panel for display
@@ -142,6 +131,48 @@ public class CartPanel extends JPanel {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(8);
 		add(scrollPane, BorderLayout.CENTER);
 	
+	}
+	
+	/**
+	 * Updates the values of all Items in the users cart and re-displays the newly updated cart
+	 * 
+	 * @param customer the Customer currently logged in
+	 * @param cart the cart containing the list of products to be displayed
+	 */
+	public void updateCart(Customer customer, Cart cart) {
+//		Event Handling for updateCart button
+		updateCartBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CONTROL.updateCartValues(cart, cartItems, spinners);
+				removeAll();
+				revalidate();
+				repaint();
+				buildCart(customer, cart);
+				//Set the totalPrice label to the updated price of the cart
+				totalPrice.setText("Total Price: €" + (float)cart.getTotalPrice());
+			}
+		});
+	}
+	
+	/**
+	 * Event handling for inserting an order into the Orders table
+	 * 
+	 * @param customer the Customer currently logged in
+	 * @param cart the cart containing the list of products to be displayed
+	 */
+	public void makeOrder(Customer customer, Cart cart) {
+//		Event Handling for checkout button
+		checkoutBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					CONTROL.submitOrder(customer, cart, cartItems);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 	}
 	
 	}

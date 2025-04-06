@@ -50,8 +50,9 @@ public class CartControl {
 	 * @param cart The current Cart object
 	 * @param cartItems List of items within the cart
 	 * @param spinners The list of qty spinners associated with each product in the cart
+	 * @return The newly updated cart
 	 */
-	public void updateCartValues(Cart cart, List<OrderItem> cartItems, List<JSpinner> spinners) {
+	public List<OrderItem> updateCartValues(Cart cart, List<OrderItem> cartItems, List<JSpinner> spinners) {
 	    try {
 			// Check if cart is empty
 	    if (!(cartItems == null || cartItems.isEmpty())) {
@@ -67,11 +68,17 @@ public class CartControl {
 				
 				//New qty of items 
 				int newQty = (int) spin.getValue();
-				//Calculate total price
-				total += newQty * product.getPrice();
+				
+//				If the new quantity is zero, remove the product from the list, 
+				if(newQty == 0) {
+					cartItems.remove(index);
+				}else {
 				//Set the new qty of items
 				cartItems.get(index).setQty(newQty);
-				//Increment index
+				}
+				//Calculate total price
+				total += newQty * product.getPrice();
+				//Increment index to proceed to next item in loop
 				index++;
 			}
 			cart.setTotalPrice(total);
@@ -82,5 +89,6 @@ public class CartControl {
 			//Write the error to log
 			GrowingPains.errorWriter.logError("Empty Cart Error: ", e1.getMessage());
 		}
+		return cartItems;
 	}
 }
