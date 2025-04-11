@@ -46,7 +46,7 @@ GrowingPains is a customer-focused system in its current iteration, so CRUD oper
     - Import the [📁 Dump File](./Misc/GrowingDump.sql) to your SQL server 
     - Run the [📁 Jar File](./Misc/FinalJar.jar) 
 
-## Future Impleementation
+## Future Implementation
 - Reminder System: Ability for users to set water scheduling notifications
 - Admin Panel: Manage inventory, customers and customer orders
 - Comprehensive Order/Product relationship integration in the backend database (simplified relationships)
