@@ -57,11 +57,17 @@ public class CartControl {
 			// Check if cart is empty
 	    if (!(cartItems == null || cartItems.isEmpty())) {
 			double total = 0;
-			int index = 0;
-			//For each loop ot iterate through spinners
-			for(JSpinner spin: spinners) {
+			int listLength = 0;
+
+			//For each loop to iterate trough spinners and get length of list
+			for(JSpinner spins: spinners) {
+				listLength++;
+			}
+			
+			//For loop to handle cart updating
+			for(int index = 0; index < listLength; index++) {
 				//Get the spinner @ current index
-				spin = spinners.get(index);
+				JSpinner spin = spinners.get(index);
 	
 				//Get product @ current index
 				OrderItem product = cartItems.get(index);
@@ -72,14 +78,15 @@ public class CartControl {
 //				If the new quantity is zero, remove the product from the list, 
 				if(newQty == 0) {
 					cartItems.remove(index);
+					//Decrement list length once removed
+					listLength--;
 				}else {
 				//Set the new qty of items
 				cartItems.get(index).setQty(newQty);
 				}
 				//Calculate total price
 				total += newQty * product.getPrice();
-				//Increment index to proceed to next item in loop
-				index++;
+
 			}
 			cart.setTotalPrice(total);
 	    }
