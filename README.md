@@ -1,4 +1,4 @@
-
+# **![GrowingPains Logo](https://github.com/lambert-27/GrowingPains/blob/main/GrowingPains/src/view/images/logo_readme.png?raw=true) Growing Pains - Online Plant Store System (OPSS)**
 **Object-Oriented Software Development - Project**
 *By Mark Lambert - C00192497*
 
